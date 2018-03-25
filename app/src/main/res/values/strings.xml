@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lab 04</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <string name="google_api_key">AIzaSyC4_rTsjBg5djIZmqr_q2fIz3QO4ksiijA</string>
+
+    <string name="hello_blank_fragment">Hello List fragment</string>
+</resources>
