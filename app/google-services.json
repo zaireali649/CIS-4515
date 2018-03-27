@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "580145931733",
+    "firebase_url": "https://cis-4515-lab-05.firebaseio.com",
+    "project_id": "cis-4515-lab-05",
+    "storage_bucket": "cis-4515-lab-05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580145931733:android:f1f037bede9124e7",
+        "android_client_info": {
+          "package_name": "edu.temple.mapchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580145931733-pe439a49aj71ga19joqi29e9hmojqlbr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.temple.mapchat",
+            "certificate_hash": "708b69b0d6ce82786cc294e0e95964921b76d957"
+          }
+        },
+        {
+          "client_id": "580145931733-aievlrq7407p08h2pglcpjufvefpgd5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY4a0-yZsctKd0VHc_qmaz_lBRJCZkjNs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580145931733-aievlrq7407p08h2pglcpjufvefpgd5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

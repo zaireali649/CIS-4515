@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Lab 05</string>
+
+    <string name="google_map_api_key">AIzaSyC4_rTsjBg5djIZmqr_q2fIz3QO4ksiijA</string>
+
+    <string name="hello_blank_fragment">Hello List fragment</string>
+</resources>
