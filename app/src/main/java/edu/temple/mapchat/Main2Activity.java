@@ -3,10 +3,15 @@ package edu.temple.mapchat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +50,7 @@ import java.util.List;
 
 import static edu.temple.mapchat.MainActivity.MY_PREFS_NAME;
 
-public class Main2Activity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener {
+public class Main2Activity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, NfcAdapter.CreateNdefMessageCallback {
 
 
     String GetLocationsURL = "https://kamorris.com/lab/get_locations.php";
@@ -55,15 +60,17 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
     private String username;
     private Button keysButton;
 
-    String u = "?username=";
-    String la = "&latitude=";
-    String lo = "&longitude=";
-
+    private byte[] jsonToByte;
+    private JSONObject jsonObj;
 
     private LocationManager lm;
     private Location location;
     public double longitude, longitudeLast;
     public double latitude, latitudeLast;
+
+    private static final String PROVIDER_NAME = "temple.mapchat.keys";
+
+    private static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER_NAME + "/keys");
 
 
     MapView mMapView;
@@ -78,17 +85,45 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
 
         keysButton = (Button) findViewById(R.id.button2);
 
+        username = prefs.getString("username", null);
+
         keysButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Main2Activity.this, FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(Main2Activity.this, FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(Main2Activity.this, "Private: " + prefs.getString("privatekey", "NULL"), Toast.LENGTH_LONG).show();
+//
+//                Log.e("query", "USERNAME = '" + username + "'");
+
+
+
+
+
+
             }
         });
 
+        jsonObj = new JSONObject ();
+
+        Cursor c = getContentResolver().query(CONTENT_URI, null, "USERNAME = '" + username + "'", null, "USERNAME");
+        if(c.moveToFirst()){
+            //Toast.makeText(Main2Activity.this, "Public: " + c.getString(c.getColumnIndex( "PUBLICKEY")), Toast.LENGTH_LONG).show();
+
+            String keypub  = "-----BEGIN PUBLIC KEY-----" +
+                    c.getString(c.getColumnIndex( "PUBLICKEY")) +
+                    "-----END PUBLIC KEY-----";
+
+            try {
+                jsonObj.put("user", username);
+                jsonObj.put("key", keypub);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
 
+        jsonToByte = jsonObj.toString().getBytes(); //convert json to bytes
 
-        username = prefs.getString("username", null);
 
         mMapView = (MapView) findViewById(R.id.mapView);
 
@@ -107,7 +142,6 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
             latitude = 0;
             latitudeLast = 0;
         }
-
 
         //Toast.makeText(Main2Activity.this, String.valueOf(longitude), Toast.LENGTH_LONG).show();
 
@@ -155,6 +189,18 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
 
 
         scheduleUpdate();
+
+        NfcAdapter mAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mAdapter == null) {
+            Toast.makeText(this, "Sorry this device does not have NFC.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!mAdapter.isEnabled()) {
+            Toast.makeText(this, "Please enable NFC via Settings.", Toast.LENGTH_LONG).show();
+        }
+
+        mAdapter.setNdefPushMessageCallback(this, this);
     }
 
 
@@ -269,7 +315,15 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         User u = partners.partners.get(position);
                         //prestationEco str = (prestationEco)o; //As you are using Default String Adapter
-                        Toast.makeText(getBaseContext(), u.UserName, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getBaseContext(), u.UserName, Toast.LENGTH_SHORT).show();
+
+                        Cursor c = getContentResolver().query(CONTENT_URI, null, "USERNAME = '" + u.UserName + "'", null, "USERNAME");
+                        if(c.moveToFirst()){
+                            Toast.makeText(Main2Activity.this, "Public: " + c.getString(c.getColumnIndex( "PUBLICKEY")), Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(Main2Activity.this, "Meet up with " + u.UserName + " in order to exchange public keys!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 
@@ -438,5 +492,12 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
                 lat2, lon2, distance);
 
         return distance[0];
+    }
+
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
+        NdefRecord ndefRecord = NdefRecord.createMime("text/plain", jsonToByte);
+        NdefMessage ndefMessage = new NdefMessage(ndefRecord);
+        return ndefMessage;
     }
 }
