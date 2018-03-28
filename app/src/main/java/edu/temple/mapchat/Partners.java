@@ -1,5 +1,7 @@
 package edu.temple.mapchat;
 
+import android.util.Log;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +13,6 @@ import java.util.List;
 public class Partners  {
     private final double lat, lon;
     public List<User> partners;
-    public List<User> partnersSort;
 
     Integer[][] list;
 
@@ -32,6 +33,24 @@ public class Partners  {
                 return o1.compareTo(o2);
             }
         });
+
+        /*Collections.sort(partners, new Comparator<User>(){
+
+            public int compare(User o1, User o2)
+            {
+                String a = o1.UserName;
+                String b = o2.UserName;
+
+                return a.compareTo(b);
+            }
+        });*/
+
+        //Collections.sort(partners);
+
+        for (int i = 0; i <partners.size(); i++)
+        {
+            Log.e("SORT: ", partners.get(i).UserName);
+        }
 
     }
 

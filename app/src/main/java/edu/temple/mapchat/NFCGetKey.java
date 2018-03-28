@@ -61,7 +61,7 @@ public class NFCGetKey extends AppCompatActivity {
                 username = jsonObj.getString("user");
                 pubk = jsonObj.getString("key");
 
-                pubk = pubk.replace("-----BEGIN PUBLIC KEY-----", "");
+                pubk = pubk.replace("-----BEGIN PUBLIC KEY-----\n", "");
                 pubk = pubk.replace("-----END PUBLIC KEY-----", "");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -75,7 +75,8 @@ public class NFCGetKey extends AppCompatActivity {
             Cursor c = getContentResolver().query(CONTENT_URI, null, "USERNAME = '" + username + "'", null, "USERNAME");
 
             if (c.moveToFirst()) {
-                getContentResolver().update(CONTENT_URI, contentValues, "USERNAME = '" + username + "'", null);
+                //getContentResolver().update(CONTENT_URI, contentValues, "USERNAME = '" + username + "'", null);
+                Toast.makeText(NFCGetKey.this, "Already got them keys, keys, keys", Toast.LENGTH_LONG).show();
             }
             else{
                 getContentResolver().insert(CONTENT_URI, contentValues);

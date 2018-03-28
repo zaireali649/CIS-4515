@@ -74,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.e("username", prefs.getString("username", "null"));
 
-                            if (username.getText().toString() != prefs.getString("username", null)){ // Username Changed
+                            if (!username.getText().toString().equals(prefs.getString("username", null))){ // Username Changed
+                                //Toast.makeText(MainActivity.this, username.getText().toString(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this, prefs.getString("username", null), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this, "Don't equal, playa", Toast.LENGTH_LONG).show();
                                 // Change Username
                                 editor.putString("username",  username.getText().toString());
 
@@ -117,6 +120,16 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putString("privatekey", prik);
 
                                 editor.apply();
+
+                                /*String msg = "test";
+
+                                Toast.makeText(MainActivity.this, "RSA: " + msg, Toast.LENGTH_LONG).show();
+
+
+
+                                RSAHandler rsaHandler = new RSAHandler(MainActivity.this, username.getText().toString(), username.getText().toString(), pubk, prik);
+
+                                Toast.makeText(MainActivity.this, rsaHandler.decryptMessage(rsaHandler.encryptMessage(msg)), Toast.LENGTH_LONG).show();*/
                             }
 
                             Intent myIntent = new Intent(MainActivity.this, Main2Activity.class);

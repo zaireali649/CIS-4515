@@ -1,7 +1,10 @@
 package edu.temple.mapchat;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
@@ -14,6 +17,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,9 +27,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -68,6 +75,8 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
     public double longitude, longitudeLast;
     public double latitude, latitudeLast;
 
+    private Boolean update = false;
+
     private static final String PROVIDER_NAME = "temple.mapchat.keys";
 
     private static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER_NAME + "/keys");
@@ -83,25 +92,7 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
 
         final SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
 
-        keysButton = (Button) findViewById(R.id.button2);
-
         username = prefs.getString("username", null);
-
-        keysButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(Main2Activity.this, FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_LONG).show();
-//                Toast.makeText(Main2Activity.this, "Private: " + prefs.getString("privatekey", "NULL"), Toast.LENGTH_LONG).show();
-//
-//                Log.e("query", "USERNAME = '" + username + "'");
-
-
-
-
-
-
-            }
-        });
 
         jsonObj = new JSONObject ();
 
@@ -109,7 +100,7 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
         if(c.moveToFirst()){
             //Toast.makeText(Main2Activity.this, "Public: " + c.getString(c.getColumnIndex( "PUBLICKEY")), Toast.LENGTH_LONG).show();
 
-            String keypub  = "-----BEGIN PUBLIC KEY-----" +
+            String keypub  = "-----BEGIN PUBLIC KEY-----\n" +
                     c.getString(c.getColumnIndex( "PUBLICKEY")) +
                     "-----END PUBLIC KEY-----";
 
@@ -189,6 +180,16 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
 
 
         scheduleUpdate();
+
+        /*String msg = "test";
+
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+
+
+
+        RSAHandler rsaHandler = new RSAHandler(this, username, username);
+
+        Toast.makeText(this, rsaHandler.decryptMessage(rsaHandler.encryptMessage(msg)), Toast.LENGTH_LONG).show();*/
 
         NfcAdapter mAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mAdapter == null) {
@@ -302,13 +303,14 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
 
                 final Partners partners = new Partners(userList, latitudeLast, longitudeLast);
 
+
                 partners.sort();
-
-
 
                 ListAdapterClass adapter = new ListAdapterClass(partners.partners, context);
 
                 userlv.setAdapter(adapter);
+
+                //adapter.notifyDataSetChanged();
 
                 userlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -319,7 +321,10 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
 
                         Cursor c = getContentResolver().query(CONTENT_URI, null, "USERNAME = '" + u.UserName + "'", null, "USERNAME");
                         if(c.moveToFirst()){
-                            Toast.makeText(Main2Activity.this, "Public: " + c.getString(c.getColumnIndex( "PUBLICKEY")), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Main2Activity.this, "Public: " + c.getString(c.getColumnIndex( "PUBLICKEY")), Toast.LENGTH_LONG).show();
+                            Intent myIntent = new Intent(Main2Activity.this, ChatActivity.class);
+                            myIntent.putExtra("user", u.UserName);
+                            startActivity(myIntent);
                         }
                         else {
                             Toast.makeText(Main2Activity.this, "Meet up with " + u.UserName + " in order to exchange public keys!", Toast.LENGTH_LONG).show();
@@ -343,6 +348,17 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
                             LatLng sydney = new LatLng(Double.parseDouble(userList.get(i).Latitude),Double.parseDouble(userList.get(i).Longitude));
                             googleMap.addMarker(new MarkerOptions().position(sydney).title(userList.get(i).UserName));
 
+                        }
+
+                        LatLng sydney = new LatLng(latitudeLast,longitudeLast);
+                        googleMap.addMarker(new MarkerOptions().position(sydney).title("Me").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+                        if (!update) {
+                            // For zooming automatically to the location of the marker
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                            update = true;
                         }
 
 
@@ -438,9 +454,11 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
             HttpPost httpPost = new HttpPost(RegisterTokenURL);
 
             // add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("user", username));
             nameValuePairs.add(new BasicNameValuePair("token", FirebaseInstanceId.getInstance().getToken()));
+
+
 
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -500,4 +518,28 @@ public class Main2Activity extends AppCompatActivity implements ListFragment.OnF
         NdefMessage ndefMessage = new NdefMessage(ndefRecord);
         return ndefMessage;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
+                new IntentFilter("newMessage")
+        );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent myIntent = new Intent(Main2Activity.this, ChatActivity.class);
+            myIntent.putExtra("user", intent.getExtras().getString("user"));
+            myIntent.putExtra("message", intent.getExtras().getString("message"));
+            startActivity(myIntent);
+        }
+    };
 }
