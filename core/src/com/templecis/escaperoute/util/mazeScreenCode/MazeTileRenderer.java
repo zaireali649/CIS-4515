@@ -19,7 +19,8 @@ public class MazeTileRenderer {
 	protected int mazeMagnifyToWorld = Const.MAZE_MAGNIFY_TO_WORDL;
 
 	public MazeTileRenderer(Maze maze, String wallFile) {
-		Texture wall = new Texture("images/Wall.png");
+		//Texture wall = (Texture)  ;
+		Texture wall = new Texture(wallFile);
 		wallTile = new StaticTiledMapTile(new TextureRegion(wall));
 		this.maze = maze;
 	}
