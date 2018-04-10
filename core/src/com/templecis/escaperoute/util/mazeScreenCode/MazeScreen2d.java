@@ -1,9 +1,5 @@
 package com.templecis.escaperoute.util.mazeScreenCode;
 
-import bp.gdx.maze.actors.Bouncer;
-import bp.gdx.maze.actors.Fly;
-import bp.gdx.maze.camera.MapViewport;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -13,10 +9,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.templecis.escaperoute.util.actors.Bouncer;
+import com.templecis.escaperoute.util.actors.Fly;
+import com.templecis.escaperoute.util.camera.MapViewport;
+
+;
 
 public class MazeScreen2d implements Screen {
 

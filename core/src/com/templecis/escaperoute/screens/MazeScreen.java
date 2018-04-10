@@ -43,12 +43,12 @@ public class MazeScreen implements Screen {
         Maze maze = (new MazeCreator()).getMaze();
 
         MazeTileRenderer mTileRenderer =
-                new MazeTileRenderer(maze, "brick_wall_single_perfect.png");
+                new MazeTileRenderer(maze, "images/Wall.png");
 
         mazeRenderer = mTileRenderer.getRenderer();
 
         MazeMapRenderer mMapRenderer =
-                new MazeMapRenderer(maze, "brick_wall_single_perfect.png", 2);
+                new MazeMapRenderer(maze, "images/Wall.png", 2);
 
         mapRenderer = mMapRenderer.getRenderer();
 

@@ -24,6 +24,10 @@ public class Maze {
 		}
 	}
 
+	public boolean empty(){
+		return true;
+	}
+
 	public PLACE getPlace(int row, int col) {
 		PLACE place = null;
 

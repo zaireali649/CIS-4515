@@ -1,6 +1,6 @@
 package com.templecis.escaperoute.util.mazeScreenCode;
 
-import bp.gdx.maze.Maze.PLACE;
+import com.templecis.escaperoute.util.mazeScreenCode.Maze.PLACE;
 
 public class MazeStringRenderer implements StringRenderer {
 

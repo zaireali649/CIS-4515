@@ -1,6 +1,6 @@
 package com.templecis.escaperoute.util.mazeScreenCode;
 
-import bp.gdx.maze.Maze.PLACE;
+import com.templecis.escaperoute.util.mazeScreenCode.Maze.PLACE;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,7 +19,7 @@ public class MazeTileRenderer {
 	protected int mazeMagnifyToWorld = Const.MAZE_MAGNIFY_TO_WORDL;
 
 	public MazeTileRenderer(Maze maze, String wallFile) {
-		Texture wall = new Texture(wallFile);
+		Texture wall = new Texture("images/Wall.png");
 		wallTile = new StaticTiledMapTile(new TextureRegion(wall));
 		this.maze = maze;
 	}
