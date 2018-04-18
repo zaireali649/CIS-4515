@@ -15,10 +15,20 @@ import com.templecis.escaperoute.screens.MenuScreen;
 import com.templecis.escaperoute.screens.transitions.ScreenTransition;
 import com.templecis.escaperoute.screens.transitions.ScreenTransitionSlice;
 
-public class EscapeRouteMain extends DirectedGame {
+public class EscapeRouteMain extends ApplicationAdapter {
+	public static final int WIDTH = 400;
+	public static final int HEIGHT = 800;
+
+	public static final String title = "Escape Route";
+
+	SpriteBatch batch;
+	Texture img;
 
 	@Override
 	public void create() {
+
+		batch = new SpriteBatch();
+		img = new Texture("badlogic.jpg");
 		// Set Libgdx log level
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
