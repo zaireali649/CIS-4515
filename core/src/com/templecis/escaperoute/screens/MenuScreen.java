@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.templecis.escaperoute.maze.MasterMaze;
+import com.templecis.escaperoute.maze.screens.GameScreen;
 import com.templecis.escaperoute.util.Constants;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -55,8 +57,11 @@ public class MenuScreen extends AbstractGameScreen {
     private boolean debugEnabled = false;
     private float debugRebuildStage;
 
+    DirectedGame game;
+
     public MenuScreen(DirectedGame game) {
         super(game);
+        this.game = game;
     }
 
     @Override
@@ -220,14 +225,8 @@ public class MenuScreen extends AbstractGameScreen {
 
 
     private void onPlayClicked() {
-        MazeScreen ms = new MazeScreen();
-        Game game = new Game() {
-            @Override
-            public void create() {
-
-            }
-        };
-        switchScreen(game, ms);
+        MasterMaze mm = new MasterMaze();
+        switchScreen(mm, new GameScreen(mm));
 
     }
 
