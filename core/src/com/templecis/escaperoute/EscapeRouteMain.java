@@ -16,8 +16,8 @@ import com.templecis.escaperoute.screens.transitions.ScreenTransition;
 import com.templecis.escaperoute.screens.transitions.ScreenTransitionSlice;
 import com.templecis.escaperoute.States.*;
 
-public class EscapeRouteMain extends ApplicationAdapter {
-	public static final int WIDTH = 400;
+public class EscapeRouteMain extends DirectedGame {
+	public static final int WIDTH = 480;
 	public static final int HEIGHT = 800;
 
 	public static final String title = "Escape Route";
@@ -43,7 +43,7 @@ public class EscapeRouteMain extends ApplicationAdapter {
 
 		// Start game at menu screen
 		ScreenTransition transition = ScreenTransitionSlice.init(2, ScreenTransitionSlice.UP_DOWN, 10, Interpolation.pow5Out);
-		// setScreen(new MenuScreen(this), transition);
+		 setScreen(new MenuScreen(this), transition);
 	}
 
     @Override
