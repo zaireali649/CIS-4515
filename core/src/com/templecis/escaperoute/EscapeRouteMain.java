@@ -15,7 +15,7 @@ import com.templecis.escaperoute.screens.MenuScreen;
 import com.templecis.escaperoute.screens.transitions.ScreenTransition;
 import com.templecis.escaperoute.screens.transitions.ScreenTransitionSlice;
 
-public class EscapeRouteMain extends ApplicationAdapter {
+public class EscapeRouteMain extends DirectedGame {
 	public static final int WIDTH = 400;
 	public static final int HEIGHT = 800;
 
