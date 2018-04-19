@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.templecis.escaperoute.screens.transitions.ScreenTransition;
+import com.templecis.escaperoute.screens.transitions.ScreenTransitionFade;
 import com.templecis.escaperoute.util.Constants;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -204,7 +206,8 @@ public class MenuScreen extends AbstractGameScreen {
 
 
     private void onPlayClicked() {
-
+        ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+        game.setScreen(new EscaperGameScreen(game), transition);
     }
 
     private void onOptionsClicked() {
