@@ -31,6 +31,12 @@ import com.templecis.escaperoute.util.Constants;
  * Created by Ziggy on 4/19/2018.
  */
 
+/*
+
+
+
+ */
+
 public class WorldController extends InputAdapter implements Disposable {
     private static final String TAG = WorldController.class.getName();
     public CameraHelper cameraHelper;
@@ -98,7 +104,7 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     private void spawnCarrots(Vector2 pos, int numCarrots, float radius) {
-        float carrotShapeScale = 0.5f;
+        /*float carrotShapeScale = 0.5f;
         // create carrots with box2d body and fixture
         for (int i = 0; i < numCarrots; i++) {
             Carrot carrot = new Carrot();
@@ -131,12 +137,13 @@ public class WorldController extends InputAdapter implements Disposable {
             polygonShape.dispose();
             // finally, add new carrot to list for updating/rendering
             level.carrots.add(carrot);
-        }
+        }*/
     }
 
     public void update(float deltaTime) {
         handleDebugInput(deltaTime);
 
+        // Game Over Conditions
         if (isGameOver() || goalReached) {
             timeLeftGameOverDelay -= deltaTime;
             if (timeLeftGameOverDelay < 0) backToMenu();
@@ -148,6 +155,7 @@ public class WorldController extends InputAdapter implements Disposable {
         b2world.step(deltaTime, 8, 3);
         cameraHelper.update(deltaTime);
 
+        // Lose Life From Water
         if (!isGameOver() && isPlayerInWater()) {
             AudioManager.instance.play(Assets.instance.sounds.liveLost);
             lives--;
@@ -156,7 +164,8 @@ public class WorldController extends InputAdapter implements Disposable {
             else
                 initLevel();
         }
-        level.mountains.updateScrollPosition(cameraHelper.getPosition());
+
+        //level.mountains.updateScrollPosition(cameraHelper.getPosition());
         if (livesVisual > lives)
             livesVisual = Math.max(lives, livesVisual - 1 * deltaTime);
         if (scoreVisual < score)
@@ -217,15 +226,21 @@ public class WorldController extends InputAdapter implements Disposable {
 
     private void handleInputGame(float deltaTime) {
         if (cameraHelper.hasTarget(level.bunnyHead)) {
+
+
+
+
+
+
             // Player Movement
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
             } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
             } else {
                 // Execute auto-forward movement on non-desktop platform
                 if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
-                    level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+                    //level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
                 }
             }
             // Bunny Jump
@@ -233,7 +248,7 @@ public class WorldController extends InputAdapter implements Disposable {
                 level.bunnyHead.setJumping(true);
             } else {
                 level.bunnyHead.setJumping(false);
-            }
+            }*/
         }
     }
 
@@ -307,6 +322,8 @@ public class WorldController extends InputAdapter implements Disposable {
             onCollisionBunnyHeadWithRock(rock);
             // IMPORTANT: must do all collisions for valid edge testing on rocks.
         }
+
+        /*
         // Test collision: Bunny Head <-> Gold Coins
         for (GoldCoin goldcoin : level.goldcoins) {
             if (goldcoin.collected) continue;
@@ -323,6 +340,7 @@ public class WorldController extends InputAdapter implements Disposable {
             onCollisionBunnyWithFeather(feather);
             break;
         }
+        */
         // Test collision: Bunny Head <-> Goal
         if (!goalReached) {
             r2.set(level.goal.bounds);

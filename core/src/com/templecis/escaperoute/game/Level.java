@@ -22,15 +22,15 @@ import com.templecis.escaperoute.game.objects.WaterOverlay;
 public class Level {
     public static final String TAG = Level.class.getName();
     public BunnyHead bunnyHead;
-    public Array<GoldCoin> goldcoins;
-    public Array<Feather> feathers;
+    //public Array<GoldCoin> goldcoins;
+    //public Array<Feather> feathers;
     // objects
     public Array<Rock> rocks;
     // decoration
-    public Clouds clouds;
-    public Mountains mountains;
-    public WaterOverlay waterOverlay;
-    public Array<Carrot> carrots;
+    //public Clouds clouds;
+    //public Mountains mountains;
+    //public WaterOverlay waterOverlay;
+    //public Array<Carrot> carrots;
     public Goal goal;
 
 
@@ -43,9 +43,9 @@ public class Level {
         bunnyHead = null;
         // objects
         rocks = new Array<Rock>();
-        goldcoins = new Array<GoldCoin>();
-        feathers = new Array<Feather>();
-        carrots = new Array<Carrot>();
+        //goldcoins = new Array<GoldCoin>();
+        //feathers = new Array<Feather>();
+        //carrots = new Array<Carrot>();
         // load image file that represents the level data
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
         // scan pixels from top-left to bottom-right
@@ -89,14 +89,14 @@ public class Level {
                     obj = new Feather();
                     offsetHeight = -1.5f;
                     obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
-                    feathers.add((Feather) obj);
+                    //feathers.add((Feather) obj);
                 }
                 // gold coin
                 else if (BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel)) {
                     obj = new GoldCoin();
                     offsetHeight = -1.5f;
                     obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
-                    goldcoins.add((GoldCoin) obj);
+                    //goldcoins.add((GoldCoin) obj);
                 }
                 // goal
                 else if (BLOCK_TYPE.GOAL.sameColor(currentPixel)) {
@@ -117,12 +117,12 @@ public class Level {
             }
         }
         // decoration
-        clouds = new Clouds(pixmap.getWidth());
-        clouds.position.set(0, 2);
-        mountains = new Mountains(pixmap.getWidth());
-        mountains.position.set(-1, -1);
-        waterOverlay = new WaterOverlay(pixmap.getWidth());
-        waterOverlay.position.set(0, -3.75f);
+        //clouds = new Clouds(pixmap.getWidth());
+        //clouds.position.set(0, 2);
+        //mountains = new Mountains(pixmap.getWidth());
+        //mountains.position.set(-1, -1);
+        //waterOverlay = new WaterOverlay(pixmap.getWidth());
+        //waterOverlay.position.set(0, -3.75f);
         // free memory
         pixmap.dispose();
         Gdx.app.debug(TAG, "level '" + filename + "' loaded");
@@ -130,41 +130,41 @@ public class Level {
 
     public void render(SpriteBatch batch) {
         // Draw Mountains
-        mountains.render(batch);
+        //mountains.render(batch);
         // Draw Goal
         goal.render(batch);
         // Draw Rocks
         for (Rock rock : rocks) {
             rock.render(batch);
         }
-        // Draw Gold Coins
-        for (GoldCoin goldCoin : goldcoins)
-            goldCoin.render(batch);
-        // Draw Feathers
-        for (Feather feather : feathers)
-            feather.render(batch);
-        // Draw Carrots
-        for (Carrot carrot : carrots)
-            carrot.render(batch);
+//        // Draw Gold Coins
+//        for (GoldCoin goldCoin : goldcoins)
+//            goldCoin.render(batch);
+//        // Draw Feathers
+//        for (Feather feather : feathers)
+//            feather.render(batch);
+//        // Draw Carrots
+//        for (Carrot carrot : carrots)
+//            carrot.render(batch);
         // Draw Player Character
         bunnyHead.render(batch);
         // Draw Water Overlay
-        waterOverlay.render(batch);
+        //waterOverlay.render(batch);
         // Draw Clouds
-        clouds.render(batch);
+        //clouds.render(batch);
     }
 
     public void update(float deltaTime) {
         bunnyHead.update(deltaTime);
         for (Rock rock : rocks)
             rock.update(deltaTime);
-        for (GoldCoin goldCoin : goldcoins)
-            goldCoin.update(deltaTime);
-        for (Feather feather : feathers)
-            feather.update(deltaTime);
-        for (Carrot carrot : carrots)
-            carrot.update(deltaTime);
-        clouds.update(deltaTime);
+//        for (GoldCoin goldCoin : goldcoins)
+//            goldCoin.update(deltaTime);
+//        for (Feather feather : feathers)
+//            feather.update(deltaTime);
+//        for (Carrot carrot : carrots)
+//            carrot.update(deltaTime);
+//        clouds.update(deltaTime);
     }
 
     public enum BLOCK_TYPE {

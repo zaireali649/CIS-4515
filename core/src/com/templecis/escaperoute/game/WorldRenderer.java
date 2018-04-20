@@ -15,6 +15,14 @@ import com.templecis.escaperoute.util.GamePreferences;
  * Created by Ziggy on 4/19/2018.
  */
 
+/*
+This file handles rendering HUD like information such as score, time, health, ect...
+ */
+
+
+
+
+
 public class WorldRenderer implements Disposable {
     private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
     private OrthographicCamera camera;
@@ -62,16 +70,16 @@ public class WorldRenderer implements Disposable {
         batch.begin();
         // draw collected gold coins icon + text
         // (anchored to top left edge)
-        renderGuiScore(batch);
+        //renderGuiScore(batch);
         // draw collected feather icon (anchored to top left edge)
-        renderGuiFeatherPowerup(batch);
+        //renderGuiFeatherPowerup(batch);
         // draw extra lives icon + text (anchored to top right edge)
-        renderGuiExtraLive(batch);
+        //renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
         if (GamePreferences.instance.showFpsCounter)
             renderGuiFpsCounter(batch);
         // draw game over text
-        renderGuiGameOverMessage(batch);
+        //renderGuiGameOverMessage(batch);
         batch.end();
     }
 
