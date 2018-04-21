@@ -1,9 +1,18 @@
 package com.templecis.escaperoute.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.templecis.escaperoute.HUD.HealthBar;
+import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
@@ -14,6 +23,9 @@ import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.Mountains;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
+
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Created by Ziggy on 4/19/2018.
@@ -33,6 +45,17 @@ public class Level {
     //public Array<Carrot> carrots;
     public Goal goal;
 
+    //Health bar vars
+    private Stage stage;
+    private HealthBar healthBar;
+    private LoadingBarWithBorders loadingBarWithBorders;
+
+    private long lastUpdate = 0L;
+
+    //end health bar vars
+
+
+
 
     public Level(String filename) {
         init(filename);
@@ -48,6 +71,20 @@ public class Level {
         //carrots = new Array<Carrot>();
         // load image file that represents the level data
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
+
+        // HEALTH BAR START
+
+//        stage = new Stage();
+//
+//        healthBar = new HealthBar(100, 10);
+//        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
+//        stage.addActor(healthBar);
+//
+//        loadingBarWithBorders = new LoadingBarWithBorders(170, 20);
+//        loadingBarWithBorders.setPosition(10, Gdx.graphics.getHeight() - 50);
+//        stage.addActor(loadingBarWithBorders);
+        // HEALTH BAR END
+
         // scan pixels from top-left to bottom-right
         int lastPixel = -1;
         for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++) {
@@ -152,6 +189,22 @@ public class Level {
         //waterOverlay.render(batch);
         // Draw Clouds
         //clouds.render(batch);
+
+        //Health Bar RENDER START
+
+//        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//
+//        if (System.currentTimeMillis() - lastUpdate > TimeUnit.SECONDS.toMillis(5)) {
+//            healthBar.setValue(healthBar.getValue() - 0.1f);
+//            loadingBarWithBorders.setValue(loadingBarWithBorders.getValue() + 0.1f);
+//            lastUpdate = System.currentTimeMillis();
+//        }
+//
+//        stage.draw();
+//        stage.act();
+
+        //Health Bar RENDER END
     }
 
     public void update(float deltaTime) {
