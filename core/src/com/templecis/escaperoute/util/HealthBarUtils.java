@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * Created by petermontanez on 4/20/18.
  */
 
-public class Utils {
-    private Utils() {}
+public class HealthBarUtils {
+    private HealthBarUtils() {}
 
     /**
      * Creates an image of determined size filled with determined color.

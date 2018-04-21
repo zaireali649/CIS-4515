@@ -2,7 +2,7 @@ package com.templecis.escaperoute.HUD;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.templecis.escaperoute.util.Utils;
+import com.templecis.escaperoute.util.HealthBarUtils;
 
 /**
  * Created by petermontanez on 4/20/18.
@@ -16,9 +16,9 @@ public class HealthBar extends ProgressBar {
      */
     public HealthBar(int width, int height) {
         super(0f, 1f, 0.01f, false, new ProgressBarStyle());
-        getStyle().background = Utils.getColoredDrawable(width, height, Color.RED);
-        getStyle().knob = Utils.getColoredDrawable(0, height, Color.GREEN);
-        getStyle().knobBefore = Utils.getColoredDrawable(width, height, Color.GREEN);
+        getStyle().background = HealthBarUtils.getColoredDrawable(width, height, Color.RED);
+        getStyle().knob = HealthBarUtils.getColoredDrawable(0, height, Color.GREEN);
+        getStyle().knobBefore = HealthBarUtils.getColoredDrawable(width, height, Color.GREEN);
 
         setWidth(width);
         setHeight(height);

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.templecis.escaperoute.util.Utils;
+import com.templecis.escaperoute.util.HealthBarUtils;
 
 /**
  * Created by petermontanez on 4/20/18.
@@ -23,7 +23,7 @@ public class LoadingBarWithBorders extends ProgressBar {
 
         TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("progress-bars.pack"));
         getStyle().background = new TextureRegionDrawable(textureAtlas.findRegion("loading-bar-2-background"));
-        getStyle().knob = Utils.getColoredDrawable(0, height, Color.GREEN);
+        getStyle().knob = HealthBarUtils.getColoredDrawable(0, height, Color.GREEN);
         getStyle().knobBefore = new TextureRegionDrawable(textureAtlas.findRegion("loading-bar-2-knobbefore"));
 
         leftBorder = textureAtlas.findRegion("loading-bar-2-left");
