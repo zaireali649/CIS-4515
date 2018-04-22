@@ -1,13 +1,20 @@
 package com.templecis.escaperoute.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.templecis.escaperoute.HUD.HealthBar;
+import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.util.Constants;
 import com.templecis.escaperoute.util.GamePreferences;
 
@@ -30,6 +37,13 @@ public class WorldRenderer implements Disposable {
     private WorldController worldController;
     private OrthographicCamera cameraGUI;
     private Box2DDebugRenderer b2debugRenderer;
+
+    //Health bar vars
+    private Stage stage;
+    private HealthBar healthBar;
+    private LoadingBarWithBorders loadingBarWithBorders;
+
+    Texture texture, texture2;
 
     public WorldRenderer(WorldController worldController) {
         this.worldController = worldController;
@@ -80,6 +94,8 @@ public class WorldRenderer implements Disposable {
             renderGuiFpsCounter(batch);
         // draw game over text
         //renderGuiGameOverMessage(batch);
+
+       // renderHealthBar(batch);
         batch.end();
     }
 
@@ -97,6 +113,60 @@ public class WorldRenderer implements Disposable {
         batch.draw(Assets.instance.goldCoin.goldCoin, x, y, offsetX, offsetY, 100, 100, 0.35f, -0.35f, 0);
         Assets.instance.fonts.defaultBig.draw(batch, "" + (int) worldController.scoreVisual, x + 75, y + 37);
     }
+
+    private void renderHealthBar(SpriteBatch batch){
+    float x = -15;
+    float y = -15;
+    float offsetX = 50;
+    float offsetY = 50;
+
+
+    int i = 0;
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.draw(texture2,100,100,300,20);
+        batch.draw(texture,100,100,i,20);
+        if(i>300)
+        {
+            i=0;
+        }
+        i++;
+   // batch.draw();
+
+       /*
+       healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
+        stage.addActor(healthBar);
+
+        loadingBarWithBorders = new LoadingBarWithBorders(170, 20);
+        loadingBarWithBorders.setPosition(10, Gdx.graphics.getHeight() - 50);
+        stage.addActor(loadingBarWithBorders);
+        */
+    }
+
+    private void initTestObjects() {
+
+        int width =1 ;
+        int height = 1;
+        Pixmap pixmap = createProceduralPixmap(width, height,0,1,0);
+        Pixmap pixmap2 = createProceduralPixmap(width, height,1,0,0);
+
+        texture = new Texture(pixmap);
+        texture2 = new Texture(pixmap2);
+
+
+
+    }
+
+    private Pixmap createProceduralPixmap (int width, int height, int r, int g, int b) {
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+
+        pixmap.setColor(r, g, b, 1);
+        pixmap.fill();
+
+        return pixmap;
+    }
+
 
     private void renderGuiGameOverMessage(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth / 2;

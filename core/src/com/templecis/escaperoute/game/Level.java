@@ -44,7 +44,6 @@ public class Level {
     //public WaterOverlay waterOverlay;
     //public Array<Carrot> carrots;
     public Goal goal;
-
     //Health bar vars
     private Stage stage;
     private HealthBar healthBar;
@@ -72,18 +71,7 @@ public class Level {
         // load image file that represents the level data
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 
-        // HEALTH BAR START
 
-//        stage = new Stage();
-//
-//        healthBar = new HealthBar(100, 10);
-//        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
-//        stage.addActor(healthBar);
-//
-//        loadingBarWithBorders = new LoadingBarWithBorders(170, 20);
-//        loadingBarWithBorders.setPosition(10, Gdx.graphics.getHeight() - 50);
-//        stage.addActor(loadingBarWithBorders);
-        // HEALTH BAR END
 
         // scan pixels from top-left to bottom-right
         int lastPixel = -1;
