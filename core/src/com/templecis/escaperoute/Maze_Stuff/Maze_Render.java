@@ -1,5 +1,6 @@
 package com.templecis.escaperoute.Maze_Stuff;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,6 +9,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
+
+
+import static com.templecis.escaperoute.util.GamePreferences.TAG;
+
 public class Maze_Render {
     protected TiledMap map;
     protected TiledMapRenderer renderer;
@@ -15,8 +20,11 @@ public class Maze_Render {
     protected Maze maze;
     protected int mazeMagnifyToWorld = Const.MAZE_MAGNIFY_TO_WORDL;
 
+    public Maze_Render(){
+
+    }
+
     public Maze_Render(Maze maze, String wallFile, int magnify) {
-        //Texture wall = (Texture)  ;
         Texture wall = new Texture(wallFile);
         wallTile = new StaticTiledMapTile(new TextureRegion(wall));
         this.maze = maze;
@@ -71,7 +79,11 @@ public class Maze_Render {
         //doors in rows
         for (int r = 0; r < Const.maze_height; r += 2) {
             for (int c = 0; c < Const.maze_width; c += 1) {
-                if (maze.getPlace(r, c) == Maze.PLACE.empty) {
+                if(maze.getPlace(r, c) == null){
+                    //android.util.Log.d(TAG, "createDoors: this is null.....................");
+                    Gdx.app.error("LOOK HERERERERER","THIS HAS FAILED!!!!!!!!!!!!!!!!!");
+                }
+                else if (maze.getPlace(r, c) == Maze.PLACE.empty) {
                     layer.setCell(
                             c * mazeMagnifyToWorld / 2,
                             r * mazeMagnifyToWorld / 2, cell);

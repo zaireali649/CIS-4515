@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -92,7 +90,6 @@ public class WorldRenderer implements Disposable {
         // draw extra lives icon + text (anchored to top right edge)
         //renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
-        renderHealthBar(batch);
         if (GamePreferences.instance.showFpsCounter)
             renderGuiFpsCounter(batch);
         // draw game over text
@@ -123,15 +120,7 @@ public class WorldRenderer implements Disposable {
     float offsetX = 50;
     float offsetY = 50;
 
-    texture = new Texture(Gdx.files.internal("healthfull.png"));
-      //  TextureRegion health = new TextureRegion(texture);
 
-        //String path = ((FileTextureData)texture.getTextureData()).getFileHandle().path();
-
-//        texture2 = new Texture(Gdx.files.internal(path));
-
-        batch.draw(texture, x, y);
-/*
     int i = 0;
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -142,8 +131,8 @@ public class WorldRenderer implements Disposable {
         {
             i=0;
         }
-        i++;*/
-
+        i++;
+   // batch.draw();
 
        /*
        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);

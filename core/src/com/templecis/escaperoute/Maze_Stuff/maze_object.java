@@ -6,26 +6,24 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.screens.AbstractGameScreen;
 import com.templecis.escaperoute.screens.DirectedGame;
 
-public class maze_screen extends AbstractGameScreen {
+public class maze_object extends AbstractGameObject {
     private Stage stage;
     private TiledMapRenderer mazeRenderer;
     private TiledMapRenderer mapRenderer;
 
-    public maze_screen(DirectedGame game) {
-        super(game);
-    }
 
-
-    public void maze_screen(){
+    public TiledMap maze_object(Maze maze){
         //super();
-        Maze maze = (new Maze_Generator()).getMaze();
+        //Maze maze = (new Maze_Generator()).getMaze();
 
         Maze_Render mTileRenderer = new Maze_Render(maze, "images/Wall.png",2);
 
@@ -36,7 +34,7 @@ public class maze_screen extends AbstractGameScreen {
 
 
 
-
+        return tiledMap;
     }
 
     private Color getRandomColor(Color notColor) {
@@ -44,17 +42,12 @@ public class maze_screen extends AbstractGameScreen {
         return colors[MathUtils.random(colors.length - 1)];
     }
 
-    @Override
-    public void show() {
-        InputMultiplexer multiplexer = new InputMultiplexer();
 
-        //Stage's InputAdapters was not called with keyboard events.
-        //I think, it is logical, because keyboard events are global
-        multiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(multiplexer);
+    public void show() {
+
     }
 
-    @Override
+
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -71,34 +64,36 @@ public class maze_screen extends AbstractGameScreen {
 
     }
 
-    @Override
+
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
 
     }
 
-    @Override
+
     public void pause() {
 
     }
 
-    @Override
+
     public void resume() {
 
     }
 
-    @Override
+
     public void hide() {
 
     }
 
-    @Override
+
     public void dispose() {
 
     }
 
+
+
     @Override
-    public InputProcessor getInputProcessor() {
-        return null;
+    public void render(SpriteBatch batch) {
+
     }
 }
