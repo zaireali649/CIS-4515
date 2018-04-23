@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,6 +16,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
+import com.templecis.escaperoute.Maze_Stuff.Maze;
+import com.templecis.escaperoute.Maze_Stuff.Maze_Generator;
+import com.templecis.escaperoute.Maze_Stuff.Maze_Render;
+import com.templecis.escaperoute.Maze_Stuff.maze_object;
 import com.templecis.escaperoute.util.Constants;
 import com.templecis.escaperoute.util.GamePreferences;
 
@@ -73,6 +78,7 @@ public class WorldRenderer implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         worldController.level.render(batch);
+        render_maze();
         batch.end();
         if (DEBUG_DRAW_BOX2D_WORLD) {
             b2debugRenderer.render(worldController.b2world, camera.combined);
@@ -237,6 +243,29 @@ public class WorldRenderer implements Disposable {
         }
         fpsFont.draw(batch, "FPS: " + fps, x, y);
         fpsFont.setColor(1, 1, 1, 1); // white
+    }
+
+    private void render_maze(){
+        maze_object maze = new maze_object();
+        Maze m = (new Maze_Generator()).getMaze();
+        TiledMap tm = maze.maze_object(m);
+
+        float x = -15;
+        float y = -15;
+        float offsetX = 50;
+        float offsetY = 50;
+        if (worldController.scoreVisual < worldController.score) {
+            long shakeAlpha = System.currentTimeMillis() % 360;
+            float shakeDist = 1.5f;
+            offsetX += MathUtils.sinDeg(shakeAlpha * 2.2f) * shakeDist;
+            offsetY += MathUtils.sinDeg(shakeAlpha * 2.9f) * shakeDist;
+        }
+        batch.draw(Assets.instance.goldCoin.goldCoin, x, y, offsetX, offsetY, 100, 100, 0.35f, -0.35f, 0);
+        Assets.instance.fonts.defaultBig.draw(batch, "" + (int) worldController.scoreVisual, x + 75, y + 37);
+
+
+
+
     }
 
 
