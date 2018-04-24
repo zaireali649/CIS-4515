@@ -95,7 +95,7 @@ public class WorldRenderer implements Disposable {
         // draw game over text
         //renderGuiGameOverMessage(batch);
 
-       //renderHealthBar(batch);
+       renderHealthBar(batch);
         batch.end();
     }
 
@@ -132,7 +132,7 @@ public class WorldRenderer implements Disposable {
             i=0;
         }
         i++;*/
-        //batch.draw(Assets.instanc, x, y, offsetX, offsetY, 100, 100, 0.35f, -0.35f, 0);
+        batch.draw(Assets.instance.health.health4, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
 
        /*
        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);

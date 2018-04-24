@@ -142,6 +142,7 @@ public class Level {
             }
         }
         // decoration
+
         //clouds = new Clouds(pixmap.getWidth());
         //clouds.position.set(0, 2);
         //mountains = new Mountains(pixmap.getWidth());
