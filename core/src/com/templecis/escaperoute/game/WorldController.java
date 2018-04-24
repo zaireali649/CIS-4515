@@ -27,6 +27,8 @@ import com.templecis.escaperoute.util.AudioManager;
 import com.templecis.escaperoute.util.CameraHelper;
 import com.templecis.escaperoute.util.Constants;
 
+import sun.management.Sensor;
+
 /**
  * Created by Ziggy on 4/19/2018.
  */
@@ -53,7 +55,7 @@ public class WorldController extends InputAdapter implements Disposable {
     private DirectedGame game;
     private boolean goalReached;
     float gyroX, gyroY, gyroZ;
-
+    float accelX, accelY;
 
     public WorldController(DirectedGame game) {
         this.game = game;
@@ -64,11 +66,16 @@ public class WorldController extends InputAdapter implements Disposable {
         cameraHelper = new CameraHelper();
 
         boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
+        boolean accelAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
         if(gyroscopeAvail){
             gyroX = Gdx.input.getGyroscopeX();
             gyroY = Gdx.input.getGyroscopeY();
             gyroZ = Gdx.input.getGyroscopeZ();
+        }
+
+        if (accelAvail){
+
         }
         lives = Constants.LIVES_START;
         livesVisual = lives;
@@ -239,21 +246,34 @@ public class WorldController extends InputAdapter implements Disposable {
 
 
 
-
+            accelX = Gdx.input.getAccelerometerX();
+            accelY = Gdx.input.getAccelerometerY();
 
 
 
             // Player Movement
-            if ( gyroX> 0) {
-                level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
-            } else if (gyroY > 0) {
-                level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
-            } else {
+
+            level.bunnyHead.velocity.y = -accelX * 100;
+            level.bunnyHead.velocity.x = accelY * 100;
+
+
+
+         /*   if ( accelX < 0) {
+                level.bunnyHead.velocity.x = -accelX * 100;
+            } else if (accelX > 0) {
+                level.bunnyHead.velocity.x = accelX * 100;
+            } else if ( accelY < 0){
+                level.bunnyHead.velocity.y = -accelY * 100;
+
+            } else if (accelY > 0) {
+                level.bunnyHead.velocity.y = accelY * 100;
+
+            }else {
                 // Execute auto-forward movement on non-desktop platform
                 if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
                     //level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
                 }
-            }
+            }*/
             // Bunny Jump
             if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 level.bunnyHead.setJumping(true);

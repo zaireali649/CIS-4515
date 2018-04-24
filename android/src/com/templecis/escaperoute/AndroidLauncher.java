@@ -11,9 +11,8 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useGyroscope = true;  //default is false
-
+		config.useAccelerometer = true;
 //you may want to switch off sensors that are on by default if they are no longer needed.
-		config.useAccelerometer = false;
 		config.useCompass = false;
 
 		initialize(new EscapeRouteMain(), config);
