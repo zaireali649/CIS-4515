@@ -23,6 +23,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final Assets instance = new Assets();
     public AssetBunny bunny;
     public AssetRock rock;
+    public AssetHealth health;
     public AssetGoldCoin goldCoin;
     public AssetFeather feather;
     public AssetLevelDecoration levelDecoration;
@@ -69,6 +70,7 @@ public class Assets implements Disposable, AssetErrorListener {
         fonts = new AssetFonts();
         bunny = new AssetBunny(atlas);
         rock = new AssetRock(atlas);
+        health = new AssetHealth(atlas);
         goldCoin = new AssetGoldCoin(atlas);
         feather = new AssetFeather(atlas);
         levelDecoration = new AssetLevelDecoration(atlas);
@@ -187,6 +189,26 @@ public class Assets implements Disposable, AssetErrorListener {
             edge = atlas.findRegion("rock_edge");
             middle = atlas.findRegion("rock_middle");
         }
+    }
+
+    public class AssetHealth{
+        public final TextureAtlas.AtlasRegion health0;
+        public final TextureAtlas.AtlasRegion health1;
+        public final TextureAtlas.AtlasRegion health2;
+        public final TextureAtlas.AtlasRegion health3;
+        public final TextureAtlas.AtlasRegion health4;
+
+        public AssetHealth(TextureAtlas atlas){
+            health0 = atlas.findRegion("health_0");
+            health1 = atlas.findRegion("health_1");
+            health2 = atlas.findRegion("health_2");
+            health3 = atlas.findRegion("health_3");
+            health4 = atlas.findRegion("health_4");
+
+        }
+
+
+
     }
 
     public class AssetBunny {

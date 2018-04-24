@@ -120,7 +120,6 @@ public class WorldRenderer implements Disposable {
     float offsetX = 50;
     float offsetY = 50;
 
-    texture = new Texture(Gdx.files.internal("health4.png"));
 
   /*  int i = 0;
         Gdx.gl.glClearColor(0, 0, 0, 0);
@@ -133,7 +132,7 @@ public class WorldRenderer implements Disposable {
             i=0;
         }
         i++;*/
-    batch.draw(texture, x, y);
+        //batch.draw(Assets.instanc, x, y, offsetX, offsetY, 100, 100, 0.35f, -0.35f, 0);
 
        /*
        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
