@@ -193,3 +193,38 @@ water_overlay
   orig: 32, 160
   offset: 0, 0
   index: -1
+health_4
+  rotate: false
+  xy: 420, 4
+  size: 262, 53
+  orig: 262, 53
+  offset: 0, 0
+  index: 8
+health_3
+  rotate: false
+  xy: 420, 58
+  size: 262, 53
+  orig: 262, 53
+  offset: 0, 0
+  index: 8
+health_2
+  rotate: false
+  xy: 420, 112
+  size: 262, 53
+  orig: 262, 53
+  offset: 0, 0
+  index: 8
+health_1
+  rotate: false
+  xy: 420, 166
+  size: 262, 53
+  orig: 262, 53
+  offset: 0, 0
+  index: 8
+health_0
+  rotate: false
+  xy: 420, 220
+  size: 262, 53
+  orig: 262, 53
+  offset: 0, 0
+  index: 8
