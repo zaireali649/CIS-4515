@@ -95,7 +95,7 @@ public class WorldRenderer implements Disposable {
         // draw game over text
         //renderGuiGameOverMessage(batch);
 
-       // renderHealthBar(batch);
+       renderHealthBar(batch);
         batch.end();
     }
 
@@ -120,8 +120,9 @@ public class WorldRenderer implements Disposable {
     float offsetX = 50;
     float offsetY = 50;
 
+    texture = new Texture(Gdx.files.internal("health4.png"));
 
-    int i = 0;
+  /*  int i = 0;
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -131,12 +132,13 @@ public class WorldRenderer implements Disposable {
         {
             i=0;
         }
-        i++;
-   // batch.draw();
+        i++;*/
+    batch.draw(texture, x, y);
 
        /*
        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
         stage.addActor(healthBar);
+
 
         loadingBarWithBorders = new LoadingBarWithBorders(170, 20);
         loadingBarWithBorders.setPosition(10, Gdx.graphics.getHeight() - 50);
