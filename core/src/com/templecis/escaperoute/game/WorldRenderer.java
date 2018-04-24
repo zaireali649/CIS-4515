@@ -95,7 +95,7 @@ public class WorldRenderer implements Disposable {
         // draw game over text
         //renderGuiGameOverMessage(batch);
 
-       renderHealthBar(batch);
+       //renderHealthBar(batch);
         batch.end();
     }
 

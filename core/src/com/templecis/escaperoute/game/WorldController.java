@@ -52,6 +52,7 @@ public class WorldController extends InputAdapter implements Disposable {
     private Rectangle r2 = new Rectangle();
     private DirectedGame game;
     private boolean goalReached;
+    float gyroX, gyroY, gyroZ;
 
 
     public WorldController(DirectedGame game) {
@@ -61,6 +62,14 @@ public class WorldController extends InputAdapter implements Disposable {
 
     private void init() {
         cameraHelper = new CameraHelper();
+
+        boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
+
+        if(gyroscopeAvail){
+            gyroX = Gdx.input.getGyroscopeX();
+            gyroY = Gdx.input.getGyroscopeY();
+            gyroZ = Gdx.input.getGyroscopeZ();
+        }
         lives = Constants.LIVES_START;
         livesVisual = lives;
         timeLeftGameOverDelay = 0;
@@ -232,10 +241,12 @@ public class WorldController extends InputAdapter implements Disposable {
 
 
 
+
+
             // Player Movement
-            /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if ( gyroX> 0) {
                 level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            } else if (gyroY > 0) {
                 level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
             } else {
                 // Execute auto-forward movement on non-desktop platform
@@ -248,7 +259,7 @@ public class WorldController extends InputAdapter implements Disposable {
                 level.bunnyHead.setJumping(true);
             } else {
                 level.bunnyHead.setJumping(false);
-            }*/
+            }
         }
     }
 
