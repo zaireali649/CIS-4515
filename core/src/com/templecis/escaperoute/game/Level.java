@@ -28,9 +28,12 @@ import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+
 
 
 /**
@@ -105,7 +108,7 @@ public class Level {
 
 
 
- /*       for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
+        for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
             for (int pixelX = 0; pixelX < W; pixelX = pixelX + w) {
                 MazeTile mt =  new MazeTile();
                 mt.position.set(mt.dimension.x + pixelX, mt.dimension.y + pixelY);
@@ -116,7 +119,7 @@ public class Level {
                 mt.leftWall = randomno.nextBoolean();
                 mazeTiles.add(mt);
             }
-        }*/
+        }
 
         mazeTiles = generateMaze();
 
@@ -128,7 +131,9 @@ public class Level {
     private Array<MazeTile> generateMaze() {
         YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();
     Maze maze = new Maze();
-        mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 10, 10, path);
+        mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 4, 4, path);
+
+
 
         return mazeTiles;
     }

@@ -28,7 +28,7 @@ public class YourGraphicMaze {
 
         V = new int[R + 1][C + 1];
         for (int i = 1; i <= R; i++) {
-            for (int j = 1; j < C; j++) {
+            for (int j = 1; j <= C; j++) {
                 V[i][j] = 0;
             }
         }
@@ -183,7 +183,7 @@ public class YourGraphicMaze {
             return done;
         }*/
 
-        merge_info();
+        //merge_info();
         return mazeTile;
     }
 

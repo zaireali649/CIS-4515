@@ -29,7 +29,6 @@ import com.templecis.escaperoute.util.AudioManager;
 import com.templecis.escaperoute.util.CameraHelper;
 import com.templecis.escaperoute.util.Constants;
 
-import sun.management.Sensor;
 
 /**
  * Created by Ziggy on 4/19/2018.
@@ -505,7 +504,7 @@ public class WorldController extends InputAdapter implements Disposable {
             // IMPORTANT: must do all collisions for valid edge testing on rocks.
         }
 
-        testMazeTileCollisions();
+        //testMazeTileCollisions();
 
 
 
