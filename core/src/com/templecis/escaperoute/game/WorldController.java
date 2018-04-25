@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
+import com.templecis.escaperoute.Maze_Stuff.Maze;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
 import com.templecis.escaperoute.game.objects.Feather;
@@ -53,6 +54,10 @@ public class WorldController extends InputAdapter implements Disposable {
     // Rectangles for collision detection
     private Rectangle r1 = new Rectangle();
     private Rectangle r2 = new Rectangle();
+    private Rectangle r3 = new Rectangle();
+    private Rectangle r4 = new Rectangle();
+    private Rectangle r5 = new Rectangle();
+
     private DirectedGame game;
     private boolean goalReached;
     float gyroX, gyroY, gyroZ;
@@ -294,6 +299,8 @@ public class WorldController extends InputAdapter implements Disposable {
             level.bunnyHead.velocity.y = -accelX * 1000;
             level.bunnyHead.velocity.x = accelY * 1000;
 
+            level.bunnyHead.velocity.x = 1 * 1000;
+
 
 
          /*   if ( accelX < 0) {
@@ -308,10 +315,9 @@ public class WorldController extends InputAdapter implements Disposable {
 
             }else {
                 // Execute auto-forward movement on non-desktop platform
-                if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
-                    //level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
-                }
+
             }*/
+
             // Bunny Jump
             if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 level.bunnyHead.setJumping(true);
@@ -373,12 +379,21 @@ public class WorldController extends InputAdapter implements Disposable {
         Gdx.app.log(TAG, "Gold coin collected");
     }
 
-    private void onCollisionBunnyWithFeather(Feather feather) {
-        feather.collected = true;
-        AudioManager.instance.play(Assets.instance.sounds.pickupFeather);
-        score += feather.getScore();
-        level.bunnyHead.setFeatherPowerup(true);
-        Gdx.app.log(TAG, "Feather collected");
+    private void testMazeTileCollisions() {
+        for (MazeTile mazeTile: level.mazeTiles) {
+            r2.set(mazeTile.position.x + mazeTile.dimension.x/2, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x/mazeTile.thickness, mazeTile.dimension.y);
+
+
+            if (r1.overlaps(r2)) // Right Wall
+            {
+                Gdx.app.debug(TAG, "Intersect Right Wall");
+            }
+
+
+
+
+
+        }
     }
 
 
@@ -391,6 +406,10 @@ public class WorldController extends InputAdapter implements Disposable {
             onCollisionBunnyHeadWithRock(rock);
             // IMPORTANT: must do all collisions for valid edge testing on rocks.
         }
+
+        testMazeTileCollisions();
+
+
 
         /*
         // Test collision: Bunny Head <-> Gold Coins

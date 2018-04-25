@@ -100,23 +100,7 @@ public class Level {
                         rocks.get(rocks.size - 1).increaseLength(1);
                     }
                 }
-                // player spawn point
-                else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-                    obj = new BunnyHead();
-                    offsetHeight = -3.0f;
-                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
-                    bunnyHead = (BunnyHead) obj;
 
-
-                }
-                // maze tiles
-                else if (BLOCK_TYPE.ITEM_MAZE_TILE.sameColor(currentPixel)) {
-                    obj = new MazeTile();
-                    offsetHeight = -1.5f;
-                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
-                    mazeTiles.add((MazeTile) obj);
-                    //goldcoins.add((GoldCoin) obj);
-                }
                 // feather
                 else if (BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel)) {
                     obj = new Feather();
@@ -152,14 +136,15 @@ public class Level {
             }
         }
 
+
+
         // Spawn Maze Tile
         AbstractGameObject obj = new MazeTile();
         int w = (int) obj.dimension.x;
         int h = (int) obj.dimension.y;
-        float offsetHeight;
 
 
-        for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY = pixelY + h) {
+        /*for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY = pixelY + h) {
             for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX = pixelX + w) {
                 obj = new MazeTile();
                 offsetHeight = -1.5f;
@@ -167,17 +152,33 @@ public class Level {
                 obj.position.set(pixelX, pixelY);
                 mazeTiles.add((MazeTile) obj);
             }
-        }
+        }*/
 
+        // Spawn Player
+        obj = new BunnyHead();
+        obj.position.set(w/2 + obj.dimension.x/2, h/2 + obj.dimension.y/2);
+        bunnyHead = (BunnyHead) obj;
 
+        // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
 
+        MazeTile mt =  new MazeTile();
+        mt.position.set(mt.dimension.x, mt.dimension.y);
+        mt.topWall = true;
+        mt.rightWall = true;
+        mazeTiles.add(mt);
 
+        //mazeTiles = generateMaze();
 
+        //  PETER COMMENT OUT THE ABOVE CODE ************************************************************************************
 
 
         // free memory
         pixmap.dispose();
-        Gdx.app.debug(TAG, "level '" + filename + "' loaded");
+        //Gdx.app.debug(TAG, "level '" + filename + "' loaded");
+    }
+
+    private Array<MazeTile> generateMaze() {
+        return null;
     }
 
     public void render(SpriteBatch batch) {

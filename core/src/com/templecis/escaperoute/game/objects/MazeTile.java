@@ -1,7 +1,9 @@
 package com.templecis.escaperoute.game.objects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.templecis.escaperoute.game.Assets;
 
 /**
@@ -11,12 +13,35 @@ import com.templecis.escaperoute.game.Assets;
 public class MazeTile extends AbstractGameObject {
 
     private TextureRegion regMazeTile;
+    private ShapeRenderer shapeRenderer;
+
+    private Color wallColor;
+    public int thickness; // Divides height and width by this number and border is 1 of them
+
+
+    public Boolean topWall, rightWall, leftWall, bottomWall;
+
+    static private boolean projectionMatrixSet;
+
+
+
 
     public MazeTile() {
         init();
     }
 
     private void init() {
+        topWall = false;
+        rightWall = false;
+        leftWall = false;
+        bottomWall = false;
+
+        wallColor = Color.RED;
+        thickness = 50;
+
+        shapeRenderer = new ShapeRenderer();
+        projectionMatrixSet = false;
+
         dimension.set(2f, 2f);
         regMazeTile = Assets.instance.mazeTile.mazeTile;
         // Set bounding box for collision detection
@@ -34,6 +59,47 @@ public class MazeTile extends AbstractGameObject {
                 dimension.y, scale.x, scale.y, rotation, reg.getRegionX(),
                 reg.getRegionY(), reg.getRegionWidth(),
                 reg.getRegionHeight(), false, false);
+
+        batch.end();
+
+        if(!projectionMatrixSet){
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        }
+
+        if(leftWall)
+        {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(wallColor);
+            shapeRenderer.rect(position.x - dimension.x/2, position.y - dimension.y/2, dimension.x/thickness, dimension.y);
+            shapeRenderer.end();
+        }
+
+        if(rightWall){
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(wallColor);
+            shapeRenderer.rect(position.x + dimension.x/2, position.y - dimension.y/2, dimension.x/thickness, dimension.y);
+            shapeRenderer.end();
+        }
+
+        if(bottomWall){
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(wallColor);
+            shapeRenderer.rect(position.x - dimension.x/2, position.y - dimension.y/2, dimension.x, dimension.y/thickness);
+            shapeRenderer.end();
+        }
+
+        if(topWall) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(wallColor);
+            shapeRenderer.rect(position.x - dimension.x / 2, position.y + dimension.y / 2, dimension.x, dimension.y / thickness);
+            shapeRenderer.end();
+        }
+
+
+        batch.begin();
+
+
+
     }
 
     @Override
