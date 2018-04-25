@@ -127,10 +127,8 @@ public class Level {
 
     private Array<MazeTile> generateMaze() {
         YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();
-        Maze maze = new Maze();
-
-        yourGraphicMaze.CreatePath(maze, 1, 1, 10, 10, path);
-        mazeTiles = yourGraphicMaze.merge_info();
+    Maze maze = new Maze();
+        mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 10, 10, path);
 
         return mazeTiles;
     }
