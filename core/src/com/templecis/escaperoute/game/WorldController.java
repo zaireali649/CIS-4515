@@ -286,9 +286,6 @@ public class WorldController extends InputAdapter implements Disposable {
     private void handleInputGame(float deltaTime) {
         if (cameraHelper.hasTarget(level.bunnyHead)) {
 
-
-
-
             accelX = Gdx.input.getAccelerometerX();
             accelY = Gdx.input.getAccelerometerY();
 
@@ -302,7 +299,8 @@ public class WorldController extends InputAdapter implements Disposable {
             //   level.bunnyHead.velocity.y = -accelX * 1000;
          //   level.bunnyHead.velocity.x = accelY * 1000;
 
-            level.bunnyHead.velocity.x = 1 * 1000;
+            // Keep moving for testing
+            // level.bunnyHead.velocity.y = -1 * 1000;
 
 
 
@@ -385,17 +383,33 @@ public class WorldController extends InputAdapter implements Disposable {
     private void testMazeTileCollisions() {
         for (MazeTile mazeTile: level.mazeTiles) {
             r2.set(mazeTile.position.x + mazeTile.dimension.x/2, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x/mazeTile.thickness, mazeTile.dimension.y);
-
+            r3.set(mazeTile.position.x - mazeTile.dimension.x/2, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x/mazeTile.thickness, mazeTile.dimension.y);
+            r4.set(mazeTile.position.x - mazeTile.dimension.x / 2, mazeTile.position.y + mazeTile.dimension.y / 2, mazeTile.dimension.x, mazeTile.dimension.y / mazeTile.thickness);
+            r5.set(mazeTile.position.x - mazeTile.dimension.x/2, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x, mazeTile.dimension.y/mazeTile.thickness);
 
             if (r1.overlaps(r2)) // Right Wall
             {
                 Gdx.app.debug(TAG, "Intersect Right Wall");
+                level.bunnyHead.position.x = mazeTile.position.x + mazeTile.dimension.x/2 - level.bunnyHead.bounds.width;
             }
 
+            if (r1.overlaps(r3)) // Left Wall
+            {
+                Gdx.app.debug(TAG, "Intersect Left Wall");
+                level.bunnyHead.position.x = mazeTile.position.x - mazeTile.dimension.x/2 + mazeTile.dimension.x/mazeTile.thickness;
+            }
 
+            if (r1.overlaps(r4)) // Top Wall
+            {
+                Gdx.app.debug(TAG, "Intersect Top Wall");
+                level.bunnyHead.position.y = mazeTile.position.y + mazeTile.dimension.y / 2 - level.bunnyHead.bounds.height;
+            }
 
-
-
+            if (r1.overlaps(r5)) // Bottom Wall
+            {
+                Gdx.app.debug(TAG, "Intersect Bottom Wall");
+                level.bunnyHead.position.y = mazeTile.position.y - mazeTile.dimension.y/2 + mazeTile.dimension.y/mazeTile.thickness;
+            }
         }
     }
 

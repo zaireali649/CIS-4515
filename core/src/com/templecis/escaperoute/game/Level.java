@@ -167,6 +167,8 @@ public class Level {
         mt.position.set(mt.dimension.x, mt.dimension.y);
         mt.topWall = true;
         mt.rightWall = true;
+        mt.bottomWall = true;
+        mt.leftWall = true;
         mazeTiles.add(mt);
 
         //mazeTiles = generateMaze();
