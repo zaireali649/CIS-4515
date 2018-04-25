@@ -21,11 +21,10 @@ public class Maze extends JFrame
     public Maze()
     {
         super("A MAZE");
-        String integers=JOptionPane.showInputDialog(
-                "Enter #rows and #columns.");
-        Scanner in=new Scanner(integers);
-        M=in.nextInt(); N=in.nextInt();
-        L=new LinkedList<Node>();
+
+        M = 10;
+        N = 10;
+        L = new LinkedList<Node>();
 
         C=new Intcoll[N*M+1]; int k;
         for (k=1; k<=M*N; k++)
