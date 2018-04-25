@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
+import com.templecis.escaperoute.Maze_Stuff.Maze;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
@@ -20,6 +21,7 @@ import com.templecis.escaperoute.game.objects.Clouds;
 import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.Goal;
 import com.templecis.escaperoute.game.objects.GoldCoin;
+import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Mountains;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
@@ -34,8 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class Level {
     public static final String TAG = Level.class.getName();
     public BunnyHead bunnyHead;
-    //public Array<GoldCoin> goldcoins;
-    //public Array<Feather> feathers;
+
     // objects
     public Array<Rock> rocks;
     // decoration
@@ -43,6 +44,7 @@ public class Level {
     //public Mountains mountains;
     //public WaterOverlay waterOverlay;
     //public Array<Carrot> carrots;
+    public Array<MazeTile> mazeTiles;
     public Goal goal;
     //Health bar vars
     private Stage stage;
@@ -53,9 +55,6 @@ public class Level {
 
     //end health bar vars
 
-
-
-
     public Level(String filename) {
         init(filename);
     }
@@ -65,9 +64,8 @@ public class Level {
         bunnyHead = null;
         // objects
         rocks = new Array<Rock>();
-        //goldcoins = new Array<GoldCoin>();
-        //feathers = new Array<Feather>();
-        //carrots = new Array<Carrot>();
+        mazeTiles = new Array<MazeTile>();
+
         // load image file that represents the level data
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 
@@ -108,6 +106,16 @@ public class Level {
                     offsetHeight = -3.0f;
                     obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
                     bunnyHead = (BunnyHead) obj;
+
+
+                }
+                // maze tiles
+                else if (BLOCK_TYPE.ITEM_MAZE_TILE.sameColor(currentPixel)) {
+                    obj = new MazeTile();
+                    offsetHeight = -1.5f;
+                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+                    mazeTiles.add((MazeTile) obj);
+                    //goldcoins.add((GoldCoin) obj);
                 }
                 // feather
                 else if (BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel)) {
@@ -139,45 +147,52 @@ public class Level {
                     Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<" + pixelY + ">: r<" + r + "> g<" + g + "> b<" + b + "> a<" + a + ">");
                 }
                 lastPixel = currentPixel;
+
+
             }
         }
-        // decoration
 
-        //clouds = new Clouds(pixmap.getWidth());
-        //clouds.position.set(0, 2);
-        //mountains = new Mountains(pixmap.getWidth());
-        //mountains.position.set(-1, -1);
-        //waterOverlay = new WaterOverlay(pixmap.getWidth());
-        //waterOverlay.position.set(0, -3.75f);
+        // Spawn Maze Tile
+        AbstractGameObject obj = new MazeTile();
+        int w = (int) obj.dimension.x;
+        int h = (int) obj.dimension.y;
+        float offsetHeight;
+
+
+        for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY = pixelY + h) {
+            for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX = pixelX + w) {
+                obj = new MazeTile();
+                offsetHeight = -1.5f;
+                //obj.position.set(pixelX, pixelY * obj.dimension.y + offsetHeight);
+                obj.position.set(pixelX, pixelY);
+                mazeTiles.add((MazeTile) obj);
+            }
+        }
+
+
+
+
+
+
+
         // free memory
         pixmap.dispose();
         Gdx.app.debug(TAG, "level '" + filename + "' loaded");
     }
 
     public void render(SpriteBatch batch) {
-        // Draw Mountains
-        //mountains.render(batch);
         // Draw Goal
         goal.render(batch);
         // Draw Rocks
         for (Rock rock : rocks) {
             rock.render(batch);
         }
-//        // Draw Gold Coins
-//        for (GoldCoin goldCoin : goldcoins)
-//            goldCoin.render(batch);
-//        // Draw Feathers
-//        for (Feather feather : feathers)
-//            feather.render(batch);
-//        // Draw Carrots
-//        for (Carrot carrot : carrots)
-//            carrot.render(batch);
+                // Draw Maze Tiles
+        for (MazeTile mazeTile : mazeTiles)
+            mazeTile.render(batch);
         // Draw Player Character
         bunnyHead.render(batch);
-        // Draw Water Overlay
-        //waterOverlay.render(batch);
-        // Draw Clouds
-        //clouds.render(batch);
+
 
         //Health Bar RENDER START
 
@@ -200,13 +215,8 @@ public class Level {
         bunnyHead.update(deltaTime);
         for (Rock rock : rocks)
             rock.update(deltaTime);
-//        for (GoldCoin goldCoin : goldcoins)
-//            goldCoin.update(deltaTime);
-//        for (Feather feather : feathers)
-//            feather.update(deltaTime);
-//        for (Carrot carrot : carrots)
-//            carrot.update(deltaTime);
-//        clouds.update(deltaTime);
+        for (MazeTile mazeTile : mazeTiles)
+            mazeTile.update(deltaTime);
     }
 
     public enum BLOCK_TYPE {
@@ -214,6 +224,7 @@ public class Level {
         ROCK(0, 255, 0), // green
         PLAYER_SPAWNPOINT(255, 255, 255), // white
         ITEM_FEATHER(255, 0, 255), // purple
+        ITEM_MAZE_TILE(0, 0, 255), // blue
         GOAL(255, 0, 0), // red
         ITEM_GOLD_COIN(255, 255, 0); // yellow
 

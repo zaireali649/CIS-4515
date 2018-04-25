@@ -24,6 +24,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetBunny bunny;
     public AssetRock rock;
     public AssetHealth health;
+    public AssetMazeTile mazeTile;
     public AssetGoldCoin goldCoin;
     public AssetFeather feather;
     public AssetLevelDecoration levelDecoration;
@@ -72,6 +73,7 @@ public class Assets implements Disposable, AssetErrorListener {
         rock = new AssetRock(atlas);
         health = new AssetHealth(atlas);
         goldCoin = new AssetGoldCoin(atlas);
+        mazeTile = new AssetMazeTile(atlas);
         feather = new AssetFeather(atlas);
         levelDecoration = new AssetLevelDecoration(atlas);
         sounds = new AssetSounds(assetManager);
@@ -155,6 +157,7 @@ public class Assets implements Disposable, AssetErrorListener {
             waterOverlay = atlas.findRegion("water_overlay");
             carrot = atlas.findRegion("carrot");
             goal = atlas.findRegion("goal");
+            //mazeTile = atlas.findRegion("mazeTile");
         }
     }
 
@@ -178,6 +181,18 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public AssetFeather(TextureAtlas atlas) {
             feather = atlas.findRegion("item_feather");
+        }
+    }
+
+    public class AssetMazeTile {
+        public final TextureAtlas.AtlasRegion mazeTile;
+
+
+        //public AssetMazeTile(TextureAtlas atlas) {
+            //mazeTile = atlas.findRegion("item_mazeTile");
+        //}
+        public AssetMazeTile(TextureAtlas atlas) {
+            mazeTile = atlas.findRegion("item_feather");
         }
     }
 

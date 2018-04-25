@@ -18,6 +18,7 @@ import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
 import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.GoldCoin;
+import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.screens.DirectedGame;
 import com.templecis.escaperoute.screens.MenuScreen;
@@ -116,6 +117,43 @@ public class WorldController extends InputAdapter implements Disposable {
             fixtureDef.shape = polygonShape;
             body.createFixture(fixtureDef);
             polygonShape.dispose();
+        }
+    }
+
+    private void spawnMazeTiles(Vector2 pos, int numMazeTiles, float radius) {
+        float mazeTileShapeScale = 0.5f;
+        // create carrots with box2d body and fixture
+        for (int i = 0; i < numMazeTiles; i++) {
+            MazeTile mazeTile = new MazeTile();
+            // calculate random spawn position, rotation, and scale
+            float x = MathUtils.random(-radius, radius);
+            float y = MathUtils.random(5.0f, 15.0f);
+            float rotation = MathUtils.random(0.0f, 360.0f) * MathUtils.degreesToRadians;
+            float mazeTileScale = MathUtils.random(0.5f, 1.5f);
+            mazeTile.scale.set(mazeTileScale, mazeTileScale);
+            // create box2d body for carrot with start position and angle of rotation
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.position.set(pos);
+            bodyDef.position.add(x, y);
+            bodyDef.angle = rotation;
+            Body body = b2world.createBody(bodyDef);
+            body.setType(BodyDef.BodyType.DynamicBody);
+            mazeTile.body = body;
+            // create rectangular shape for carrot to allow interactions (collisions) with other objects
+            PolygonShape polygonShape = new PolygonShape();
+            float halfWidth = mazeTile.bounds.width / 2.0f * mazeTileScale;
+            float halfHeight = mazeTile.bounds.height / 2.0f * mazeTileScale;
+            polygonShape.setAsBox(halfWidth * mazeTileShapeScale, halfHeight * mazeTileShapeScale);
+            // set physics attributes
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = polygonShape;
+            fixtureDef.density = 50;
+            fixtureDef.restitution = 0.5f;
+            fixtureDef.friction = 0.5f;
+            body.createFixture(fixtureDef);
+            polygonShape.dispose();
+            // finally, add new carrot to list for updating/rendering
+            level.mazeTiles.add(mazeTile);
         }
     }
 
@@ -253,8 +291,8 @@ public class WorldController extends InputAdapter implements Disposable {
 
             // Player Movement
 
-            level.bunnyHead.velocity.y = -accelX * 100;
-            level.bunnyHead.velocity.x = accelY * 100;
+            level.bunnyHead.velocity.y = -accelX * 1000;
+            level.bunnyHead.velocity.x = accelY * 1000;
 
 
 

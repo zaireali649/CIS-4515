@@ -115,10 +115,10 @@ public class WorldRenderer implements Disposable {
     }
 
     private void renderHealthBar(SpriteBatch batch){
-    float x = -15;
-    float y = -15;
-    float offsetX = 50;
-    float offsetY = 50;
+        float x = -15;
+        float y = -15;
+        float offsetX = 50;
+        float offsetY = 50;
 
 
   /*  int i = 0;
