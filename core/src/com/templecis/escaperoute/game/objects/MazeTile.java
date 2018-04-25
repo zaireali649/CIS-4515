@@ -65,29 +65,29 @@ public class MazeTile extends AbstractGameObject {
         if(leftWall)
         {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(wallColor);
+            shapeRenderer.setColor(Color.RED);
             shapeRenderer.rect(position.x - dimension.x/2, position.y - dimension.y/2, dimension.x/thickness, dimension.y);
             shapeRenderer.end();
         }
 
         if(rightWall){
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(wallColor);
-            shapeRenderer.rect(position.x + dimension.x/2, position.y - dimension.y/2, dimension.x/thickness, dimension.y);
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.rect(position.x + dimension.x/2 - dimension.x/thickness, position.y - dimension.y/2, dimension.x/thickness, dimension.y);
             shapeRenderer.end();
         }
 
         if(bottomWall){
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(wallColor);
+            shapeRenderer.setColor(Color.YELLOW);
             shapeRenderer.rect(position.x - dimension.x/2, position.y - dimension.y/2, dimension.x, dimension.y/thickness);
             shapeRenderer.end();
         }
 
         if(topWall) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(wallColor);
-            shapeRenderer.rect(position.x - dimension.x / 2, position.y + dimension.y / 2, dimension.x, dimension.y / thickness);
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.rect(position.x - dimension.x / 2, position.y + dimension.y / 2 - dimension.y / thickness, dimension.x, dimension.y / thickness);
             shapeRenderer.end();
         }
 
