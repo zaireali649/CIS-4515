@@ -57,6 +57,10 @@ public class WorldController extends InputAdapter implements Disposable {
     private Rectangle r3 = new Rectangle();
     private Rectangle r4 = new Rectangle();
     private Rectangle r5 = new Rectangle();
+    private Rectangle r6 = new Rectangle();
+    private Rectangle r7 = new Rectangle();
+
+
 
     private DirectedGame game;
     private boolean goalReached;
@@ -289,12 +293,27 @@ public class WorldController extends InputAdapter implements Disposable {
             accelX = Gdx.input.getAccelerometerX();
             accelY = Gdx.input.getAccelerometerY();
 
+
+
+
             // Player Movement
             level.bunnyHead.velocity.y = -accelX * 1000;
             level.bunnyHead.velocity.x = accelY * 1000;
 
             // Keep moving for testing
             // level.bunnyHead.velocity.y = -1 * 1000;
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+                level.bunnyHead.velocity.x = 1 * 1000;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+                level.bunnyHead.velocity.x = -1 * 1000;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+                level.bunnyHead.velocity.y = 1 * 1000;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+                level.bunnyHead.velocity.y = -1 * 1000;
+            }
 
 
 
@@ -341,6 +360,8 @@ public class WorldController extends InputAdapter implements Disposable {
         return false;
     }
 
+
+
     private void onCollisionBunnyHeadWithRock(Rock rock) {
         BunnyHead bunnyHead = level.bunnyHead;
         float heightDifference = Math.abs(bunnyHead.position.y - (rock.position.y + rock.bounds.height));
@@ -377,11 +398,25 @@ public class WorldController extends InputAdapter implements Disposable {
     private void testMazeTileCollisions() {
         for (MazeTile mazeTile: level.mazeTiles) {
             if (mazeTile.rightWall) {
-                r2.set(mazeTile.position.x + mazeTile.dimension.x/2, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x/mazeTile.thickness, mazeTile.dimension.y);
+                r2.set(mazeTile.position.x + mazeTile.dimension.x/2 - mazeTile.dimension.x/mazeTile.thickness, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x/mazeTile.thickness, mazeTile.dimension.y);
                 if (r1.overlaps(r2)) // Right Wall
                 {
                     Gdx.app.debug(TAG, "Intersect Right Wall");
-                    level.bunnyHead.position.x = mazeTile.position.x + mazeTile.dimension.x / 2 - level.bunnyHead.bounds.width;
+                    // Left edge
+                    //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
+                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+                    // Right edge
+                    r7.set(level.bunnyHead.position.x + level.bunnyHead.bounds.width - level.bunnyHead.bounds.width / 100, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+
+                    // Hit wall from right
+                    if(r6.overlaps(r2)) {
+                        level.bunnyHead.position.x = mazeTile.position.x + mazeTile.dimension.x / 2;
+                    }
+
+                    // Hit wall from left
+                    if(r7.overlaps(r2)) {
+                        level.bunnyHead.position.x = mazeTile.position.x + mazeTile.dimension.x / 2 - level.bunnyHead.bounds.width - mazeTile.dimension.x/mazeTile.thickness;
+                    }
                 }
             }
 
@@ -390,16 +425,46 @@ public class WorldController extends InputAdapter implements Disposable {
                 if (r1.overlaps(r3)) // Left Wall
                 {
                     Gdx.app.debug(TAG, "Intersect Left Wall");
-                    level.bunnyHead.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 + mazeTile.dimension.x / mazeTile.thickness;
+
+                    // Left edge
+                    //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
+                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+                    // Right edge
+                    r7.set(level.bunnyHead.position.x + level.bunnyHead.bounds.width - level.bunnyHead.bounds.width / 100, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+
+                    // Hit wall from right
+                    if(r6.overlaps(r3)) {
+                        level.bunnyHead.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 + mazeTile.dimension.x/mazeTile.thickness;
+                    }
+
+                    // Hit wall from left
+                    if(r7.overlaps(r3)) {
+                        level.bunnyHead.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 - level.bunnyHead.bounds.width;
+                    }
                 }
             }
 
             if (mazeTile.topWall) {
-                r4.set(mazeTile.position.x - mazeTile.dimension.x / 2, mazeTile.position.y + mazeTile.dimension.y / 2, mazeTile.dimension.x, mazeTile.dimension.y / mazeTile.thickness);
+                r4.set(mazeTile.position.x - mazeTile.dimension.x / 2, mazeTile.position.y + mazeTile.dimension.y / 2 - mazeTile.dimension.y / mazeTile.thickness, mazeTile.dimension.x, mazeTile.dimension.y / mazeTile.thickness);
                 if (r1.overlaps(r4)) // Top Wall
                 {
                     Gdx.app.debug(TAG, "Intersect Top Wall");
-                    level.bunnyHead.position.y = mazeTile.position.y + mazeTile.dimension.y / 2 - level.bunnyHead.bounds.height;
+
+                    // Bottom edge
+                    //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
+                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width , level.bunnyHead.bounds.height / 100);
+                    // Top edge
+                    r7.set(level.bunnyHead.position.x, level.bunnyHead.position.y + level.bunnyHead.bounds.height - level.bunnyHead.bounds.height / 100, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height / 100);
+
+                    // Hit wall from top
+                    if(r6.overlaps(r4)) {
+                        level.bunnyHead.position.y = mazeTile.position.y + mazeTile.dimension.y / 2;
+                    }
+
+                    // Hit wall from bottom
+                    if(r7.overlaps(r4)) {
+                        level.bunnyHead.position.y = mazeTile.position.y + mazeTile.dimension.y / 2 - level.bunnyHead.bounds.height - mazeTile.dimension.y / mazeTile.thickness;
+                    }
                 }
             }
 
@@ -408,7 +473,22 @@ public class WorldController extends InputAdapter implements Disposable {
                 if (r1.overlaps(r5)) // Bottom Wall
                 {
                     Gdx.app.debug(TAG, "Intersect Bottom Wall");
-                    level.bunnyHead.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 + mazeTile.dimension.y / mazeTile.thickness;
+
+                    // Bottom edge
+                    //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
+                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width , level.bunnyHead.bounds.height / 100);
+                    // Top edge
+                    r7.set(level.bunnyHead.position.x, level.bunnyHead.position.y + level.bunnyHead.bounds.height - level.bunnyHead.bounds.height / 100, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height / 100);
+
+                    // Hit wall from top
+                    if(r6.overlaps(r5)) {
+                        level.bunnyHead.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 + mazeTile.dimension.y/mazeTile.thickness;
+                    }
+
+                    // Hit wall from bottom
+                    if(r7.overlaps(r5)) {
+                        level.bunnyHead.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 - level.bunnyHead.bounds.height ;
+                    }
                 }
             }
         }
