@@ -296,8 +296,11 @@ public class WorldController extends InputAdapter implements Disposable {
 
             // Player Movement
 
-            level.bunnyHead.velocity.y = -accelX * 1000;
-            level.bunnyHead.velocity.x = accelY * 1000;
+
+
+
+            //   level.bunnyHead.velocity.y = -accelX * 1000;
+         //   level.bunnyHead.velocity.x = accelY * 1000;
 
             level.bunnyHead.velocity.x = 1 * 1000;
 
