@@ -23,7 +23,9 @@ public class Maze
     private LinkedList<Point> Path;
     private LinkedList<Node> L;
     private int start, delta;
-//    private Stroke drawingStroke=new BasicStroke(2);
+//    private Stroke drawingStroke=new BasicStroke(2);+
+
+
 
     public Maze()
     {
@@ -168,8 +170,7 @@ public class Maze
         {
             if (B.belongs(i)) {
             A.insert(i);
-            n--;}
-            i++;}
+            n--;}            i++;}
     }
 
     private class Node

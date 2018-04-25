@@ -23,8 +23,8 @@ public class YourGraphicMaze {
     public YourGraphicMaze() {
         // an R rows x C columns maze
         maze = new Maze();
-        R = maze.Rows();
-        C = maze.Cols();
+        //R = maze.Rows();
+        //C = maze.Cols();
 
         V = new int[R + 1][C + 1];
         for (int i = 1; i <= R; i++) {

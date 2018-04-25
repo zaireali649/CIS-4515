@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
+import com.templecis.escaperoute.Maze_Stuff.MazeGenerator;
 import com.templecis.escaperoute.Maze_Stuff.YourGraphicMaze;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
@@ -108,7 +109,7 @@ public class Level {
 
 
 
-        for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
+        /*for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
             for (int pixelX = 0; pixelX < W; pixelX = pixelX + w) {
                 MazeTile mt =  new MazeTile();
                 mt.position.set(mt.dimension.x + pixelX, mt.dimension.y + pixelY);
@@ -119,9 +120,10 @@ public class Level {
                 mt.leftWall = randomno.nextBoolean();
                 mazeTiles.add(mt);
             }
-        }
+        }*/
 
-        mazeTiles = generateMaze();
+        //mazeTiles = generateMaze();
+        generateMaze();
 
         //  PETER COMMENT OUT THE ABOVE CODE ************************************************************************************
 
@@ -129,13 +131,34 @@ public class Level {
     }
 
     private Array<MazeTile> generateMaze() {
-        YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();
-    Maze maze = new Maze();
-        mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 4, 4, path);
+        //YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();
+    //Maze maze = new Maze();
+        //mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 4, 4, path);
+
+        MazeGenerator mg = new MazeGenerator(5);
+
+        Gdx.app.debug(TAG, "North Size: " + mg.north.length);
+
+        for (int x = 1; x < mg.north.length-1; x++) {
+            for (int y = 1; y < mg.north[0].length-1; y++) {
+                MazeTile mt =  new MazeTile();
+                mt.position.set(mt.dimension.x + (x * 2), mt.dimension.y + (y * 2));
+
+                mt.topWall = mg.north[x][y];
+                mt.rightWall = mg.east[x][y];
+                mt.bottomWall = mg.south[x][y];
+                mt.leftWall = mg.west[x][y];
+                mazeTiles.add(mt);
+            }
+        }
+
+        //mg.draw();
+        //maze.solve();
 
 
 
-        return mazeTiles;
+        //return mazeTiles;
+        return null;
     }
 
     public void render(SpriteBatch batch) {
