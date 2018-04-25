@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
+import com.templecis.escaperoute.Maze_Stuff.YourGraphicMaze;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
@@ -26,6 +27,8 @@ import com.templecis.escaperoute.game.objects.Mountains;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
 
+import java.awt.Point;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 public class Level {
     public static final String TAG = Level.class.getName();
     public BunnyHead bunnyHead;
+    LinkedList<Point> path = new LinkedList<Point>();
+
 
 
 
@@ -100,7 +105,7 @@ public class Level {
 
 
 
-        for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
+ /*       for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
             for (int pixelX = 0; pixelX < W; pixelX = pixelX + w) {
                 MazeTile mt =  new MazeTile();
                 mt.position.set(mt.dimension.x + pixelX, mt.dimension.y + pixelY);
@@ -111,9 +116,9 @@ public class Level {
                 mt.leftWall = randomno.nextBoolean();
                 mazeTiles.add(mt);
             }
-        }
+        }*/
 
-        //mazeTiles = generateMaze();
+        mazeTiles = generateMaze();
 
         //  PETER COMMENT OUT THE ABOVE CODE ************************************************************************************
 
@@ -121,7 +126,13 @@ public class Level {
     }
 
     private Array<MazeTile> generateMaze() {
-        return null;
+        YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();
+        Maze maze = new Maze();
+
+        yourGraphicMaze.CreatePath(maze, 1, 1, 10, 10, path);
+        mazeTiles = yourGraphicMaze.merge_info();
+
+        return mazeTiles;
     }
 
     public void render(SpriteBatch batch) {

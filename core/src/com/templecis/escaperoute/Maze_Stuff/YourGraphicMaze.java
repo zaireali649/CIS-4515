@@ -36,7 +36,7 @@ public class YourGraphicMaze {
         // Create the path
         CreatePath(maze, 1, 1, R, C, Path);
         // show the path in the maze
-        maze.showPath(Path);
+        // maze.showPath(Path);
     }
 
     // Creates the path through maze, starting at cell (srow, scol)
@@ -76,10 +76,10 @@ public class YourGraphicMaze {
             y = maze_tiles_down.get(counter).position.y;
 
             MazeTile adding_new_tile = new MazeTile();
-            adding_new_tile.rightWall = right_wall;
-            adding_new_tile.leftWall = left_wall;
             adding_new_tile.topWall = up_wall;
+            adding_new_tile.rightWall = right_wall;
             adding_new_tile.bottomWall = down_wall;
+            adding_new_tile.leftWall = left_wall;
             adding_new_tile.position.x = x;
             adding_new_tile.position.y = y;
 
@@ -103,7 +103,7 @@ public class YourGraphicMaze {
         boolean done = false;
         int c = scol;
         int r = srow;
-        //        V[srow][scol] = 1;
+
         V[r][c] = 1;
 
         if (!(done) && (r > 1) && (V[r - 1][c] != 1) && maze.can_go(r, c, 'U')) {
@@ -168,7 +168,4 @@ public class YourGraphicMaze {
         return done;
     }
 
-    public static void main(String[] args) {
-        {}
-    }
 }
