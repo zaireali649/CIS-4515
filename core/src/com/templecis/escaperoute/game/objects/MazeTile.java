@@ -18,13 +18,9 @@ public class MazeTile extends AbstractGameObject {
     private Color wallColor;
     public int thickness; // Divides height and width by this number and border is 1 of them
 
-
     public Boolean topWall, rightWall, leftWall, bottomWall;
 
     static private boolean projectionMatrixSet;
-
-
-
 
     public MazeTile() {
         init();
@@ -37,7 +33,7 @@ public class MazeTile extends AbstractGameObject {
         bottomWall = false;
 
         wallColor = Color.RED;
-        thickness = 50;
+        thickness = 10;
 
         shapeRenderer = new ShapeRenderer();
         projectionMatrixSet = false;
@@ -95,11 +91,7 @@ public class MazeTile extends AbstractGameObject {
             shapeRenderer.end();
         }
 
-
         batch.begin();
-
-
-
     }
 
     @Override

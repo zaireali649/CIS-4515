@@ -26,6 +26,7 @@ import com.templecis.escaperoute.game.objects.Mountains;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
@@ -55,6 +56,9 @@ public class Level {
 
     private long lastUpdate = 0L;
 
+    Random randomno = new Random();
+
+
     //end health bar vars
 
     public Level(String filename) {
@@ -68,93 +72,24 @@ public class Level {
         rocks = new Array<Rock>();
         mazeTiles = new Array<MazeTile>();
 
-        // load image file that represents the level data
-        Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
+        AbstractGameObject obj;
 
 
-
-        // scan pixels from top-left to bottom-right
-        int lastPixel = -1;
-        for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++) {
-            for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) {
-                AbstractGameObject obj;
-                float offsetHeight;
-                // height grows from bottom to top
-                float baseHeight = pixmap.getHeight() - pixelY;
-                // get color of current pixel as 32-bit RGBA value
-                int currentPixel = pixmap.getPixel(pixelX, pixelY);
-                // find matching color value to identify block type at (x,y)
-                // point and create the corresponding game object if there is
-                // a match
-                // empty space
-                if (BLOCK_TYPE.EMPTY.sameColor(currentPixel)) {
-                    // do nothing
-                }
-                // rock
-                else if (BLOCK_TYPE.ROCK.sameColor(currentPixel)) {
-                    if (lastPixel != currentPixel) {
-                        obj = new Rock();
-                        float heightIncreaseFactor = 0.25f;
-                        offsetHeight = -2.5f;
-                        obj.position.set(pixelX, baseHeight * obj.dimension.y * heightIncreaseFactor + offsetHeight);
-                        rocks.add((Rock) obj);
-                    } else {
-                        rocks.get(rocks.size - 1).increaseLength(1);
-                    }
-                }
-
-                // feather
-                else if (BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel)) {
-                    obj = new Feather();
-                    offsetHeight = -1.5f;
-                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
-                    //feathers.add((Feather) obj);
-                }
-                // gold coin
-                else if (BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel)) {
-                    obj = new GoldCoin();
-                    offsetHeight = -1.5f;
-                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
-                    //goldcoins.add((GoldCoin) obj);
-                }
-                // goal
-                else if (BLOCK_TYPE.GOAL.sameColor(currentPixel)) {
-                    obj = new Goal();
-                    offsetHeight = -7.0f;
-                    obj.position.set(pixelX, baseHeight + offsetHeight);
-                    goal = (Goal) obj;
-                }
-                // unknown object/pixel color
-                else {
-                    int r = 0xff & (currentPixel >>> 24); //red color channel
-                    int g = 0xff & (currentPixel >>> 16); //green color channel
-                    int b = 0xff & (currentPixel >>> 8); //blue color channel
-                    int a = 0xff & currentPixel; //alpha channel
-                    Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<" + pixelY + ">: r<" + r + "> g<" + g + "> b<" + b + "> a<" + a + ">");
-                }
-                lastPixel = currentPixel;
-
-
-            }
-        }
 
 
 
         // Spawn Maze Tile
-        AbstractGameObject obj = new MazeTile();
+        obj = new MazeTile();
         int w = (int) obj.dimension.x;
         int h = (int) obj.dimension.y;
+        int row = 7;
+        int column = 7;
+        int W = row * w;
+        int H = column * h;
 
-
-        /*for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY = pixelY + h) {
-            for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX = pixelX + w) {
-                obj = new MazeTile();
-                offsetHeight = -1.5f;
-                //obj.position.set(pixelX, pixelY * obj.dimension.y + offsetHeight);
-                obj.position.set(pixelX, pixelY);
-                mazeTiles.add((MazeTile) obj);
-            }
-        }*/
+        obj = new Goal();
+        obj.position.set(W,H);
+        goal = (Goal) obj;
 
         // Spawn Player
         obj = new BunnyHead();
@@ -163,22 +98,26 @@ public class Level {
 
         // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
 
-        MazeTile mt =  new MazeTile();
-        mt.position.set(mt.dimension.x, mt.dimension.y);
-        mt.topWall = true;
-        mt.rightWall = true;
-        mt.bottomWall = true;
-        mt.leftWall = true;
-        mazeTiles.add(mt);
+
+
+        for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
+            for (int pixelX = 0; pixelX < W; pixelX = pixelX + w) {
+                MazeTile mt =  new MazeTile();
+                mt.position.set(mt.dimension.x + pixelX, mt.dimension.y + pixelY);
+
+                mt.topWall = randomno.nextBoolean();
+                mt.rightWall = randomno.nextBoolean();
+                mt.bottomWall = randomno.nextBoolean();
+                mt.leftWall = randomno.nextBoolean();
+                mazeTiles.add(mt);
+            }
+        }
 
         //mazeTiles = generateMaze();
 
         //  PETER COMMENT OUT THE ABOVE CODE ************************************************************************************
 
 
-        // free memory
-        pixmap.dispose();
-        //Gdx.app.debug(TAG, "level '" + filename + "' loaded");
     }
 
     private Array<MazeTile> generateMaze() {
@@ -187,11 +126,7 @@ public class Level {
 
     public void render(SpriteBatch batch) {
         // Draw Goal
-        goal.render(batch);
-        // Draw Rocks
-        for (Rock rock : rocks) {
-            rock.render(batch);
-        }
+
                 // Draw Maze Tiles
         for (MazeTile mazeTile : mazeTiles)
             mazeTile.render(batch);
@@ -224,27 +159,5 @@ public class Level {
             mazeTile.update(deltaTime);
     }
 
-    public enum BLOCK_TYPE {
-        EMPTY(0, 0, 0), // black
-        ROCK(0, 255, 0), // green
-        PLAYER_SPAWNPOINT(255, 255, 255), // white
-        ITEM_FEATHER(255, 0, 255), // purple
-        ITEM_MAZE_TILE(0, 0, 255), // blue
-        GOAL(255, 0, 0), // red
-        ITEM_GOLD_COIN(255, 255, 0); // yellow
 
-        private int color;
-
-        BLOCK_TYPE(int r, int g, int b) {
-            color = r << 24 | g << 16 | b << 8 | 0xff;
-        }
-
-        public boolean sameColor(int color) {
-            return this.color == color;
-        }
-
-        public int getColor() {
-            return color;
-        }
-    }
 }
