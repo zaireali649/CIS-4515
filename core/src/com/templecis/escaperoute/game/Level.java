@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
+import com.templecis.escaperoute.Maze_Stuff.Maze_Generator;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
@@ -37,6 +38,8 @@ public class Level {
     public static final String TAG = Level.class.getName();
     public BunnyHead bunnyHead;
 
+
+
     // objects
     public Array<Rock> rocks;
     // decoration
@@ -56,6 +59,8 @@ public class Level {
     //end health bar vars
 
     public Level(String filename) {
+        Maze_Generator mg = new Maze_Generator();
+        mg.MazeCreator();
         init(filename);
     }
 
