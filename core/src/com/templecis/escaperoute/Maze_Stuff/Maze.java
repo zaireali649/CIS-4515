@@ -1,5 +1,9 @@
 package com.templecis.escaperoute.Maze_Stuff;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
+import com.templecis.escaperoute.game.objects.MazeTile;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -29,19 +33,25 @@ public class Maze
         N = 10;
         L = new LinkedList<Node>();
 
-        C=new Intcoll[N*M+1]; int k;
+        C=new Intcoll[N*M+1];
+        int k;
         for (k=1; k<=M*N; k++)
-        {C[k]=new Intcoll(M*N+1); C[k].insert(k);}
+        {
+            C[k]=new Intcoll(M*N+1);
+            C[k].insert(k);}
 
         start=50; delta=15;
         //Top=new Line2D.Double(start+delta, start, start+N*delta, start);
        // Bottom=new Line2D.Double(start, start+M*delta,start+(N-1)*delta, start+M*delta);
        // Left=new Line2D.Double(start, start, start, start+M*delta);
        // Right=new Line2D.Double(start+N*delta, start, start+N*delta, start+M*delta);
-        int i=0, j=0; int size=M*(N-1)+(M-1)*N+1;
+        int i=0, j=0;
+        int size=M*(N-1)+(M-1)*N+1;
         //Add all internal lines
         Line=new int[size]; status=new boolean[size];
-        for (k=1; k<size; k++) {Line[k]=k; status[k]=true;}
+        for (k=1; k<size; k++) {
+            Line[k]=k; status[k]=true;
+        }
         // Randomly generate the next line to remove if its adjacent
         // cells are not already connected
         Random gen=new Random();
@@ -82,12 +92,15 @@ public class Maze
             {
                 if (a<b) {
                     union(C[a], C[b], C);
-                C[b]=C[M*N-count];}
+                C[b]=C[M*N-count];
+                }
                 else {
                     union(C[b], C[a], C);
-                C[a]=C[M*N-count];}
+                C[a]=C[M*N-count];
+                }
                 status[k]=false; count++;
-                Line[slot]=Line[L]; L--;
+                Line[slot]=Line[L];
+                L--;
             }
         } //end of while
 
@@ -106,26 +119,47 @@ public class Maze
     }//end of constructor
 
 
-    public int Rows() {
-        return M;
-    }
-    public int Cols() {
-        return N;
+    public Array<MazeTile> CreatePath(Maze maze, int srow, int scol, int erow, int ecol, LinkedList<Point> L) {
+        boolean done = false;
+        Array<MazeTile> mazeTile = new Array<MazeTile>();
+
+
+        for (int r = srow; r < erow; r++){
+            for(int c = scol; c < ecol; c++){
+                MazeTile mz = new MazeTile();
+                Gdx.app.log("THIS IS THE SIZE", "" + mazeTile.size);
+
+                mz.position.x = r * 2;
+                mz.position.y = c * 2;
+                mz.topWall = !maze.can_go(r, c, 'U');
+                mz.rightWall = !maze.can_go(r, c, 'R');
+                mz.bottomWall = !maze.can_go(r, c, 'D');
+                mz.leftWall = !maze.can_go(r, c, 'L');
+                mazeTile.add(mz);
+
+            }
+
+
+        }
+        return mazeTile;
     }
     public boolean can_go(int i, int j, char c)
     {
-        int D=M*(N-1); boolean result=false; int K=N*(M-1)+(N-1)*M;
-        if (c=='U') result = !status[D+(i-2)*N+j];
-        if (c=='R') result = !status[(i-1)*(N-1)+j];
-        if (c=='D') result = !status[D+(i-1)*N+j];
-        if (c=='L') result = !status[(i-1)*(N-1)+j-1];
+        int D=M*(N-1);
+        boolean result=false;
+        int K=N*(M-1)+(N-1)*M;
+        if (c=='U') result = status[D+(i-2)*N+j];
+        if (c=='R') result = status[(i-1)*(N-1)+j];
+        if (c=='D') result = status[D+(i-1)*N+j];
+        if (c=='L') result = status[(i-1)*(N-1)+j-1];
         return result;
     }
 
-    public void showPath(LinkedList<Point> P)
-    {Path=P;
+  /*  public void showPath(LinkedList<Point> P)
+    {
+        Path=P;
    // repaint();
-    }
+    }*/
 
     private void union(Intcoll A, Intcoll B, Intcoll[] C)
     {
