@@ -59,9 +59,6 @@ public class YourGraphicMaze {
         //        V[srow][scol] = 1;
         V[r][c] = 1;
 
-
-
-
         if (!(done) && (r > 1) && (V[r - 1][c] != 1) && maze.can_go(r, c, 'U')) {
             MazeTile mz = new MazeTile();
             mz.position.x = r;
@@ -75,8 +72,11 @@ public class YourGraphicMaze {
         }
 
         if (!(done) && (c < C) && (V[r][c + 1] != 1) && maze.can_go(r, c, 'R')) {
-
-
+            MazeTile mz = new MazeTile();
+            mz.position.x = r;
+            mz.position.y = c;
+            mz.rightWall = maze.can_go(r, c, 'R');
+            maze_tiles_right.add(mz);
 
             c++;
             done = CreatePath(maze, r, c, erow, ecol, L);
@@ -84,12 +84,24 @@ public class YourGraphicMaze {
         }
 
         if (!(done) && (r < R) && (V[r + 1][c] != 1) && maze.can_go(r, c, 'D')) {
+            MazeTile mz = new MazeTile();
+            mz.position.x = r;
+            mz.position.y = c;
+            mz.rightWall = maze.can_go(r, c, 'D');
+            maze_tiles_down.add(mz);
+
             r++;
             done = CreatePath(maze, r, c, erow, ecol, L);
             r--;
         }
 
         if (!(done) && (c > 1) && (V[r][c - 1] != 1) && maze.can_go(r, c, 'L')) {
+            MazeTile mz = new MazeTile();
+            mz.position.x = r;
+            mz.position.y = c;
+            mz.rightWall = maze.can_go(r, c, 'L');
+            maze_tiles_left.add(mz);
+
             c--;
             done = CreatePath(maze, r, c, erow, ecol, L);
             c++;
@@ -109,8 +121,6 @@ public class YourGraphicMaze {
     }
 
     public static void main(String[] args) {
-        {
-            new YourGraphicMaze();
-        }
+        {}
     }
 }
