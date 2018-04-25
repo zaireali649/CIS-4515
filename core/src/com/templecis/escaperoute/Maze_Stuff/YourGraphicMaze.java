@@ -48,6 +48,7 @@ public class YourGraphicMaze {
     public Array<MazeTile> maze_tiles_left;
     public Array<MazeTile> maze_tiles_right;
 
+
     //then merge all directions into one array
 
 
