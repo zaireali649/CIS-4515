@@ -6,9 +6,9 @@ public class Maze {
 
     private PLACE maze[][] = new PLACE[Const.maze_height][Const.maze_width];
 
-    //public String toString() {
-    //    return new MazeStringRenderer(this).toString();
-    //}
+    public String toString() {
+        return new MazeStringRenderer(this).toString();
+    }
 
     public static boolean isValidPlace(int row, int col) {
         return

@@ -11,6 +11,7 @@ public class Maze_Generator {
     public void MazeCreator() {
         maze = new Maze();
         createMaze();
+        log();
     }
 
     public Maze getMaze() {
@@ -33,6 +34,8 @@ public class Maze_Generator {
         }
     }
 
+
+
     private Place createExit() {
         // exit should be on the left or right side
         int c = (Math.random() < 0.5) ? 0 : Const.maze_width - 1;
@@ -42,6 +45,7 @@ public class Maze_Generator {
     }
 
     private void log() {
+        //MazeStringRenderer mazeStringRenderer = new MazeStringRenderer(this.maze);
         Gdx.app.log("MazeCreator", "\n" + maze.toString());
     }
 
