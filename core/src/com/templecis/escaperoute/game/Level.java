@@ -102,7 +102,7 @@ public class Level {
 
         // Spawn Player
         obj = new BunnyHead();
-        obj.position.set(w/2 + obj.dimension.x/2, h/2 + obj.dimension.y/2);
+        obj.position.set(w/2 + obj.dimension.x/2 + 2, h/2 + obj.dimension.y/2 + 2);
         bunnyHead = (BunnyHead) obj;
 
         // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
@@ -135,7 +135,7 @@ public class Level {
     //Maze maze = new Maze();
         //mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 4, 4, path);
 
-        MazeGenerator mg = new MazeGenerator(5);
+        MazeGenerator mg = new MazeGenerator(10);
 
         Gdx.app.debug(TAG, "North Size: " + mg.north.length);
 
