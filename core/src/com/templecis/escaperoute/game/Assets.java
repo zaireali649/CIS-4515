@@ -31,6 +31,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetFonts fonts;
     public AssetSounds sounds;
     public AssetMusic music;
+    public AssetReverseCoin reverseCoin;
     private AssetManager assetManager;
 
     // singleton: prevent instantiation from other classes
@@ -78,6 +79,7 @@ public class Assets implements Disposable, AssetErrorListener {
         levelDecoration = new AssetLevelDecoration(atlas);
         sounds = new AssetSounds(assetManager);
         music = new AssetMusic(assetManager);
+        reverseCoin = new AssetReverseCoin();
     }
 
     @Override
@@ -181,6 +183,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public AssetFeather(TextureAtlas atlas) {
             feather = atlas.findRegion("item_feather");
+        }
+    }
+
+    public class AssetReverseCoin {
+        public final Texture reverseCoin;
+
+        public AssetReverseCoin() {
+            reverseCoin = new Texture(Gdx.files.internal("images/reverseCoin.png"));
         }
     }
 

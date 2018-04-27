@@ -25,6 +25,7 @@ import com.templecis.escaperoute.game.objects.Goal;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Mountains;
+import com.templecis.escaperoute.game.objects.ReverseCoin;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
 
@@ -44,19 +45,11 @@ import java.util.concurrent.TimeUnit;
 public class Level {
     public static final String TAG = Level.class.getName();
     public BunnyHead bunnyHead;
-    LinkedList<Point> path = new LinkedList<Point>();
-
-
-
-
     // objects
     public Array<Rock> rocks;
     // decoration
-    //public Clouds clouds;
-    //public Mountains mountains;
-    //public WaterOverlay waterOverlay;
-    //public Array<Carrot> carrots;
     public Array<MazeTile> mazeTiles;
+    public Array<ReverseCoin> reverseCoins;
     public Goal goal;
     //Health bar vars
     private Stage stage;
@@ -64,8 +57,6 @@ public class Level {
     private LoadingBarWithBorders loadingBarWithBorders;
 
     private long lastUpdate = 0L;
-
-    Random randomno = new Random();
 
 
     //end health bar vars
@@ -80,12 +71,9 @@ public class Level {
         // objects
         rocks = new Array<Rock>();
         mazeTiles = new Array<MazeTile>();
+        reverseCoins = new Array<ReverseCoin>();
 
         AbstractGameObject obj;
-
-
-
-
 
         // Spawn Maze Tile
         obj = new MazeTile();
@@ -104,6 +92,11 @@ public class Level {
         obj = new BunnyHead();
         obj.position.set(w/2 + obj.dimension.x/2 + 2, h/2 + obj.dimension.y/2 + 2);
         bunnyHead = (BunnyHead) obj;
+
+        // Spawn Reverse Coin
+        obj = new ReverseCoin();
+        obj.position.set(w/2 + obj.dimension.x/2 + 4, h/2 + obj.dimension.y/2 + 4);
+        reverseCoins.add((ReverseCoin) obj);
 
         // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
 
@@ -167,6 +160,10 @@ public class Level {
                 // Draw Maze Tiles
         for (MazeTile mazeTile : mazeTiles)
             mazeTile.render(batch);
+
+        for (ReverseCoin reverseCoin : reverseCoins)
+            reverseCoin.render(batch);
+
         // Draw Player Character
         bunnyHead.render(batch);
 

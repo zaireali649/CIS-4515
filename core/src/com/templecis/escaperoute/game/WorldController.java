@@ -14,12 +14,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
+import com.sun.org.apache.regexp.internal.RE;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
 import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
+import com.templecis.escaperoute.game.objects.ReverseCoin;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.screens.DirectedGame;
 import com.templecis.escaperoute.screens.MenuScreen;
@@ -59,6 +61,9 @@ public class WorldController extends InputAdapter implements Disposable {
     private Rectangle r6 = new Rectangle();
     private Rectangle r7 = new Rectangle();
 
+    public long reverseCoinTime = 0;
+    public int reverseCoinDuration;
+
 
 
     private DirectedGame game;
@@ -96,6 +101,7 @@ public class WorldController extends InputAdapter implements Disposable {
         score = 0;
         scoreVisual = score;
         goalReached = false;
+        reverseCoinDuration = new ReverseCoin().getDuration();
         level = new Level(Constants.LEVEL_01);
         cameraHelper.setTarget(level.bunnyHead);
         initPhysics();
@@ -128,42 +134,7 @@ public class WorldController extends InputAdapter implements Disposable {
         }
     }
 
-    private void spawnMazeTiles(Vector2 pos, int numMazeTiles, float radius) {
-        float mazeTileShapeScale = 0.5f;
-        // create carrots with box2d body and fixture
-        for (int i = 0; i < numMazeTiles; i++) {
-            MazeTile mazeTile = new MazeTile();
-            // calculate random spawn position, rotation, and scale
-            float x = MathUtils.random(-radius, radius);
-            float y = MathUtils.random(5.0f, 15.0f);
-            float rotation = MathUtils.random(0.0f, 360.0f) * MathUtils.degreesToRadians;
-            float mazeTileScale = MathUtils.random(0.5f, 1.5f);
-            mazeTile.scale.set(mazeTileScale, mazeTileScale);
-            // create box2d body for carrot with start position and angle of rotation
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.position.set(pos);
-            bodyDef.position.add(x, y);
-            bodyDef.angle = rotation;
-            Body body = b2world.createBody(bodyDef);
-            body.setType(BodyDef.BodyType.DynamicBody);
-            mazeTile.body = body;
-            // create rectangular shape for carrot to allow interactions (collisions) with other objects
-            PolygonShape polygonShape = new PolygonShape();
-            float halfWidth = mazeTile.bounds.width / 2.0f * mazeTileScale;
-            float halfHeight = mazeTile.bounds.height / 2.0f * mazeTileScale;
-            polygonShape.setAsBox(halfWidth * mazeTileShapeScale, halfHeight * mazeTileShapeScale);
-            // set physics attributes
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.shape = polygonShape;
-            fixtureDef.density = 50;
-            fixtureDef.restitution = 0.5f;
-            fixtureDef.friction = 0.5f;
-            body.createFixture(fixtureDef);
-            polygonShape.dispose();
-            // finally, add new carrot to list for updating/rendering
-            level.mazeTiles.add(mazeTile);
-        }
-    }
+
 
     private void spawnCarrots(Vector2 pos, int numCarrots, float radius) {
         /*float carrotShapeScale = 0.5f;
@@ -295,6 +266,8 @@ public class WorldController extends InputAdapter implements Disposable {
 
 
 
+
+
             // Player Movement
             level.bunnyHead.velocity.y = -accelX * 1000;
             level.bunnyHead.velocity.x = accelY * 1000;
@@ -312,6 +285,14 @@ public class WorldController extends InputAdapter implements Disposable {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
                 level.bunnyHead.velocity.y = -1 * 1000;
+            }
+
+
+            // Reverse Coin Trap Implementation
+            if(System.currentTimeMillis() - reverseCoinTime < reverseCoinDuration * 1000){
+                level.bunnyHead.velocity.x = level.bunnyHead.velocity.x * -1;
+                level.bunnyHead.velocity.y = level.bunnyHead.velocity.y * -1;
+                Gdx.app.debug(TAG, "TIME: " + System.currentTimeMillis());
             }
 
 
@@ -502,6 +483,16 @@ public class WorldController extends InputAdapter implements Disposable {
             if (!r1.overlaps(r2)) continue;
             onCollisionBunnyHeadWithRock(rock);
             // IMPORTANT: must do all collisions for valid edge testing on rocks.
+        }
+
+        for (ReverseCoin reverseCoin: level.reverseCoins) {
+            r2.set(reverseCoin.position.x, reverseCoin.position.y, reverseCoin.bounds.width, reverseCoin.bounds.height);
+            if (reverseCoin.collected) continue;
+            if (!r1.overlaps(r2)) continue;
+            Gdx.app.debug(TAG, "Intersect Reverse Coin");
+            reverseCoin.collected = true;
+            reverseCoinTime = System.currentTimeMillis();
+
         }
 
         //testMazeTileCollisions();

@@ -1,5 +1,7 @@
 package com.templecis.escaperoute.Maze_Stuff;
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 import java.util.Random;
 
 /**
