@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.sun.org.apache.regexp.internal.RE;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
 import com.templecis.escaperoute.Sprites.Trap;
 import com.templecis.escaperoute.game.objects.BunnyHead;
@@ -75,9 +76,17 @@ public class WorldController extends InputAdapter implements Disposable {
     private boolean goalReached;
     float gyroX, gyroY, gyroZ;
     float accelX, accelY;
+    private Boolean attacker;
+
+    public WorldController(DirectedGame game, Boolean attacker) {
+        this.game = game;
+        this.attacker = attacker;
+        init();
+    }
 
     public WorldController(DirectedGame game) {
         this.game = game;
+        this.attacker = false;
         init();
     }
 
