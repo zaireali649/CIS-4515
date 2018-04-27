@@ -9,7 +9,9 @@ import java.util.Random;
  */
 
 public class MazeGenerator {
-    private int n;                 // dimension of maze
+    private int n;
+    private int m;
+    // dimension of maze
     public boolean[][] north;     // is there a wall to north of cell i, j
     public boolean[][] east;
     public boolean[][] south;
@@ -19,6 +21,7 @@ public class MazeGenerator {
 
     public MazeGenerator(int n) {
         this.n = n;
+        this.m = n * 4;
 
         init();
         generate();
@@ -26,24 +29,24 @@ public class MazeGenerator {
 
     private void init() {
         // initialize border cells as already visited
-        visited = new boolean[n+2][n+2];
+        visited = new boolean[n+2][m +2];
         for (int x = 0; x < n+2; x++) {
             visited[x][0] = true;
-            visited[x][n+1] = true;
+            visited[x][m+1] = true;
         }
-        for (int y = 0; y < n+2; y++) {
+        for (int y = 0; y < m+2; y++) {
             visited[0][y] = true;
             visited[n+1][y] = true;
         }
 
 
         // initialze all walls as present
-        north = new boolean[n+2][n+2];
-        east  = new boolean[n+2][n+2];
-        south = new boolean[n+2][n+2];
-        west  = new boolean[n+2][n+2];
+        north = new boolean[n+2][m+2];
+        east  = new boolean[n+2][m+2];
+        south = new boolean[n+2][m+2];
+        west  = new boolean[n+2][m+2];
         for (int x = 0; x < n+2; x++) {
-            for (int y = 0; y < n+2; y++) {
+            for (int y = 0; y < m+2; y++) {
                 north[x][y] = true;
                 east[x][y]  = true;
                 south[x][y] = true;
