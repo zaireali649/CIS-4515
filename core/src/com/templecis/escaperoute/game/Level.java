@@ -107,19 +107,38 @@ public class Level {
         bunnyHead = (BunnyHead) obj;
 
         // Spawn Reverse Coin
-        obj = new Monster();
+        obj = new ReverseCoin();
         obj.position.set(w/2 + obj.dimension.x/2 + 4, h/2 + obj.dimension.y/2 + 4);
-        monsters.add((Monster) obj);
+        reverseCoins.add((ReverseCoin) obj);
 
         // Spawn Trap Door
-        obj = new Monster();
+        obj = new TrapDoor();
         obj.position.set(w/2 + obj.dimension.x/2 + 6, h/2 + obj.dimension.y/2 + 6);
-        monsters.add((Monster) obj);
+        trapDoors.add((TrapDoor) obj);
 
         // Spawn Monster
         obj = new Monster();
         obj.position.set(w/2 + obj.dimension.x/2 + 8, h/2 + obj.dimension.y/2 + 8);
         monsters.add((Monster) obj);
+
+        // Spawn Monster
+        obj = new Monster();
+        obj.position.set(w/2 + obj.dimension.x/2 + 3, h/2 + obj.dimension.y/2 + 3);
+        monsters.add((Monster) obj);
+
+        // Spawn Monster
+        obj = new Monster();
+        obj.position.set(w/2 + obj.dimension.x/2 + 5, h/2 + obj.dimension.y/2 + 5);
+        monsters.add((Monster) obj);
+
+        // Spawn Monster
+        obj = new Monster();
+        obj.position.set(w/2 + obj.dimension.x/2 + 7, h/2 + obj.dimension.y/2 + 7);
+        monsters.add((Monster) obj);
+
+
+
+
 
         // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
 

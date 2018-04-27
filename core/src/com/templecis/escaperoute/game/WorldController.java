@@ -205,7 +205,7 @@ public class WorldController extends InputAdapter implements Disposable {
         // Game Over Conditions
         if (isGameOver() || goalReached) {
             timeLeftGameOverDelay -= deltaTime;
-            if (timeLeftGameOverDelay < 0) backToMenu();
+//            if (timeLeftGameOverDelay < 0) backToMenu();
         } else {
             handleInputGame(deltaTime);
         }
@@ -213,24 +213,6 @@ public class WorldController extends InputAdapter implements Disposable {
         //can get int lives from here
         testCollisions();
 
-//        if(lives == 3){
-//            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 3");
-//            batch.begin();
-//            batch.draw(Assets.instance.health.health3, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-//            batch.end();
-//        }
-//        else if(lives == 2){
-//            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 2");
-//            batch.begin();
-//            batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-//            batch.end();
-//        }
-//        else if(lives == 1){
-//            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
-//            batch.begin();
-//            batch.draw(Assets.instance.health.health1, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-//            batch.end();
-//        }
 
         b2world.step(deltaTime, 8, 3);
         cameraHelper.update(deltaTime);
@@ -253,13 +235,15 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public boolean isGameOver() {
-        return lives < 0;
+        return get_number_of_lives() < 0;
     }
 
-    private void backToMenu() {
+    public void backToMenu() {
         // switch to menu screen
         ScreenTransition transition = ScreenTransitionSlide.init(0.75f, ScreenTransitionSlide.DOWN, false, Interpolation.bounceOut);
+        Gdx.app.log("ABOUT TO","DO STUFF");
         game.setScreen(new MenuScreen(game), transition);
+        Gdx.app.log("STUFF","DONE STUFF");
     }
 
     public boolean isPlayerInWater() {

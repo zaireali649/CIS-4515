@@ -285,6 +285,15 @@ public class WorldRenderer implements Disposable {
             batch.draw(Assets.instance.health.health1, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
             batch.end();
         }
+        else if(lives == 0){
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
+            batch.begin();
+            batch.draw(Assets.instance.health.health0, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+            batch.end();
+
+            //renderGuiGameOverMessage(batch);
+            //worldController.backToMenu();
+        }
     }
 
 }
