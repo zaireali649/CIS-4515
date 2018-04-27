@@ -61,16 +61,23 @@ public class Level {
     private HealthBar healthBar;
     private LoadingBarWithBorders loadingBarWithBorders;
 
+    private Boolean Attacker;
+
     private long lastUpdate = 0L;
 
 
     //end health bar vars
 
-    public Level(String filename) {
-        init(filename);
+    public Level() {
+        init();
     }
 
-    private void init(String filename) {
+    public Level(Boolean Attacker) {
+        this.Attacker = Attacker;
+        init();
+    }
+
+    private void init() {
         // player character
         bunnyHead = null;
         // objects

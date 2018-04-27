@@ -120,7 +120,7 @@ public class WorldController extends InputAdapter implements Disposable {
         w = (int) new MazeTile().dimension.x;
         h = (int) new MazeTile().dimension.y;
 
-        level = new Level(Constants.LEVEL_01);
+        level = new Level(true);
         cameraHelper.setTarget(level.bunnyHead);
         initPhysics();
     }
