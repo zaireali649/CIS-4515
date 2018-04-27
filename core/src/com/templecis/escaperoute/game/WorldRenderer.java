@@ -45,6 +45,12 @@ public class WorldRenderer implements Disposable {
 
     Texture texture, texture2;
 
+
+    float x = -15;
+    float y = -15;
+    float offsetX = 50;
+    float offsetY = 50;
+
     public WorldRenderer(WorldController worldController) {
         this.worldController = worldController;
         init();
@@ -66,6 +72,10 @@ public class WorldRenderer implements Disposable {
     public void render() {
         renderWorld(batch);
         renderGui(batch);
+
+        int lives = get_lives();
+        change_health(lives);
+
     }
 
     private void renderWorld(SpriteBatch batch) {
@@ -115,10 +125,7 @@ public class WorldRenderer implements Disposable {
     }
 
     private void renderHealthBar(SpriteBatch batch){
-        float x = -15;
-        float y = -15;
-        float offsetX = 50;
-        float offsetY = 50;
+
 
 
   /*  int i = 0;
@@ -133,7 +140,6 @@ public class WorldRenderer implements Disposable {
         }
         i++;*/
         batch.draw(Assets.instance.health.health4, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-
        /*
        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
         stage.addActor(healthBar);
@@ -254,4 +260,31 @@ public class WorldRenderer implements Disposable {
     public void dispose() {
         batch.dispose();
     }
+
+    public int get_lives(){
+        return worldController.get_number_of_lives();
+    }
+
+    public void change_health(int lives){
+
+        if(lives == 3){
+            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 3");
+            batch.begin();
+            batch.draw(Assets.instance.health.health3, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+            batch.end();
+        }
+        else if(lives == 2){
+            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 2");
+            batch.begin();
+            batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+            batch.end();
+        }
+        else if(lives == 1){
+            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
+            batch.begin();
+            batch.draw(Assets.instance.health.health1, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+            batch.end();
+        }
+    }
+
 }

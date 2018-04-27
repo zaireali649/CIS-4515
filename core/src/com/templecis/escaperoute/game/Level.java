@@ -108,14 +108,14 @@ public class Level {
         bunnyHead = (BunnyHead) obj;
 
         // Spawn Reverse Coin
-        obj = new ReverseCoin();
+        obj = new Monster();
         obj.position.set(w/2 + obj.dimension.x/2 + 4, h/2 + obj.dimension.y/2 + 4);
-        reverseCoins.add((ReverseCoin) obj);
+        monsters.add((Monster) obj);
 
         // Spawn Trap Door
-        obj = new TrapDoor();
+        obj = new Monster();
         obj.position.set(w/2 + obj.dimension.x/2 + 6, h/2 + obj.dimension.y/2 + 6);
-        trapDoors.add((TrapDoor) obj);
+        monsters.add((Monster) obj);
 
         // Spawn Monster
         obj = new Monster();

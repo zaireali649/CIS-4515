@@ -41,8 +41,8 @@ public abstract class AbstractGameObject {
             updateMotionX(deltaTime);
             updateMotionY(deltaTime);
             // Move to new position
-            position.x += velocity.x * deltaTime;
-            position.y += velocity.y * deltaTime;
+            position.x += velocity.x * deltaTime*6;
+            position.y += velocity.y * deltaTime*6;
         } else {
             position.set(body.getPosition());
             rotation = body.getAngle() * MathUtils.radiansToDegrees;
