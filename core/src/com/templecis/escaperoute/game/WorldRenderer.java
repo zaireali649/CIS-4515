@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
+import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.util.Constants;
 import com.templecis.escaperoute.util.GamePreferences;
 
@@ -39,9 +40,6 @@ public class WorldRenderer implements Disposable {
     private Box2DDebugRenderer b2debugRenderer;
 
     //Health bar vars
-    private Stage stage;
-    private HealthBar healthBar;
-    private LoadingBarWithBorders loadingBarWithBorders;
     long startTime = System.currentTimeMillis();
 
 
@@ -187,7 +185,8 @@ public class WorldRenderer implements Disposable {
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
             fontGameOver.draw(batch, "GAME OVER", x, y, 0, Align.center, true);
             fontGameOver.setColor(1, 1, 1, 1);
-            worldController.backToMenu();
+
+            // worldController.backToMenu();
         }
     }
 
@@ -236,7 +235,7 @@ public class WorldRenderer implements Disposable {
         float y = cameraGUI.viewportHeight - 450;
 
 
-        timer = (int) (10 - ((System.currentTimeMillis() - startTime) / 1000));
+        timer = (int) (60 - ((System.currentTimeMillis() - startTime) / 1000));
         timeleft = timer;
         BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
 
@@ -294,9 +293,8 @@ public class WorldRenderer implements Disposable {
             batch.begin();
             batch.draw(Assets.instance.health.health0, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
             batch.end();
-
             //renderGuiGameOverMessage(batch);
-            worldController.backToMenu();
+           // worldController.backToMenu();
         }
     }
 

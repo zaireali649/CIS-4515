@@ -74,7 +74,7 @@ public class Level {
         int H = column * h;
 
         obj = new Goal();
-        obj.position.set(W,H);
+        obj.position.set(8,32);
         goal = (Goal) obj;
 
         // Spawn Player
