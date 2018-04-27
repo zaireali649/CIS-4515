@@ -268,19 +268,19 @@ public class WorldRenderer implements Disposable {
     public void change_health(int lives){
 
         if(lives == 3){
-            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 3");
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 3");
             batch.begin();
             batch.draw(Assets.instance.health.health3, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
             batch.end();
         }
         else if(lives == 2){
-            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 2");
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 2");
             batch.begin();
             batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
             batch.end();
         }
         else if(lives == 1){
-            Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
             batch.begin();
             batch.draw(Assets.instance.health.health1, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
             batch.end();
