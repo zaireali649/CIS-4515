@@ -16,13 +16,16 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.sun.org.apache.regexp.internal.RE;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
+import com.templecis.escaperoute.Sprites.Trap;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
 import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
+import com.templecis.escaperoute.game.objects.Monster;
 import com.templecis.escaperoute.game.objects.ReverseCoin;
 import com.templecis.escaperoute.game.objects.Rock;
+import com.templecis.escaperoute.game.objects.TrapDoor;
 import com.templecis.escaperoute.screens.DirectedGame;
 import com.templecis.escaperoute.screens.MenuScreen;
 import com.templecis.escaperoute.screens.transitions.ScreenTransition;
@@ -48,6 +51,8 @@ public class WorldController extends InputAdapter implements Disposable {
     public Level level;
     public int lives;
     public int score;
+    public int w;
+    public int h;
     public float livesVisual;
     public float scoreVisual;
     public World b2world;
@@ -102,6 +107,10 @@ public class WorldController extends InputAdapter implements Disposable {
         scoreVisual = score;
         goalReached = false;
         reverseCoinDuration = new ReverseCoin().getDuration();
+
+        w = (int) new MazeTile().dimension.x;
+        h = (int) new MazeTile().dimension.y;
+
         level = new Level(Constants.LEVEL_01);
         cameraHelper.setTarget(level.bunnyHead);
         initPhysics();
@@ -492,8 +501,29 @@ public class WorldController extends InputAdapter implements Disposable {
             Gdx.app.debug(TAG, "Intersect Reverse Coin");
             reverseCoin.collected = true;
             reverseCoinTime = System.currentTimeMillis();
-
         }
+
+        for (TrapDoor trapDoor: level.trapDoors) {
+            r2.set(trapDoor.position.x, trapDoor.position.y, trapDoor.bounds.width, trapDoor.bounds.height);
+            if (trapDoor.collected) continue;
+            if (!r1.overlaps(r2)) continue;
+            Gdx.app.debug(TAG, "Intersect Trap Door");
+            trapDoor.collected = true;
+            // Send Back to Start
+            level.bunnyHead.position.x = w/2 + level.bunnyHead.dimension.x/2 + 2;
+            level.bunnyHead.position.y = h/2 + level.bunnyHead.dimension.y/2 + 2;
+        }
+
+        for (Monster monster: level.monsters) {
+            r2.set(monster.position.x, monster.position.y, monster.bounds.width, monster.bounds.height);
+            if (monster.collected) continue;
+            if (!r1.overlaps(r2)) continue;
+            Gdx.app.debug(TAG, "Intersect Monster");
+            monster.collected = true;
+            // Reduce Health
+            level.bunnyHead.health = level.bunnyHead.health - monster.getStrength();
+        }
+
 
         //testMazeTileCollisions();
 

@@ -16,6 +16,7 @@ import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
 import com.templecis.escaperoute.Maze_Stuff.MazeGenerator;
 import com.templecis.escaperoute.Maze_Stuff.YourGraphicMaze;
+import com.templecis.escaperoute.Sprites.Trap;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Carrot;
@@ -24,9 +25,11 @@ import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.Goal;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
+import com.templecis.escaperoute.game.objects.Monster;
 import com.templecis.escaperoute.game.objects.Mountains;
 import com.templecis.escaperoute.game.objects.ReverseCoin;
 import com.templecis.escaperoute.game.objects.Rock;
+import com.templecis.escaperoute.game.objects.TrapDoor;
 import com.templecis.escaperoute.game.objects.WaterOverlay;
 
 import java.awt.Point;
@@ -50,6 +53,8 @@ public class Level {
     // decoration
     public Array<MazeTile> mazeTiles;
     public Array<ReverseCoin> reverseCoins;
+    public Array<Monster> monsters;
+    public Array<TrapDoor> trapDoors;
     public Goal goal;
     //Health bar vars
     private Stage stage;
@@ -72,6 +77,8 @@ public class Level {
         rocks = new Array<Rock>();
         mazeTiles = new Array<MazeTile>();
         reverseCoins = new Array<ReverseCoin>();
+        trapDoors = new Array<TrapDoor>();
+        monsters = new Array<Monster>();
 
         AbstractGameObject obj;
 
@@ -97,6 +104,16 @@ public class Level {
         obj = new ReverseCoin();
         obj.position.set(w/2 + obj.dimension.x/2 + 4, h/2 + obj.dimension.y/2 + 4);
         reverseCoins.add((ReverseCoin) obj);
+
+        // Spawn Trap Door
+        obj = new TrapDoor();
+        obj.position.set(w/2 + obj.dimension.x/2 + 6, h/2 + obj.dimension.y/2 + 6);
+        trapDoors.add((TrapDoor) obj);
+
+        // Spawn Monster
+        obj = new Monster();
+        obj.position.set(w/2 + obj.dimension.x/2 + 8, h/2 + obj.dimension.y/2 + 8);
+        monsters.add((Monster) obj);
 
         // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
 
@@ -164,6 +181,12 @@ public class Level {
         for (ReverseCoin reverseCoin : reverseCoins)
             reverseCoin.render(batch);
 
+        for (TrapDoor trapDoor: trapDoors)
+            trapDoor.render(batch);
+
+        for (Monster monster: monsters)
+            monster.render(batch);
+
         // Draw Player Character
         bunnyHead.render(batch);
 
@@ -187,10 +210,6 @@ public class Level {
 
     public void update(float deltaTime) {
         bunnyHead.update(deltaTime);
-        for (Rock rock : rocks)
-            rock.update(deltaTime);
-        for (MazeTile mazeTile : mazeTiles)
-            mazeTile.update(deltaTime);
     }
 
 

@@ -32,6 +32,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetSounds sounds;
     public AssetMusic music;
     public AssetReverseCoin reverseCoin;
+    public AssetMonster monster;
+    public AssetTrapDoor trapDoor;
     private AssetManager assetManager;
 
     // singleton: prevent instantiation from other classes
@@ -80,6 +82,8 @@ public class Assets implements Disposable, AssetErrorListener {
         sounds = new AssetSounds(assetManager);
         music = new AssetMusic(assetManager);
         reverseCoin = new AssetReverseCoin();
+        trapDoor = new AssetTrapDoor();
+        monster = new AssetMonster();
     }
 
     @Override
@@ -191,6 +195,22 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public AssetReverseCoin() {
             reverseCoin = new Texture(Gdx.files.internal("images/reverseCoin.png"));
+        }
+    }
+
+    public class AssetMonster {
+        public final Texture monster;
+
+        public AssetMonster() {
+            monster = new Texture(Gdx.files.internal("images/monster.png"));
+        }
+    }
+
+    public class AssetTrapDoor {
+        public final Texture trapDoor;
+
+        public AssetTrapDoor() {
+            trapDoor = new Texture(Gdx.files.internal("images/trapDoor.png"));
         }
     }
 

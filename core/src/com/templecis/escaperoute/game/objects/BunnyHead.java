@@ -33,11 +33,14 @@ public class BunnyHead extends AbstractGameObject {
     private Animation animCopterTransformBack;
     private Animation animCopterRotate;
 
+    public int health;
+
     public BunnyHead() {
         init();
     }
 
     public void init() {
+        health = 4;
         dimension.set(1, 1);
 
         animNormal = Assets.instance.bunny.animNormal;
