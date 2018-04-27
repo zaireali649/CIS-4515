@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.templecis.escaperoute.HUD.Countdown;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.Maze;
@@ -36,9 +37,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
-
+import java.util.Timer;
 
 
 /**
@@ -142,17 +141,24 @@ public class Level {
         //mazeTiles = generateMaze();
         generateMaze();
 
+       // Timer timer = new Timer();
+
+        //timer.schedule(new Countdown(), 0, 5000);
+
+
+
         //  PETER COMMENT OUT THE ABOVE CODE ************************************************************************************
 
 
     }
+
 
     private Array<MazeTile> generateMaze() {
         //YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();
     //Maze maze = new Maze();
         //mazeTiles = yourGraphicMaze.CreatePath(maze, 1, 1, 4, 4, path);
 
-        MazeGenerator mg = new MazeGenerator(10);
+        MazeGenerator mg = new MazeGenerator(4);
 
         Gdx.app.debug(TAG, "North Size: " + mg.north.length);
 
@@ -168,7 +174,7 @@ public class Level {
                 mazeTiles.add(mt);
             }
         }
-
+    mg = null;
         //mg.draw();
         //maze.solve();
 
