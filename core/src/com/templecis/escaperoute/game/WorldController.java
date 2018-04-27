@@ -235,6 +235,8 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public boolean isGameOver() {
+
+
         return get_number_of_lives() < 0;
     }
 
@@ -605,6 +607,7 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public int get_number_of_lives(){
+
         return level.bunnyHead.health;
     }
 }

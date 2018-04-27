@@ -1,44 +1,20 @@
 package com.templecis.escaperoute.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.templecis.escaperoute.HUD.Countdown;
 import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
-import com.templecis.escaperoute.Maze_Stuff.Maze;
 import com.templecis.escaperoute.Maze_Stuff.MazeGenerator;
-import com.templecis.escaperoute.Maze_Stuff.YourGraphicMaze;
-import com.templecis.escaperoute.Sprites.Trap;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
-import com.templecis.escaperoute.game.objects.Carrot;
-import com.templecis.escaperoute.game.objects.Clouds;
-import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.Goal;
-import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
-import com.templecis.escaperoute.game.objects.Mountains;
 import com.templecis.escaperoute.game.objects.ReverseCoin;
 import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.TrapDoor;
-import com.templecis.escaperoute.game.objects.WaterOverlay;
-
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Timer;
-
 
 /**
  * Created by Ziggy on 4/19/2018.
@@ -159,10 +135,6 @@ public class Level {
 
         //mazeTiles = generateMaze();
         generateMaze();
-
-       // Timer timer = new Timer();
-
-        //timer.schedule(new Countdown(), 0, 5000);
 
 
 

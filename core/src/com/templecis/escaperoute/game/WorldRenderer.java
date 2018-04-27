@@ -42,9 +42,12 @@ public class WorldRenderer implements Disposable {
     private Stage stage;
     private HealthBar healthBar;
     private LoadingBarWithBorders loadingBarWithBorders;
+    long startTime = System.currentTimeMillis();
+
 
     Texture texture, texture2;
-
+    int timer;
+    int timeleft;
 
     float x = -15;
     float y = -15;
@@ -67,6 +70,7 @@ public class WorldRenderer implements Disposable {
         // flip y-axis
         cameraGUI.update();
         b2debugRenderer = new Box2DDebugRenderer();
+
     }
 
     public void render() {
@@ -75,6 +79,7 @@ public class WorldRenderer implements Disposable {
 
         int lives = get_lives();
         change_health(lives);
+
 
     }
 
@@ -100,10 +105,9 @@ public class WorldRenderer implements Disposable {
         // draw extra lives icon + text (anchored to top right edge)
         //renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
-        if (GamePreferences.instance.showFpsCounter)
-            renderGuiFpsCounter(batch);
+            Countdown(batch);
         // draw game over text
-        //renderGuiGameOverMessage(batch);
+        renderGuiGameOverMessage(batch);
 
        renderHealthBar(batch);
         batch.end();
@@ -178,19 +182,19 @@ public class WorldRenderer implements Disposable {
     private void renderGuiGameOverMessage(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth / 2;
         float y = cameraGUI.viewportHeight / 2;
-        if (worldController.isGameOver()) {
+        if (worldController.isGameOver() || timeleft == 0) {
             BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
             fontGameOver.draw(batch, "GAME OVER", x, y, 0, Align.center, true);
             fontGameOver.setColor(1, 1, 1, 1);
+            worldController.backToMenu();
         }
     }
 
     private void renderGuiFeatherPowerup(SpriteBatch batch) {
         float x = -15;
         float y = 30;
-        float timeLeftFeatherPowerup =
-                worldController.level.bunnyHead.timeLeftFeatherPowerup;
+        float timeLeftFeatherPowerup = worldController.level.bunnyHead.timeLeftFeatherPowerup;
         if (timeLeftFeatherPowerup > 0) {
             // Start icon fade in/out if the left power-up time
             // is less than 4 seconds. The fade interval is set
@@ -227,23 +231,18 @@ public class WorldRenderer implements Disposable {
         }
     }
 
-    private void renderGuiFpsCounter(SpriteBatch batch) {
-        float x = cameraGUI.viewportWidth - 55;
-        float y = cameraGUI.viewportHeight - 15;
-        int fps = Gdx.graphics.getFramesPerSecond();
-        BitmapFont fpsFont = Assets.instance.fonts.defaultNormal;
-        if (fps >= 45) {
-            // 45 or more FPS show up in green
-            fpsFont.setColor(0, 1, 0, 1);
-        } else if (fps >= 30) {
-            // 30 or more FPS show up in yellow
-            fpsFont.setColor(1, 1, 0, 1);
-        } else {
-            // less than 30 FPS show up in red
-            fpsFont.setColor(1, 0, 0, 1);
-        }
-        fpsFont.draw(batch, "FPS: " + fps, x, y);
-        fpsFont.setColor(1, 1, 1, 1); // white
+    private void Countdown(SpriteBatch batch) {
+        float x = cameraGUI.viewportWidth - 500;
+        float y = cameraGUI.viewportHeight - 450;
+
+
+        timer = (int) (10 - ((System.currentTimeMillis() - startTime) / 1000));
+        timeleft = timer;
+        BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
+
+
+        fpsFont.draw(batch, "Time Remaining: " + timer, x, y);
+        fpsFont.setColor(1, 0, 0, 1); // white
     }
 
 
@@ -263,6 +262,10 @@ public class WorldRenderer implements Disposable {
 
     public int get_lives(){
         return worldController.get_number_of_lives();
+    }
+
+    public int get_time(){
+        return timer;
     }
 
     public void change_health(int lives){
@@ -286,13 +289,13 @@ public class WorldRenderer implements Disposable {
             batch.end();
         }
         else if(lives == 0){
-            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 0");
             batch.begin();
             batch.draw(Assets.instance.health.health0, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
             batch.end();
 
             //renderGuiGameOverMessage(batch);
-            //worldController.backToMenu();
+            worldController.backToMenu();
         }
     }
 
