@@ -255,6 +255,7 @@ public class WorldRenderer implements Disposable {
         cameraGUI.update();
     }
 
+
     @Override
     public void dispose() {
         batch.dispose();
