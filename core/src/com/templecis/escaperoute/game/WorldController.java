@@ -107,7 +107,19 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     private void initLevel() {
-        if(!attacker){
+   /*     score = 0;
+        scoreVisual = score;
+        goalReached = false;
+        reverseCoinDuration = new ReverseCoin().getDuration();
+
+        w = (int) new MazeTile().dimension.x;
+        h = (int) new MazeTile().dimension.y;
+
+        level = new Level(true);
+        cameraHelper.setTarget(level.bunnyHead);
+        initPhysics(); */
+
+       // if(!attacker){
             score = 0;
             scoreVisual = score;
             goalReached = false;
@@ -119,10 +131,10 @@ public class WorldController extends InputAdapter implements Disposable {
             level = new Level(true);
             cameraHelper.setTarget(level.bunnyHead);
             initPhysics();
-        }
-        else if(attacker){
+      //  }
+      //  else if(attacker){
             //init attacker stuff
-        }
+       // }
     }
 
     @Override
