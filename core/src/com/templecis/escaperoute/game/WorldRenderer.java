@@ -72,7 +72,7 @@ public class WorldRenderer implements Disposable {
         // flip y-axis
         cameraGUI.update();
         b2debugRenderer = new Box2DDebugRenderer();
-
+        add_attacker_trap_ui(batch);
     }
 
     public void render() {
@@ -143,6 +143,7 @@ public class WorldRenderer implements Disposable {
         batch.end();
     }
 
+
     private void renderAttackerGui(SpriteBatch batch) {
         batch.setProjectionMatrix(cameraGUI.combined);
         batch.begin();
@@ -152,7 +153,7 @@ public class WorldRenderer implements Disposable {
         // draw collected feather icon (anchored to top left edge)
         //renderGuiFeatherPowerup(batch);
         // draw extra lives icon + text (anchored to top right edge)
-        attacker_traps(batch);
+        add_attacker_trap_ui(batch);
         // draw FPS text (anchored to bottom right edge)
 
 
@@ -306,15 +307,10 @@ public class WorldRenderer implements Disposable {
 
 
     private Skin skin = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
-    private void attacker_traps(SpriteBatch batch) {
+    private void add_attacker_trap_ui(SpriteBatch batch) {
 
         Table layer = new Table();
         layer.right().top();
-
-
-
-
-
 
         Button trap_door = new Button(skin,"play");
         layer.add(trap_door);
@@ -460,15 +456,15 @@ public class WorldRenderer implements Disposable {
     }
 
     private void reverse_coin_button_clicked(){
-
+        Gdx.app.log("REVERSE COIN CLICKED","REVERSE COIN");
     }
 
     private void trap_door_button_clicked(){
-
+        Gdx.app.log("TRAP DOOR CLICKED","ITS A TARP");
     }
 
     private void monster_button_clicked(){
-
+        Gdx.app.log("MONSTER CLOCKED","MONSTER!!!!!!!");
     }
 
 }
