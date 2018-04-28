@@ -1,23 +1,16 @@
 package com.templecis.escaperoute.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.templecis.escaperoute.HUD.HealthBar;
-import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
-import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.util.Constants;
-import com.templecis.escaperoute.util.GamePreferences;
 
 /**
  * Created by Ziggy on 4/19/2018.
@@ -75,8 +68,7 @@ public class WorldRenderer implements Disposable {
         renderWorld(batch);
         renderGui(batch);
 
-        int lives = get_lives();
-        change_health(lives);
+
 
 
     }
@@ -103,11 +95,12 @@ public class WorldRenderer implements Disposable {
         // draw extra lives icon + text (anchored to top right edge)
         //renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
-            Countdown(batch);
+        Countdown(batch);
+        renderHealthBar(batch);
         // draw game over text
-        renderGuiGameOverMessage(batch);
+        //renderGuiGameOverMessage(batch);
 
-       renderHealthBar(batch);
+
         batch.end();
     }
 
@@ -126,7 +119,37 @@ public class WorldRenderer implements Disposable {
         Assets.instance.fonts.defaultBig.draw(batch, "" + (int) worldController.scoreVisual, x + 75, y + 37);
     }
 
+    boolean dead = false;
     private void renderHealthBar(SpriteBatch batch){
+        int lives = get_lives();
+
+        if(lives == 4){
+            batch.draw(Assets.instance.health.health4, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+
+        }
+        else if(lives == 3){
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 3");
+            batch.draw(Assets.instance.health.health3, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        }
+        else if(lives == 2){
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 2");
+            batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        }
+        else if(lives == 1){
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
+            batch.draw(Assets.instance.health.health1, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        }
+        else if(lives == 0 && !dead){
+            //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 0");
+            dead = true;
+            batch.draw(Assets.instance.health.health0, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+            Gdx.app.log("WorldRender 146","INSIDE LAST ELSE IF");
+            renderGuiGameOverMessage(batch);
+
+            // worldController.backToMenu();
+        }
+
+
 
 
 
@@ -141,7 +164,7 @@ public class WorldRenderer implements Disposable {
             i=0;
         }
         i++;*/
-        batch.draw(Assets.instance.health.health4, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+
        /*
        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
         stage.addActor(healthBar);
@@ -180,14 +203,20 @@ public class WorldRenderer implements Disposable {
     private void renderGuiGameOverMessage(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth / 2;
         float y = cameraGUI.viewportHeight / 2;
+        //Gdx.app.log("WorldRender 217","GAMEOVER");
         if (worldController.isGameOver() || timeleft == 0) {
+            Gdx.app.log("WorldRender 221","GAMEOVER");
             BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
             fontGameOver.draw(batch, "GAME OVER", x, y, 0, Align.center, true);
             fontGameOver.setColor(1, 1, 1, 1);
 
-            // worldController.backToMenu();
+
+            dispose();
+            //worldController.backToMenu();
         }
+       //Gdx.app.log("WorldRender 226","GAMEOVER");
+
     }
 
     private void renderGuiFeatherPowerup(SpriteBatch batch) {
@@ -230,18 +259,25 @@ public class WorldRenderer implements Disposable {
         }
     }
 
+    boolean time_done = false;
     private void Countdown(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth - 500;
         float y = cameraGUI.viewportHeight - 450;
 
 
-        timer = (int) (60 - ((System.currentTimeMillis() - startTime) / 1000));
+        timer = (int) (5 - ((System.currentTimeMillis() - startTime) / 1000));
         timeleft = timer;
         BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
 
 
         fpsFont.draw(batch, "Time Remaining: " + timer, x, y);
         fpsFont.setColor(1, 0, 0, 1); // white
+
+        if(timer == 0 && !time_done){
+            time_done = true;
+            renderGuiGameOverMessage(batch);
+        }
+
     }
 
 

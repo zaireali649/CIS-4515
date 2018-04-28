@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -15,13 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
-import com.sun.org.apache.regexp.internal.RE;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.templecis.escaperoute.Maze_Stuff.Maze;
-import com.templecis.escaperoute.Sprites.Trap;
 import com.templecis.escaperoute.game.objects.BunnyHead;
-import com.templecis.escaperoute.game.objects.Carrot;
-import com.templecis.escaperoute.game.objects.Feather;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
@@ -235,9 +228,7 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public boolean isGameOver() {
-
-
-        return get_number_of_lives() < 0;
+        return (get_number_of_lives() <= 0);
     }
 
     public void backToMenu() {
@@ -325,7 +316,7 @@ public class WorldController extends InputAdapter implements Disposable {
             if(System.currentTimeMillis() - reverseCoinTime < reverseCoinDuration * 1000){
                 level.bunnyHead.velocity.x = level.bunnyHead.velocity.x * -1;
                 level.bunnyHead.velocity.y = level.bunnyHead.velocity.y * -1;
-                Gdx.app.debug(TAG, "TIME: " + System.currentTimeMillis());
+                //Gdx.app.debug(TAG, "TIME: " + System.currentTimeMillis());
             }
 
 
