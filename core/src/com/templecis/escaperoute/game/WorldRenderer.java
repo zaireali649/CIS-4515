@@ -75,6 +75,7 @@ public class WorldRenderer implements Disposable {
 
     }
 
+
     public boolean renderAttack(){
         renderWorld(batch);
         renderGui(batch);
