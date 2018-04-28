@@ -13,7 +13,6 @@ import com.templecis.escaperoute.util.GamePreferences;
 
 public class AttackerGameScreen extends AbstractGameScreen {
     private static final String TAG = AttackerGameScreen.class.getName();
-
     private WorldController worldController;
     private WorldRenderer worldRenderer;
     private boolean paused;
