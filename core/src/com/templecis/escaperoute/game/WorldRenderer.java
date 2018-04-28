@@ -6,10 +6,19 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.templecis.escaperoute.util.Constants;
 
 /**
@@ -77,14 +86,25 @@ public class WorldRenderer implements Disposable {
 
 
     public boolean renderAttack(){
-        renderWorld(batch);
-        renderGui(batch);
+        renderAttackerWorld(batch);
+        renderAttackerGui(batch);
 
         attacker = true;
         return attacker;
     }
 
     private void renderWorld(SpriteBatch batch) {
+        worldController.cameraHelper.applyTo(camera);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        worldController.level.render(batch);
+        batch.end();
+        if (DEBUG_DRAW_BOX2D_WORLD) {
+            b2debugRenderer.render(worldController.b2world, camera.combined);
+        }
+    }
+
+    private void renderAttackerWorld(SpriteBatch batch) {
         worldController.cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -106,10 +126,39 @@ public class WorldRenderer implements Disposable {
         // draw extra lives icon + text (anchored to top right edge)
         //renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
-        Countdown(batch);
-        renderHealthBar(batch);
+        if(!attacker){
+            Countdown(batch);
+            renderHealthBar(batch);
+        }
+
 
         if (attacker){
+            renderGuiGameOverMessage(batch);
+        }
+
+        // draw game over text
+        //renderGuiGameOverMessage(batch);
+
+
+        batch.end();
+    }
+
+    private void renderAttackerGui(SpriteBatch batch) {
+        batch.setProjectionMatrix(cameraGUI.combined);
+        batch.begin();
+        // draw collected gold coins icon + text
+        // (anchored to top left edge)
+        //renderGuiScore(batch);
+        // draw collected feather icon (anchored to top left edge)
+        //renderGuiFeatherPowerup(batch);
+        // draw extra lives icon + text (anchored to top right edge)
+        attacker_traps(batch);
+        // draw FPS text (anchored to bottom right edge)
+
+
+        if (attacker){
+
+
             renderGuiGameOverMessage(batch);
         }
 
@@ -254,7 +303,66 @@ public class WorldRenderer implements Disposable {
         }
     }
 
-    private void renderGuiExtraLive(SpriteBatch batch) {
+
+
+    private Skin skin = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
+    private void attacker_traps(SpriteBatch batch) {
+
+        Table layer = new Table();
+        layer.right().top();
+
+
+
+
+
+
+        Button trap_door = new Button(skin,"play");
+        layer.add(trap_door);
+        layer.columnDefaults(1);
+        Button reverse_coin = new Button(skin,"play");
+        layer.add(reverse_coin);
+        layer.columnDefaults(1);
+        Button monster = new Button(skin,"play");
+        layer.add(monster);
+
+
+        Stage stage = new Stage(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
+        stage.clear();
+        Stack stack = new Stack();
+        stage.addActor(stack);
+        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+        stack.add(layer);
+
+        stage.act(worldController.get_delta_time());
+        stage.setDebugAll(false);
+        stage.draw();
+
+
+        trap_door.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                trap_door_button_clicked();
+            }
+        });
+        reverse_coin.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                reverse_coin_button_clicked();
+            }
+        });
+        monster.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                monster_button_clicked();
+            }
+        });
+
+
+
+
+
+
+        /*
         float x = cameraGUI.viewportWidth - 50 - Constants.LIVES_START * 50;
         float y = -15;
         for (int i = 0; i < Constants.LIVES_START; i++) {
@@ -273,6 +381,7 @@ public class WorldRenderer implements Disposable {
             batch.draw(Assets.instance.bunny.head, x + i * 50, y, 50, 50, 120, 100, alphaScale, -alphaScale, alphaRotate);
             batch.setColor(1, 1, 1, 1);
         }
+        */
     }
 
     boolean time_done = false;
@@ -348,6 +457,18 @@ public class WorldRenderer implements Disposable {
             //renderGuiGameOverMessage(batch);
            // worldController.backToMenu();
         }
+    }
+
+    private void reverse_coin_button_clicked(){
+
+    }
+
+    private void trap_door_button_clicked(){
+
+    }
+
+    private void monster_button_clicked(){
+
     }
 
 }
