@@ -63,10 +63,20 @@ public class WorldRenderer implements Disposable {
         b2debugRenderer = new Box2DDebugRenderer();
 
     }
-
+    boolean doRender = true;
     public void render() {
-        renderWorld(batch);
-        renderGui(batch);
+
+        if(doRender && !dead && !time_done){
+            renderWorld(batch);
+            renderGui(batch);
+        }
+        else if(doRender && (dead||time_done)){
+            doRender = false;
+            renderGuiGameOverMessage(batch);
+            //dispose();
+
+        }
+
 
 
 
@@ -84,9 +94,21 @@ public class WorldRenderer implements Disposable {
         }
     }
 
+    boolean render = true;
     private void renderGui(SpriteBatch batch) {
         batch.setProjectionMatrix(cameraGUI.combined);
         batch.begin();
+
+        if(render &&!dead && !time_done){
+            Countdown(batch);
+            renderHealthBar(batch);
+        }
+        else if(render &&(dead || time_done)){
+            renderGuiGameOverMessage(batch);
+            render = false;
+        }
+
+
         // draw collected gold coins icon + text
         // (anchored to top left edge)
         //renderGuiScore(batch);
@@ -95,8 +117,7 @@ public class WorldRenderer implements Disposable {
         // draw extra lives icon + text (anchored to top right edge)
         //renderGuiExtraLive(batch);
         // draw FPS text (anchored to bottom right edge)
-        Countdown(batch);
-        renderHealthBar(batch);
+
         // draw game over text
         //renderGuiGameOverMessage(batch);
 
@@ -143,37 +164,12 @@ public class WorldRenderer implements Disposable {
             //Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 0");
             dead = true;
             batch.draw(Assets.instance.health.health0, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-            Gdx.app.log("WorldRender 146","INSIDE LAST ELSE IF");
-            renderGuiGameOverMessage(batch);
+            //Gdx.app.log("WorldRender 146","INSIDE LAST ELSE IF");
+            //renderGuiGameOverMessage(batch);
 
             // worldController.backToMenu();
         }
 
-
-
-
-
-  /*  int i = 0;
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.draw(texture2,100,100,300,20);
-        batch.draw(texture,100,100,i,20);
-        if(i>300)
-        {
-            i=0;
-        }
-        i++;*/
-
-       /*
-       healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
-        stage.addActor(healthBar);
-
-
-        loadingBarWithBorders = new LoadingBarWithBorders(170, 20);
-        loadingBarWithBorders.setPosition(10, Gdx.graphics.getHeight() - 50);
-        stage.addActor(loadingBarWithBorders);
-        */
     }
 
     private void initTestObjects() {
@@ -200,20 +196,25 @@ public class WorldRenderer implements Disposable {
     }
 
 
+    private float timeLeftGameOverDelay;
+    //float deltaTime;
     private void renderGuiGameOverMessage(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth / 2;
         float y = cameraGUI.viewportHeight / 2;
         //Gdx.app.log("WorldRender 217","GAMEOVER");
         if (worldController.isGameOver() || timeleft == 0) {
-            Gdx.app.log("WorldRender 221","GAMEOVER");
+            batch.begin();
+            Gdx.app.log("WorldRender 192","GAMEOVER");
             BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
             fontGameOver.draw(batch, "GAME OVER", x, y, 0, Align.center, true);
             fontGameOver.setColor(1, 1, 1, 1);
+            batch.end();
 
-
-            dispose();
-            //worldController.backToMenu();
+            while(timeLeftGameOverDelay*5 > 0){
+                timeLeftGameOverDelay -= worldController.get_delta_time();
+            }
+            worldController.backToMenu();
         }
        //Gdx.app.log("WorldRender 226","GAMEOVER");
 
@@ -265,7 +266,7 @@ public class WorldRenderer implements Disposable {
         float y = cameraGUI.viewportHeight - 450;
 
 
-        timer = (int) (5 - ((System.currentTimeMillis() - startTime) / 1000));
+        timer = (int) (60 - ((System.currentTimeMillis() - startTime) / 1000));
         timeleft = timer;
         BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
 

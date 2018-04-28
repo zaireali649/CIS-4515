@@ -107,17 +107,22 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     private void initLevel() {
-        score = 0;
-        scoreVisual = score;
-        goalReached = false;
-        reverseCoinDuration = new ReverseCoin().getDuration();
+        if(!attacker){
+            score = 0;
+            scoreVisual = score;
+            goalReached = false;
+            reverseCoinDuration = new ReverseCoin().getDuration();
 
-        w = (int) new MazeTile().dimension.x;
-        h = (int) new MazeTile().dimension.y;
+            w = (int) new MazeTile().dimension.x;
+            h = (int) new MazeTile().dimension.y;
 
-        level = new Level(true);
-        cameraHelper.setTarget(level.bunnyHead);
-        initPhysics();
+            level = new Level(true);
+            cameraHelper.setTarget(level.bunnyHead);
+            initPhysics();
+        }
+        else if(attacker){
+            //init attacker stuff
+        }
     }
 
     @Override
@@ -193,6 +198,7 @@ public class WorldController extends InputAdapter implements Disposable {
     float offsetY = 50;
 
     public void update(float deltaTime) {
+        this.delta_time = deltaTime;
         handleDebugInput(deltaTime);
 
         // Game Over Conditions
@@ -544,24 +550,7 @@ public class WorldController extends InputAdapter implements Disposable {
 
             //return level.bunnyHead.health;
 
-//            if(level.bunnyHead.health == 3){
-//                Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 3");
-//                batch.begin();
-//                batch.draw(Assets.instance.health.health3, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-//                batch.end();
-//            }
-//            else if(level.bunnyHead.health == 2){
-//                Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 2");
-//                batch.begin();
-//                batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-//                batch.end();
-//            }
-//            else if(level.bunnyHead.health == 1){
-//                Gdx.app.log("LOOOOOOOOOOOOOOOOOOOK","Health at 1");
-//                batch.begin();
-//                batch.draw(Assets.instance.health.health1, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
-//                batch.end();
-//            }
+
         }
 
 
@@ -600,5 +589,9 @@ public class WorldController extends InputAdapter implements Disposable {
     public int get_number_of_lives(){
 
         return level.bunnyHead.health;
+    }
+    float delta_time;
+    public float get_delta_time(){
+        return delta_time;
     }
 }
