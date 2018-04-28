@@ -35,7 +35,7 @@ public class AttackerGameScreen extends AbstractGameScreen {
         // Clears the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // Render game world to screen
-        worldRenderer.render();
+        worldRenderer.renderAttack();
     }
 
     @Override

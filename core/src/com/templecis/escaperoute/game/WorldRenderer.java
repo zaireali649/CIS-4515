@@ -32,6 +32,8 @@ public class WorldRenderer implements Disposable {
     private OrthographicCamera cameraGUI;
     private Box2DDebugRenderer b2debugRenderer;
 
+    boolean attacker = false;
+
     //Health bar vars
     long startTime = System.currentTimeMillis();
 
@@ -73,6 +75,15 @@ public class WorldRenderer implements Disposable {
 
     }
 
+    public boolean renderAttack(){
+        renderWorld(batch);
+        renderGui(batch);
+//        renderGuiGameOverMessage(batch);
+
+        attacker = true;
+        return attacker;
+    }
+
     private void renderWorld(SpriteBatch batch) {
         worldController.cameraHelper.applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
@@ -97,6 +108,11 @@ public class WorldRenderer implements Disposable {
         // draw FPS text (anchored to bottom right edge)
         Countdown(batch);
         renderHealthBar(batch);
+
+        if (attacker){
+            renderGuiGameOverMessage(batch);
+        }
+
         // draw game over text
         //renderGuiGameOverMessage(batch);
 
@@ -204,7 +220,7 @@ public class WorldRenderer implements Disposable {
         float x = cameraGUI.viewportWidth / 2;
         float y = cameraGUI.viewportHeight / 2;
         //Gdx.app.log("WorldRender 217","GAMEOVER");
-        if (worldController.isGameOver() || timeleft == 0) {
+       // if (worldController.isGameOver() || timeleft == 0) {
             Gdx.app.log("WorldRender 221","GAMEOVER");
             BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
@@ -212,9 +228,9 @@ public class WorldRenderer implements Disposable {
             fontGameOver.setColor(1, 1, 1, 1);
 
 
-            dispose();
+           // dispose();
             //worldController.backToMenu();
-        }
+        //}
        //Gdx.app.log("WorldRender 226","GAMEOVER");
 
     }
@@ -265,7 +281,7 @@ public class WorldRenderer implements Disposable {
         float y = cameraGUI.viewportHeight - 450;
 
 
-        timer = (int) (5 - ((System.currentTimeMillis() - startTime) / 1000));
+        timer = (int) (60 - ((System.currentTimeMillis() - startTime) / 1000));
         timeleft = timer;
         BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
 
