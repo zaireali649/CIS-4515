@@ -228,24 +228,69 @@ health_0
   orig: 262, 53
   offset: 0, 0
   index: 8
-monster
+eight_mana
   rotate: false
-  xy: 1, 560
-  size: 264, 205
-  orig: 264, 205
+  xy: 2, 570
+  size: 328, 93
+  orig: 328, 93
   offset: 0, 0
   index: 8
-coin
+seven_mana
   rotate: false
-  xy: 472, 626
-  size: 286, 285
-  orig: 286, 285
+  xy: 2, 664
+  size: 328, 93
+  orig: 328, 93
   offset: 0, 0
   index: 8
-trap
+six_mana
   rotate: false
-  xy: 1, 800
-  size: 466, 148
-  orig: 466, 148
+  xy: 2, 758
+  size: 328, 93
+  orig: 328, 93
   offset: 0, 0
   index: 8
+five_mana
+  rotate: false
+  xy: 2, 852
+  size: 328, 93
+  orig: 328, 93
+  offset: 0, 0
+  index: 8
+four_mana
+  rotate: false
+  xy: 331, 570
+  size: 328, 93
+  orig: 328, 93
+  offset: 0, 0
+  index: 8
+three_mana
+  rotate: false
+  xy: 331, 664
+  size: 328, 93
+  orig: 328, 93
+  offset: 0, 0
+  index: 8
+two_mana
+  rotate: false
+  xy: 331, 758
+  size: 328, 93
+  orig: 328, 93
+  offset: 0, 0
+  index: 8
+one_mana
+  rotate: false
+  xy: 331, 852
+  size: 328, 93
+  orig: 328, 93
+  offset: 0, 0
+  index: 8
+zero_mana
+  rotate: false
+  xy: 660, 711
+  size: 328, 93
+  orig: 328, 93
+  offset: 0, 0
+  index: 8
+
+
+
