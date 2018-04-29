@@ -607,7 +607,11 @@ public class WorldController extends InputAdapter implements Disposable {
     public float get_delta_time(){
         return delta_time;
     }
+
+
+
     int mana = 8;
+    Level spawn_stuff = new Level();
     public void trapClick(OrthographicCamera camera) {
         for (Button button: level.buttons) {
             r2.set(button.position.x, button.position.y, button.bounds.width, button.bounds.height);
@@ -619,12 +623,15 @@ public class WorldController extends InputAdapter implements Disposable {
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
                     if(button.bt == button.get_coin_type()){
                         mana -= 1;
+                        level.spawn_stuff(1);
                     }
                     else if(button.bt == button.get_monster_type()){
                         mana -= 2;
+                        level.spawn_stuff(3);
                     }
                     else if(button.bt == button.get_trap_type()){
                         mana -= 5;
+                        level.spawn_stuff(2);
                     }
 
                 }
