@@ -445,15 +445,15 @@ public class WorldController extends InputAdapter implements Disposable {
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
                     if(button.bt == button.get_coin_type() && mana > 0){
                         mana -= 1;
-                        level.spawn_stuff(1);
+                        //level.spawn_stuff(1);
                     }
                     else if(button.bt == button.get_monster_type() && mana > 0){
                         mana -= 2;
-                        level.spawn_stuff(3);
+                        //level.spawn_stuff(3);
                     }
                     else if(button.bt == button.get_trap_type() && mana > 0){
                         mana -= 5;
-                        level.spawn_stuff(2);
+                        //level.spawn_stuff(2);
                     }
 
                 }
