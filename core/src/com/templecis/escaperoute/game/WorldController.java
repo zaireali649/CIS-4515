@@ -18,7 +18,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Button;
-import com.templecis.escaperoute.game.objects.ButtonType;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
@@ -608,7 +607,7 @@ public class WorldController extends InputAdapter implements Disposable {
     public float get_delta_time(){
         return delta_time;
     }
-
+    int mana = 8;
     public void trapClick(OrthographicCamera camera) {
         for (Button button: level.buttons) {
             r2.set(button.position.x, button.position.y, button.bounds.width, button.bounds.height);
@@ -618,11 +617,23 @@ public class WorldController extends InputAdapter implements Disposable {
             if (Gdx.input.justTouched()){
                 if (r2.contains(vec.x, vec.y)){
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
-
+                    if(button.bt == button.get_coin_type()){
+                        mana -= 1;
+                    }
+                    else if(button.bt == button.get_monster_type()){
+                        mana -= 2;
+                    }
+                    else if(button.bt == button.get_trap_type()){
+                        mana -= 5;
+                    }
 
                 }
             }
         }
+    }
+
+    public int return_mana(){
+        return mana;
     }
 
     public void renderTrap(Rectangle trap){

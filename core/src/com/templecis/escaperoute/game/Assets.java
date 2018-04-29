@@ -24,6 +24,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetBunny bunny;
     public AssetRock rock;
     public AssetHealth health;
+    public AssetMana mana;
     public AssetMazeTile mazeTile;
     public AssetGoldCoin goldCoin;
     public AssetFeather feather;
@@ -75,6 +76,7 @@ public class Assets implements Disposable, AssetErrorListener {
         bunny = new AssetBunny(atlas);
         rock = new AssetRock(atlas);
         health = new AssetHealth(atlas);
+        mana = new AssetMana(atlas);
         goldCoin = new AssetGoldCoin(atlas);
         mazeTile = new AssetMazeTile(atlas);
         feather = new AssetFeather(atlas);
@@ -255,6 +257,37 @@ public class Assets implements Disposable, AssetErrorListener {
 
 
     }
+
+    public class AssetMana{
+        public TextureAtlas.AtlasRegion mana0;
+        public TextureAtlas.AtlasRegion mana1;
+        public TextureAtlas.AtlasRegion mana2;
+        public TextureAtlas.AtlasRegion mana3;
+        public TextureAtlas.AtlasRegion mana4;
+        public TextureAtlas.AtlasRegion mana5;
+        public TextureAtlas.AtlasRegion mana6;
+        public TextureAtlas.AtlasRegion mana7;
+        public TextureAtlas.AtlasRegion mana8;
+
+        public AssetMana(TextureAtlas atlas){
+            mana0 = atlas.findRegion("zero_mana");
+            mana1 = atlas.findRegion("one_mana");
+            mana2 = atlas.findRegion("two_mana");
+            mana3 = atlas.findRegion("three_mana");
+            mana4 = atlas.findRegion("four_mana");
+            mana5 = atlas.findRegion("five_mana");
+            mana6 = atlas.findRegion("six_mana");
+            mana7 = atlas.findRegion("seven_mana");
+            mana8 = atlas.findRegion("eight_mana");
+
+
+        }
+
+
+
+    }
+
+
 
     public class AssetBunny {
         public final TextureAtlas.AtlasRegion head;
