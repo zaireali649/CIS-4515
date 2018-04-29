@@ -13,8 +13,8 @@ import com.templecis.escaperoute.util.Constants;
 import com.templecis.escaperoute.util.GamePreferences;
 
 
-public class BunnyHead extends AbstractGameObject {
-    public static final String TAG = BunnyHead.class.getName();
+public class Player extends AbstractGameObject {
+    public static final String TAG = Player.class.getName();
     private final float JUMP_TIME_MAX = 0.3f;
 
     private final float JUMP_TIME_MIN = 0.1f;
@@ -35,7 +35,7 @@ public class BunnyHead extends AbstractGameObject {
 
     public int health;
 
-    public BunnyHead() {
+    public Player() {
         init();
     }
 

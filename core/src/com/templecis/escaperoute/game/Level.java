@@ -8,14 +8,13 @@ import com.templecis.escaperoute.HUD.HealthBar;
 import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.MazeGenerator;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
-import com.templecis.escaperoute.game.objects.BunnyHead;
+import com.templecis.escaperoute.game.objects.Player;
 import com.templecis.escaperoute.game.objects.Button;
 import com.templecis.escaperoute.game.objects.ButtonType;
 import com.templecis.escaperoute.game.objects.Goal;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
 import com.templecis.escaperoute.game.objects.ReverseCoin;
-import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.TrapDoor;
 
 /**
@@ -24,9 +23,8 @@ import com.templecis.escaperoute.game.objects.TrapDoor;
 
 public class Level {
     public static final String TAG = Level.class.getName();
-    public BunnyHead bunnyHead;
+    public Player player;
     // objects
-    public Array<Rock> rocks;
     // decoration
     public Array<MazeTile> mazeTiles;
     public Array<ReverseCoin> reverseCoins;
@@ -58,9 +56,8 @@ public class Level {
 
     private void init() {
         // player character
-        bunnyHead = null;
+        player = null;
         // objects
-        rocks = new Array<Rock>();
         mazeTiles = new Array<MazeTile>();
         reverseCoins = new Array<ReverseCoin>();
         trapDoors = new Array<TrapDoor>();
@@ -83,9 +80,9 @@ public class Level {
         goal = (Goal) obj;
 
         // Spawn Player
-        obj = new BunnyHead();
+        obj = new Player();
         obj.position.set(w/2 + obj.dimension.x/2 + 2, h/2 + obj.dimension.y/2 + 2);
-        bunnyHead = (BunnyHead) obj;
+        player = (Player) obj;
 
         // Spawn Reverse Coin
         obj = new ReverseCoin();
@@ -117,14 +114,16 @@ public class Level {
         obj.position.set(w/2 + obj.dimension.x/2 + 7, h/2 + obj.dimension.y/2 + 7);
         monsters.add((Monster) obj);
 
-        // Spawn Trap Buttons
-        obj = new Button(ButtonType.MONSTER);
-        buttons.add((Button) obj);
-        obj = new Button(ButtonType.TRAPDOOR);
-        buttons.add((Button) obj);
-        obj = new Button(ButtonType.REVERSECOIN);
-        buttons.add((Button) obj);
+        if (Attacker) {
 
+            // Spawn Trap Buttons
+            obj = new Button(ButtonType.MONSTER);
+            buttons.add((Button) obj);
+            obj = new Button(ButtonType.TRAPDOOR);
+            buttons.add((Button) obj);
+            obj = new Button(ButtonType.REVERSECOIN);
+            buttons.add((Button) obj);
+        }
         generateMaze();
     }
 
@@ -178,22 +177,22 @@ public class Level {
 
         for (Button button: buttons) {
             if (button.bt == ButtonType.MONSTER){
-                button.position.x = bunnyHead.position.x - 2;
-                button.position.y = (float) (bunnyHead.position.y - 1.5);
+                button.position.x = player.position.x - 2;
+                button.position.y = (float) (player.position.y - 1.5);
             }
             else if (button.bt == ButtonType.TRAPDOOR){
-                button.position.x = bunnyHead.position.x;
-                button.position.y = (float) (bunnyHead.position.y - 1.5);
+                button.position.x = player.position.x;
+                button.position.y = (float) (player.position.y - 1.5);
             }
             else if (button.bt == ButtonType.REVERSECOIN){
-                button.position.x = bunnyHead.position.x + 2;
-                button.position.y = (float) (bunnyHead.position.y - 1.5);
+                button.position.x = player.position.x + 2;
+                button.position.y = (float) (player.position.y - 1.5);
             }
             button.render(batch);
         }
 
         // Draw Player Character
-        bunnyHead.render(batch);
+        player.render(batch);
 
 
         //Health Bar RENDER START
@@ -214,7 +213,7 @@ public class Level {
     }
 
     public void update(float deltaTime) {
-        bunnyHead.update(deltaTime);
+        player.update(deltaTime);
     }
 
 

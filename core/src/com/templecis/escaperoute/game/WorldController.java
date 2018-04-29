@@ -16,13 +16,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
-import com.templecis.escaperoute.game.objects.BunnyHead;
+import com.templecis.escaperoute.game.objects.Player;
 import com.templecis.escaperoute.game.objects.Button;
-import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
 import com.templecis.escaperoute.game.objects.ReverseCoin;
-import com.templecis.escaperoute.game.objects.Rock;
 import com.templecis.escaperoute.game.objects.TrapDoor;
 import com.templecis.escaperoute.screens.DirectedGame;
 import com.templecis.escaperoute.screens.MenuScreen;
@@ -66,9 +64,6 @@ public class WorldController extends InputAdapter implements Disposable {
 
     public long reverseCoinTime = 0;
     public int reverseCoinDuration;
-
-    SpriteBatch batch;
-
 
     private DirectedGame game;
     private boolean goalReached;
@@ -131,8 +126,8 @@ public class WorldController extends InputAdapter implements Disposable {
             w = (int) new MazeTile().dimension.x;
             h = (int) new MazeTile().dimension.y;
 
-            level = new Level(true);
-            cameraHelper.setTarget(level.bunnyHead);
+            level = new Level(attacker);
+            cameraHelper.setTarget(level.player);
             initPhysics();
       //  }
       //  else if(attacker){
@@ -148,73 +143,12 @@ public class WorldController extends InputAdapter implements Disposable {
     private void initPhysics() {
         if (b2world != null) b2world.dispose();
         b2world = new World(new Vector2(0, -9.81f), true);
-        // Rocks
-        Vector2 origin = new Vector2();
-        for (Rock rock : level.rocks) {
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.type = BodyDef.BodyType.KinematicBody;
-            bodyDef.position.set(rock.position);
-            Body body = b2world.createBody(bodyDef);
-            rock.body = body;
-            PolygonShape polygonShape = new PolygonShape();
-            origin.x = rock.bounds.width / 2.0f;
-            origin.y = rock.bounds.height / 2.0f;
-            polygonShape.setAsBox(rock.bounds.width / 2.0f, rock.bounds.height / 2.0f, origin, 0);
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.shape = polygonShape;
-            body.createFixture(fixtureDef);
-            polygonShape.dispose();
-        }
     }
 
 
-
-    private void spawnCarrots(Vector2 pos, int numCarrots, float radius) {
-        /*float carrotShapeScale = 0.5f;
-        // create carrots with box2d body and fixture
-        for (int i = 0; i < numCarrots; i++) {
-            Carrot carrot = new Carrot();
-            // calculate random spawn position, rotation, and scale
-            float x = MathUtils.random(-radius, radius);
-            float y = MathUtils.random(5.0f, 15.0f);
-            float rotation = MathUtils.random(0.0f, 360.0f) * MathUtils.degreesToRadians;
-            float carrotScale = MathUtils.random(0.5f, 1.5f);
-            carrot.scale.set(carrotScale, carrotScale);
-            // create box2d body for carrot with start position and angle of rotation
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.position.set(pos);
-            bodyDef.position.add(x, y);
-            bodyDef.angle = rotation;
-            Body body = b2world.createBody(bodyDef);
-            body.setType(BodyDef.BodyType.DynamicBody);
-            carrot.body = body;
-            // create rectangular shape for carrot to allow interactions (collisions) with other objects
-            PolygonShape polygonShape = new PolygonShape();
-            float halfWidth = carrot.bounds.width / 2.0f * carrotScale;
-            float halfHeight = carrot.bounds.height / 2.0f * carrotScale;
-            polygonShape.setAsBox(halfWidth * carrotShapeScale, halfHeight * carrotShapeScale);
-            // set physics attributes
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.shape = polygonShape;
-            fixtureDef.density = 50;
-            fixtureDef.restitution = 0.5f;
-            fixtureDef.friction = 0.5f;
-            body.createFixture(fixtureDef);
-            polygonShape.dispose();
-            // finally, add new carrot to list for updating/rendering
-            level.carrots.add(carrot);
-        }*/
-    }
-
-
-    float x = -15;
-    float y = -15;
-    float offsetX = 50;
-    float offsetY = 50;
 
     public void update(float deltaTime) {
         this.delta_time = deltaTime;
-        handleDebugInput(deltaTime);
 
         // Game Over Conditions
         if (isGameOver() || goalReached) {
@@ -261,104 +195,47 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public boolean isPlayerInWater() {
-        return level.bunnyHead.position.y < -5;
+        return level.player.position.y < -5;
     }
 
     private void onCollisionBunnyWithGoal() {
         goalReached = true;
         timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_FINISHED;
-        Vector2 centerPosBunnyHead = new Vector2(level.bunnyHead.position);
-        centerPosBunnyHead.x += level.bunnyHead.bounds.width;
-        spawnCarrots(centerPosBunnyHead, Constants.CARROTS_SPAWN_MAX, Constants.CARROTS_SPAWN_RADIUS);
+        Vector2 centerPosBunnyHead = new Vector2(level.player.position);
+        centerPosBunnyHead.x += level.player.bounds.width;
     }
 
-    private void handleDebugInput(float deltaTime) {
-        if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
-        if (!cameraHelper.hasTarget(level.bunnyHead)) {
-            // Camera Controls (move)
-            float camMoveSpeed = 5 * deltaTime;
-            float camMoveSpeedAccelerationFactor = 5;
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-                camMoveSpeed *= camMoveSpeedAccelerationFactor;
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) moveCamera(-camMoveSpeed, 0);
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) moveCamera(camMoveSpeed, 0);
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) moveCamera(0, camMoveSpeed);
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) moveCamera(0, -camMoveSpeed);
-            if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) cameraHelper.setPosition(0, 0);
-            // Camera Controls (zoom)
-            float camZoomSpeed = 1 * deltaTime;
-            float camZoomSpeedAccelerationFactor = 5;
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-                camZoomSpeed *= camZoomSpeedAccelerationFactor;
-            if (Gdx.input.isKeyPressed(Input.Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
-            if (Gdx.input.isKeyPressed(Input.Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
-            if (Gdx.input.isKeyPressed(Input.Keys.SLASH)) cameraHelper.setZoom(1);
-        }
-    }
-
-    private void moveCamera(float x, float y) {
-        x += cameraHelper.getPosition().x;
-        y += cameraHelper.getPosition().y;
-        cameraHelper.setPosition(x, y);
-    }
 
     private void handleInputGame(float deltaTime) {
-        if (cameraHelper.hasTarget(level.bunnyHead)) {
+        if (cameraHelper.hasTarget(level.player)) {
 
             accelX = Gdx.input.getAccelerometerX();
             accelY = Gdx.input.getAccelerometerY();
 
             // Player Movement
-            level.bunnyHead.velocity.y = -accelX * 1000;
-            level.bunnyHead.velocity.x = accelY * 1000;
+            level.player.velocity.y = -accelX * 1000;
+            level.player.velocity.x = accelY * 1000;
 
             // Keep moving for testing
             // level.bunnyHead.velocity.y = -1 * 1000;
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                level.bunnyHead.velocity.x = 1 * 1000;
+                level.player.velocity.x = 1 * 1000;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-                level.bunnyHead.velocity.x = -1 * 1000;
+                level.player.velocity.x = -1 * 1000;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-                level.bunnyHead.velocity.y = 1 * 1000;
+                level.player.velocity.y = 1 * 1000;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                level.bunnyHead.velocity.y = -1 * 1000;
+                level.player.velocity.y = -1 * 1000;
             }
 
 
             // Reverse Coin Trap Implementation
             if(System.currentTimeMillis() - reverseCoinTime < reverseCoinDuration * 1000){
-                level.bunnyHead.velocity.x = level.bunnyHead.velocity.x * -1;
-                level.bunnyHead.velocity.y = level.bunnyHead.velocity.y * -1;
-                //Gdx.app.debug(TAG, "TIME: " + System.currentTimeMillis());
-            }
-
-
-
-         /*   if ( accelX < 0) {
-                level.bunnyHead.velocity.x = -accelX * 100;
-            } else if (accelX > 0) {
-                level.bunnyHead.velocity.x = accelX * 100;
-            } else if ( accelY < 0){
-                level.bunnyHead.velocity.y = -accelY * 100;
-
-            } else if (accelY > 0) {
-                level.bunnyHead.velocity.y = accelY * 100;
-
-            }else {
-                // Execute auto-forward movement on non-desktop platform
-
-            }*/
-
-
-
-            // Bunny Jump
-            if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                level.bunnyHead.setJumping(true);
-            } else {
-                level.bunnyHead.setJumping(false);
+                level.player.velocity.x = level.player.velocity.x * -1;
+                level.player.velocity.y = level.player.velocity.y * -1;
             }
         }
     }
@@ -372,7 +249,7 @@ public class WorldController extends InputAdapter implements Disposable {
         }
         // Toggle camera follow
         else if (keycode == Input.Keys.ENTER) {
-            cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
+            cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.player);
             Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
         }
         // Back to  Menu
@@ -384,38 +261,8 @@ public class WorldController extends InputAdapter implements Disposable {
 
 
 
-    private void onCollisionBunnyHeadWithRock(Rock rock) {
-        BunnyHead bunnyHead = level.bunnyHead;
-        float heightDifference = Math.abs(bunnyHead.position.y - (rock.position.y + rock.bounds.height));
-        if (heightDifference > 0.25f) {
-            boolean hitRightEdge = bunnyHead.position.x > (rock.position.x + rock.bounds.width / 2.0f);
-            if (hitRightEdge) {
-                bunnyHead.position.x = rock.position.x + rock.bounds.width;
-            } else {
-                bunnyHead.position.x = rock.position.x - bunnyHead.bounds.width;
-            }
-            return;
-        }
-        switch (bunnyHead.jumpState) {
-            case GROUNDED:
-                break;
-            case FALLING:
-            case JUMP_FALLING:
-                bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
-                bunnyHead.jumpState = BunnyHead.JUMP_STATE.GROUNDED;
-                break;
-            case JUMP_RISING:
-                bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
-                break;
-        }
-    }
 
-    private void onCollisionBunnyWithGoldCoin(GoldCoin goldcoin) {
-        goldcoin.collected = true;
-        AudioManager.instance.play(Assets.instance.sounds.pickupCoin);
-        score += goldcoin.getScore();
-        Gdx.app.log(TAG, "Gold coin collected");
-    }
+
 
     private void testMazeTileCollisions() {
         for (MazeTile mazeTile: level.mazeTiles) {
@@ -426,18 +273,18 @@ public class WorldController extends InputAdapter implements Disposable {
                     Gdx.app.debug(TAG, "Intersect Right Wall");
                     // Left edge
                     //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
-                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+                    r6.set(level.player.position.x, level.player.position.y, level.player.bounds.width / 100, level.player.bounds.height);
                     // Right edge
-                    r7.set(level.bunnyHead.position.x + level.bunnyHead.bounds.width - level.bunnyHead.bounds.width / 100, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+                    r7.set(level.player.position.x + level.player.bounds.width - level.player.bounds.width / 100, level.player.position.y, level.player.bounds.width / 100, level.player.bounds.height);
 
                     // Hit wall from right
                     if(r6.overlaps(r2)) {
-                        level.bunnyHead.position.x = mazeTile.position.x + mazeTile.dimension.x / 2;
+                        level.player.position.x = mazeTile.position.x + mazeTile.dimension.x / 2;
                     }
 
                     // Hit wall from left
                     if(r7.overlaps(r2)) {
-                        level.bunnyHead.position.x = mazeTile.position.x + mazeTile.dimension.x / 2 - level.bunnyHead.bounds.width - mazeTile.dimension.x/mazeTile.thickness;
+                        level.player.position.x = mazeTile.position.x + mazeTile.dimension.x / 2 - level.player.bounds.width - mazeTile.dimension.x/mazeTile.thickness;
                     }
                 }
             }
@@ -450,18 +297,18 @@ public class WorldController extends InputAdapter implements Disposable {
 
                     // Left edge
                     //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
-                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+                    r6.set(level.player.position.x, level.player.position.y, level.player.bounds.width / 100, level.player.bounds.height);
                     // Right edge
-                    r7.set(level.bunnyHead.position.x + level.bunnyHead.bounds.width - level.bunnyHead.bounds.width / 100, level.bunnyHead.position.y, level.bunnyHead.bounds.width / 100, level.bunnyHead.bounds.height);
+                    r7.set(level.player.position.x + level.player.bounds.width - level.player.bounds.width / 100, level.player.position.y, level.player.bounds.width / 100, level.player.bounds.height);
 
                     // Hit wall from right
                     if(r6.overlaps(r3)) {
-                        level.bunnyHead.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 + mazeTile.dimension.x/mazeTile.thickness;
+                        level.player.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 + mazeTile.dimension.x/mazeTile.thickness;
                     }
 
                     // Hit wall from left
                     if(r7.overlaps(r3)) {
-                        level.bunnyHead.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 - level.bunnyHead.bounds.width;
+                        level.player.position.x = mazeTile.position.x - mazeTile.dimension.x / 2 - level.player.bounds.width;
                     }
                 }
             }
@@ -474,18 +321,18 @@ public class WorldController extends InputAdapter implements Disposable {
 
                     // Bottom edge
                     //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
-                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width , level.bunnyHead.bounds.height / 100);
+                    r6.set(level.player.position.x, level.player.position.y, level.player.bounds.width , level.player.bounds.height / 100);
                     // Top edge
-                    r7.set(level.bunnyHead.position.x, level.bunnyHead.position.y + level.bunnyHead.bounds.height - level.bunnyHead.bounds.height / 100, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height / 100);
+                    r7.set(level.player.position.x, level.player.position.y + level.player.bounds.height - level.player.bounds.height / 100, level.player.bounds.width, level.player.bounds.height / 100);
 
                     // Hit wall from top
                     if(r6.overlaps(r4)) {
-                        level.bunnyHead.position.y = mazeTile.position.y + mazeTile.dimension.y / 2;
+                        level.player.position.y = mazeTile.position.y + mazeTile.dimension.y / 2;
                     }
 
                     // Hit wall from bottom
                     if(r7.overlaps(r4)) {
-                        level.bunnyHead.position.y = mazeTile.position.y + mazeTile.dimension.y / 2 - level.bunnyHead.bounds.height - mazeTile.dimension.y / mazeTile.thickness;
+                        level.player.position.y = mazeTile.position.y + mazeTile.dimension.y / 2 - level.player.bounds.height - mazeTile.dimension.y / mazeTile.thickness;
                     }
                 }
             }
@@ -498,18 +345,18 @@ public class WorldController extends InputAdapter implements Disposable {
 
                     // Bottom edge
                     //(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
-                    r6.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width , level.bunnyHead.bounds.height / 100);
+                    r6.set(level.player.position.x, level.player.position.y, level.player.bounds.width , level.player.bounds.height / 100);
                     // Top edge
-                    r7.set(level.bunnyHead.position.x, level.bunnyHead.position.y + level.bunnyHead.bounds.height - level.bunnyHead.bounds.height / 100, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height / 100);
+                    r7.set(level.player.position.x, level.player.position.y + level.player.bounds.height - level.player.bounds.height / 100, level.player.bounds.width, level.player.bounds.height / 100);
 
                     // Hit wall from top
                     if(r6.overlaps(r5)) {
-                        level.bunnyHead.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 + mazeTile.dimension.y/mazeTile.thickness;
+                        level.player.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 + mazeTile.dimension.y/mazeTile.thickness;
                     }
 
                     // Hit wall from bottom
                     if(r7.overlaps(r5)) {
-                        level.bunnyHead.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 - level.bunnyHead.bounds.height ;
+                        level.player.position.y = mazeTile.position.y - mazeTile.dimension.y / 2 - level.player.bounds.height ;
                     }
                 }
             }
@@ -520,15 +367,9 @@ public class WorldController extends InputAdapter implements Disposable {
     private void testCollisions() {
 
 
-        r1.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
+        r1.set(level.player.position.x, level.player.position.y, level.player.bounds.width, level.player.bounds.height);
 
-        // Test collision: Bunny Head <-> Rocks
-        for (Rock rock : level.rocks) {
-            r2.set(rock.position.x, rock.position.y, rock.bounds.width, rock.bounds.height);
-            if (!r1.overlaps(r2)) continue;
-            onCollisionBunnyHeadWithRock(rock);
-            // IMPORTANT: must do all collisions for valid edge testing on rocks.
-        }
+
 
         for (ReverseCoin reverseCoin: level.reverseCoins) {
             r2.set(reverseCoin.position.x, reverseCoin.position.y, reverseCoin.bounds.width, reverseCoin.bounds.height);
@@ -546,8 +387,8 @@ public class WorldController extends InputAdapter implements Disposable {
             Gdx.app.debug(TAG, "Intersect Trap Door");
             trapDoor.collected = true;
             // Send Back to Start
-            level.bunnyHead.position.x = w/2 + level.bunnyHead.dimension.x/2 + 2;
-            level.bunnyHead.position.y = h/2 + level.bunnyHead.dimension.y/2 + 2;
+            level.player.position.x = w/2 + level.player.dimension.x/2 + 2;
+            level.player.position.y = h/2 + level.player.dimension.y/2 + 2;
         }
 
         for (Monster monster: level.monsters) {
@@ -557,7 +398,7 @@ public class WorldController extends InputAdapter implements Disposable {
             Gdx.app.debug(TAG, "Intersect Monster");
             monster.collected = true;
             // Reduce Health
-            level.bunnyHead.health = level.bunnyHead.health - monster.getStrength();
+            level.player.health = level.player.health - monster.getStrength();
 
             //return level.bunnyHead.health;
 
@@ -570,25 +411,6 @@ public class WorldController extends InputAdapter implements Disposable {
         //testMazeTileCollisions();
 
 
-
-        /*
-        // Test collision: Bunny Head <-> Gold Coins
-        for (GoldCoin goldcoin : level.goldcoins) {
-            if (goldcoin.collected) continue;
-            r2.set(goldcoin.position.x, goldcoin.position.y, goldcoin.bounds.width, goldcoin.bounds.height);
-            if (!r1.overlaps(r2)) continue;
-            onCollisionBunnyWithGoldCoin(goldcoin);
-            break;
-        }
-        // Test collision: Bunny Head <-> Feathers
-        for (Feather feather : level.feathers) {
-            if (feather.collected) continue;
-            r2.set(feather.position.x, feather.position.y, feather.bounds.width, feather.bounds.height);
-            if (!r1.overlaps(r2)) continue;
-            onCollisionBunnyWithFeather(feather);
-            break;
-        }
-        */
         // Test collision: Bunny Head <-> Goal
         if (!goalReached) {
             r2.set(level.goal.bounds);
@@ -601,7 +423,7 @@ public class WorldController extends InputAdapter implements Disposable {
 
     public int get_number_of_lives(){
 
-        return level.bunnyHead.health;
+        return level.player.health;
     }
     float delta_time;
     public float get_delta_time(){

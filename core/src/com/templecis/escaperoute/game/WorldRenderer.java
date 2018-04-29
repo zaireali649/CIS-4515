@@ -289,7 +289,7 @@ public class WorldRenderer implements Disposable {
     private void renderGuiFeatherPowerup(SpriteBatch batch) {
         float x = -15;
         float y = 30;
-        float timeLeftFeatherPowerup = worldController.level.bunnyHead.timeLeftFeatherPowerup;
+        float timeLeftFeatherPowerup = worldController.level.player.timeLeftFeatherPowerup;
         if (timeLeftFeatherPowerup > 0) {
             // Start icon fade in/out if the left power-up time
             // is less than 4 seconds. The fade interval is set
