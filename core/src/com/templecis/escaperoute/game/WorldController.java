@@ -52,6 +52,8 @@ public class WorldController extends InputAdapter implements Disposable {
     public float livesVisual;
     public float scoreVisual;
     public World b2world;
+    public int mana = 8;
+
     private float timeLeftGameOverDelay;
     // Rectangles for collision detection
     private Rectangle r1 = new Rectangle();
@@ -259,11 +261,6 @@ public class WorldController extends InputAdapter implements Disposable {
         return false;
     }
 
-
-
-
-
-
     private void testMazeTileCollisions() {
         for (MazeTile mazeTile: level.mazeTiles) {
             if (mazeTile.rightWall) {
@@ -404,10 +401,6 @@ public class WorldController extends InputAdapter implements Disposable {
 
 
         }
-
-
-
-
         //testMazeTileCollisions();
 
 
@@ -431,9 +424,6 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
 
-
-    int mana = 8;
-    Level spawn_stuff = new Level();
     public void trapClick(OrthographicCamera camera) {
         for (Button button: level.buttons) {
             r2.set(button.position.x, button.position.y, button.bounds.width, button.bounds.height);
@@ -455,7 +445,6 @@ public class WorldController extends InputAdapter implements Disposable {
                         mana -= 5;
                         //level.spawn_stuff(2);
                     }
-
                 }
             }
         }
@@ -465,13 +454,5 @@ public class WorldController extends InputAdapter implements Disposable {
         return mana;
     }
 
-    public void renderTrap(Rectangle trap){
-
-        if (Gdx.input.justTouched()) {
-
-
-
-        }
-        }
 
 }
