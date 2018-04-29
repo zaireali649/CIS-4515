@@ -6,19 +6,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.util.Constants;
 
 /**
@@ -40,6 +32,7 @@ public class WorldRenderer implements Disposable {
     private WorldController worldController;
     private OrthographicCamera cameraGUI;
     private Box2DDebugRenderer b2debugRenderer;
+    AbstractGameObject obj;
 
     boolean attacker = false;
 
@@ -159,7 +152,7 @@ public class WorldRenderer implements Disposable {
 
 
         if (attacker){
-
+            render_mana(batch);
 
             renderGuiGameOverMessage(batch);
         }
@@ -307,52 +300,47 @@ public class WorldRenderer implements Disposable {
 
 
 
-    private Skin skin = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
-    private void add_attacker_trap_ui(SpriteBatch batch) {
+    //private Skin skin = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
+    int mana;
+    private void render_mana(final SpriteBatch batch) {
+        float x = cameraGUI.viewportWidth - 50 - Constants.LIVES_START * 50;
+        float y = -15;
 
-        Table layer = new Table();
-        layer.right().top();
+        mana = worldController.return_mana();
 
-        Button trap_door = new Button(skin,"play");
-        layer.add(trap_door);
-        layer.columnDefaults(1);
-        Button reverse_coin = new Button(skin,"play");
-        layer.add(reverse_coin);
-        layer.columnDefaults(1);
-        Button monster = new Button(skin,"play");
-        layer.add(monster);
+        if(mana == 8){
+            batch.draw(Assets.instance.mana.mana8, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 7){
+            batch.draw(Assets.instance.mana.mana7, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 6){
+            batch.draw(Assets.instance.mana.mana6, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 5){
+            batch.draw(Assets.instance.mana.mana5, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 4){
+            batch.draw(Assets.instance.mana.mana4, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 3){
+            batch.draw(Assets.instance.mana.mana3, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 2){
+            batch.draw(Assets.instance.mana.mana2, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 1){
+            batch.draw(Assets.instance.mana.mana1, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana == 0){
+            batch.draw(Assets.instance.mana.mana0, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
+        else if(mana < 0){
+            batch.draw(Assets.instance.mana.mana0, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
+        }
 
 
-        Stage stage = new Stage(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
-        stage.clear();
-        Stack stack = new Stack();
-        stage.addActor(stack);
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-        stack.add(layer);
 
-        stage.act(worldController.get_delta_time());
-        stage.setDebugAll(false);
-        stage.draw();
-
-
-        trap_door.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                trap_door_button_clicked();
-            }
-        });
-        reverse_coin.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                reverse_coin_button_clicked();
-            }
-        });
-        monster.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                monster_button_clicked();
-            }
-        });
 
 
 
@@ -456,16 +444,49 @@ public class WorldRenderer implements Disposable {
         }
     }
 
-    private void reverse_coin_button_clicked(){
+    private void reverse_coin_button_clicked(SpriteBatch batch){
         Gdx.app.log("REVERSE COIN CLICKED","REVERSE COIN");
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+
+        // Spawn Reverse Coin
+        batch.begin();
+        batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        batch.end();
+
+
+
+
     }
 
-    private void trap_door_button_clicked(){
+    private void trap_door_button_clicked(SpriteBatch batch){
         Gdx.app.log("TRAP DOOR CLICKED","ITS A TARP");
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+
+        // Spawn Trap Door
+        batch.begin();
+        batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        batch.end();
+
     }
 
-    private void monster_button_clicked(){
+    private void monster_button_clicked(SpriteBatch batch){
         Gdx.app.log("MONSTER CLOCKED","MONSTER!!!!!!!");
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+
+
+        // Spawn Monster
+
+        batch.begin();
+        batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        batch.end();
+
+
     }
 
-}
+    }
+
+
+

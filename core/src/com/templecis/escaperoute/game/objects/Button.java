@@ -1,7 +1,6 @@
 package com.templecis.escaperoute.game.objects;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,6 +18,17 @@ public class Button extends AbstractGameObject {
         this.bt = bt;
         init();
     }
+
+    public ButtonType get_trap_type(){
+        return ButtonType.TRAPDOOR;
+    }
+    public ButtonType get_monster_type(){
+        return ButtonType.MONSTER;
+    }
+    public ButtonType get_coin_type(){
+        return ButtonType.REVERSECOIN;
+    }
+
 
     private void init() {
         dimension.set(1f, 1f);

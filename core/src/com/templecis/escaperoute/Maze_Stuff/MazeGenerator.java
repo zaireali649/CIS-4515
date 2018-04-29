@@ -1,7 +1,5 @@
 package com.templecis.escaperoute.Maze_Stuff;
 
-import com.badlogic.gdx.utils.TimeUtils;
-
 import java.util.Random;
 
 /**
@@ -9,6 +7,7 @@ import java.util.Random;
  */
 
 public class MazeGenerator {
+    private int maze_size;
     private int n;
     private int m;
     // dimension of maze
@@ -22,10 +21,15 @@ public class MazeGenerator {
     public MazeGenerator(int n) {
         this.n = n;
         this.m = n * 4;
-
+        this.maze_size = n;
         init();
         generate();
     }
+
+    public int return_size(){
+        return maze_size;
+    }
+
 
     private void init() {
         // initialize border cells as already visited
