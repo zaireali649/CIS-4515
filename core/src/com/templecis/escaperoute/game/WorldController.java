@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.templecis.escaperoute.game.objects.BunnyHead;
 import com.templecis.escaperoute.game.objects.Button;
+import com.templecis.escaperoute.game.objects.ButtonType;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
@@ -617,8 +618,20 @@ public class WorldController extends InputAdapter implements Disposable {
             if (Gdx.input.justTouched()){
                 if (r2.contains(vec.x, vec.y)){
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
+                    renderTrap(r2);
+
+
                 }
             }
         }
     }
+
+    public void renderTrap(Rectangle trap){
+
+        if (Gdx.input.justTouched()) {
+
+
+        }
+        }
+
 }

@@ -19,6 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.templecis.escaperoute.game.objects.AbstractGameObject;
+import com.templecis.escaperoute.game.objects.Monster;
+import com.templecis.escaperoute.game.objects.ReverseCoin;
+import com.templecis.escaperoute.game.objects.TrapDoor;
 import com.templecis.escaperoute.util.Constants;
 
 /**
@@ -40,6 +44,7 @@ public class WorldRenderer implements Disposable {
     private WorldController worldController;
     private OrthographicCamera cameraGUI;
     private Box2DDebugRenderer b2debugRenderer;
+    AbstractGameObject obj;
 
     boolean attacker = false;
 
@@ -308,7 +313,7 @@ public class WorldRenderer implements Disposable {
 
 
     private Skin skin = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
-    private void add_attacker_trap_ui(SpriteBatch batch) {
+    private void add_attacker_trap_ui(final SpriteBatch batch) {
 
         Table layer = new Table();
         layer.right().top();
@@ -338,19 +343,19 @@ public class WorldRenderer implements Disposable {
         trap_door.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                trap_door_button_clicked();
+                trap_door_button_clicked(batch);
             }
         });
         reverse_coin.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                reverse_coin_button_clicked();
+                reverse_coin_button_clicked(batch);
             }
         });
         monster.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                monster_button_clicked();
+                monster_button_clicked(batch);
             }
         });
 
@@ -456,16 +461,49 @@ public class WorldRenderer implements Disposable {
         }
     }
 
-    private void reverse_coin_button_clicked(){
+    private void reverse_coin_button_clicked(SpriteBatch batch){
         Gdx.app.log("REVERSE COIN CLICKED","REVERSE COIN");
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+
+        // Spawn Reverse Coin
+        batch.begin();
+        batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        batch.end();
+
+
+
+
     }
 
-    private void trap_door_button_clicked(){
+    private void trap_door_button_clicked(SpriteBatch batch){
         Gdx.app.log("TRAP DOOR CLICKED","ITS A TARP");
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+
+        // Spawn Trap Door
+        batch.begin();
+        batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        batch.end();
+
     }
 
-    private void monster_button_clicked(){
+    private void monster_button_clicked(SpriteBatch batch){
         Gdx.app.log("MONSTER CLOCKED","MONSTER!!!!!!!");
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+
+
+        // Spawn Monster
+
+        batch.begin();
+        batch.draw(Assets.instance.health.health2, x, y, offsetX, offsetY, 262, 53, 0.35f, -0.35f, 0);
+        batch.end();
+
+
     }
 
-}
+    }
+
+
+
