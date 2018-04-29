@@ -618,7 +618,6 @@ public class WorldController extends InputAdapter implements Disposable {
             if (Gdx.input.justTouched()){
                 if (r2.contains(vec.x, vec.y)){
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
-                    renderTrap(r2);
 
 
                 }
@@ -629,6 +628,7 @@ public class WorldController extends InputAdapter implements Disposable {
     public void renderTrap(Rectangle trap){
 
         if (Gdx.input.justTouched()) {
+
 
 
         }
