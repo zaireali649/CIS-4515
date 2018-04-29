@@ -9,6 +9,8 @@ import com.templecis.escaperoute.HUD.LoadingBarWithBorders;
 import com.templecis.escaperoute.Maze_Stuff.MazeGenerator;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.BunnyHead;
+import com.templecis.escaperoute.game.objects.Button;
+import com.templecis.escaperoute.game.objects.ButtonType;
 import com.templecis.escaperoute.game.objects.Goal;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
@@ -30,6 +32,7 @@ public class Level {
     public Array<ReverseCoin> reverseCoins;
     public Array<Monster> monsters;
     public Array<TrapDoor> trapDoors;
+    public Array<Button> buttons;
     public Goal goal;
     //Health bar vars
     private Stage stage;
@@ -44,6 +47,7 @@ public class Level {
     //end health bar vars
 
     public Level() {
+        Attacker = false;
         init();
     }
 
@@ -61,6 +65,7 @@ public class Level {
         reverseCoins = new Array<ReverseCoin>();
         trapDoors = new Array<TrapDoor>();
         monsters = new Array<Monster>();
+        buttons = new Array<Button>();
 
         AbstractGameObject obj;
 
@@ -112,35 +117,15 @@ public class Level {
         obj.position.set(w/2 + obj.dimension.x/2 + 7, h/2 + obj.dimension.y/2 + 7);
         monsters.add((Monster) obj);
 
+        // Spawn Trap Buttons
+        obj = new Button(ButtonType.MONSTER);
+        buttons.add((Button) obj);
+        obj = new Button(ButtonType.TRAPDOOR);
+        buttons.add((Button) obj);
+        obj = new Button(ButtonType.REVERSECOIN);
+        buttons.add((Button) obj);
 
-
-
-
-        // PETER COMMENT OUT THE BELOW CODE AND SET MAZETILES HERE ***********************************************************
-
-
-
-        /*for (int pixelY = 0; pixelY < H; pixelY = pixelY + h) {
-            for (int pixelX = 0; pixelX < W; pixelX = pixelX + w) {
-                MazeTile mt =  new MazeTile();
-                mt.position.set(mt.dimension.x + pixelX, mt.dimension.y + pixelY);
-
-                mt.topWall = randomno.nextBoolean();
-                mt.rightWall = randomno.nextBoolean();
-                mt.bottomWall = randomno.nextBoolean();
-                mt.leftWall = randomno.nextBoolean();
-                mazeTiles.add(mt);
-            }
-        }*/
-
-        //mazeTiles = generateMaze();
         generateMaze();
-
-
-
-        //  PETER COMMENT OUT THE ABOVE CODE ************************************************************************************
-
-
     }
 
 
@@ -190,6 +175,22 @@ public class Level {
 
         for (Monster monster: monsters)
             monster.render(batch);
+
+        for (Button button: buttons) {
+            if (button.bt == ButtonType.MONSTER){
+                button.position.x = bunnyHead.position.x - 2;
+                button.position.y = (float) (bunnyHead.position.y - 1.5);
+            }
+            else if (button.bt == ButtonType.TRAPDOOR){
+                button.position.x = bunnyHead.position.x;
+                button.position.y = (float) (bunnyHead.position.y - 1.5);
+            }
+            else if (button.bt == ButtonType.REVERSECOIN){
+                button.position.x = bunnyHead.position.x + 2;
+                button.position.y = (float) (bunnyHead.position.y - 1.5);
+            }
+            button.render(batch);
+        }
 
         // Draw Player Character
         bunnyHead.render(batch);

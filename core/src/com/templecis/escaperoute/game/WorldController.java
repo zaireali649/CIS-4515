@@ -4,10 +4,12 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.templecis.escaperoute.game.objects.BunnyHead;
+import com.templecis.escaperoute.game.objects.Button;
 import com.templecis.escaperoute.game.objects.GoldCoin;
 import com.templecis.escaperoute.game.objects.MazeTile;
 import com.templecis.escaperoute.game.objects.Monster;
@@ -305,11 +308,6 @@ public class WorldController extends InputAdapter implements Disposable {
             accelX = Gdx.input.getAccelerometerX();
             accelY = Gdx.input.getAccelerometerY();
 
-
-
-
-
-
             // Player Movement
             level.bunnyHead.velocity.y = -accelX * 1000;
             level.bunnyHead.velocity.x = accelY * 1000;
@@ -353,6 +351,8 @@ public class WorldController extends InputAdapter implements Disposable {
                 // Execute auto-forward movement on non-desktop platform
 
             }*/
+
+
 
             // Bunny Jump
             if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -520,7 +520,6 @@ public class WorldController extends InputAdapter implements Disposable {
     private void testCollisions() {
 
 
-
         r1.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
 
         // Test collision: Bunny Head <-> Rocks
@@ -566,6 +565,8 @@ public class WorldController extends InputAdapter implements Disposable {
         }
 
 
+
+
         //testMazeTileCollisions();
 
 
@@ -605,5 +606,19 @@ public class WorldController extends InputAdapter implements Disposable {
     float delta_time;
     public float get_delta_time(){
         return delta_time;
+    }
+
+    public void trapClick(OrthographicCamera camera) {
+        for (Button button: level.buttons) {
+            r2.set(button.position.x, button.position.y, button.bounds.width, button.bounds.height);
+            Vector3 vec = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+            camera.unproject(vec);
+
+            if (Gdx.input.justTouched()){
+                if (r2.contains(vec.x, vec.y)){
+                    Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
+                }
+            }
+        }
     }
 }

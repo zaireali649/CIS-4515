@@ -13,13 +13,14 @@ import com.templecis.escaperoute.game.Assets;
 public class MazeTile extends AbstractGameObject {
 
     private TextureRegion regMazeTile;
-    private ShapeRenderer shapeRenderer;
+
 
     private Color wallColor;
     public int thickness; // Divides height and width by this number and border is 1 of them
 
     public Boolean topWall, rightWall, leftWall, bottomWall;
 
+    private ShapeRenderer shapeRenderer;
     static private boolean projectionMatrixSet;
 
     public MazeTile() {

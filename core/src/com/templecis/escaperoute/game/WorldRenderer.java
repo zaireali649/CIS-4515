@@ -72,7 +72,7 @@ public class WorldRenderer implements Disposable {
         // flip y-axis
         cameraGUI.update();
         b2debugRenderer = new Box2DDebugRenderer();
-        add_attacker_trap_ui(batch);
+//        add_attacker_trap_ui(batch);
     }
 
     public void render() {
@@ -109,6 +109,7 @@ public class WorldRenderer implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         worldController.level.render(batch);
+        worldController.trapClick(camera);
         batch.end();
         if (DEBUG_DRAW_BOX2D_WORLD) {
             b2debugRenderer.render(worldController.b2world, camera.combined);
@@ -153,7 +154,7 @@ public class WorldRenderer implements Disposable {
         // draw collected feather icon (anchored to top left edge)
         //renderGuiFeatherPowerup(batch);
         // draw extra lives icon + text (anchored to top right edge)
-        add_attacker_trap_ui(batch);
+        //add_attacker_trap_ui(batch);
         // draw FPS text (anchored to bottom right edge)
 
 
@@ -271,7 +272,7 @@ public class WorldRenderer implements Disposable {
         float y = cameraGUI.viewportHeight / 2;
         //Gdx.app.log("WorldRender 217","GAMEOVER");
        // if (worldController.isGameOver() || timeleft == 0) {
-            Gdx.app.log("WorldRender 221","GAMEOVER");
+            //Gdx.app.log("WorldRender 221","GAMEOVER");
             BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
             fontGameOver.setColor(1, 0.75f, 0.25f, 1);
             fontGameOver.draw(batch, "GAME OVER", x, y, 0, Align.center, true);
