@@ -2,10 +2,12 @@ package com.templecis.escaperoute;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClientStatusCodes;
 import com.google.android.gms.games.multiplayer.Participant;
@@ -17,6 +19,8 @@ import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListene
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.example.games.basegameutils.GameHelper;
+import com.templecis.escaperoute.screens.EscaperGameScreen;
+import com.templecis.escaperoute.screens.MenuScreen;
 import com.templecis.escaperoute.util.ActionResolver;
 
 import java.util.ArrayList;
@@ -27,7 +31,10 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	private GameHelper gameHelper;
 	private String mRoomId = "";
 	private String mMyId = "";
+	private Room mRoomCurrent;
 	private ArrayList<Participant> mParticipants;
+
+	private EscapeRouteMain erm;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -37,7 +44,9 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		config.useAccelerometer = true;
 		config.useCompass = false;
 
-		initialize(new EscapeRouteMain(this), config);
+		erm = new EscapeRouteMain(this);
+
+		initialize(erm, config);
 
 		if (gameHelper == null) {
 			gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
@@ -129,6 +138,8 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		builder.setAutoMatchCriteria(autoMatchCriteria);
 
 
+		//erm.ms.startGame();
+
 		Games.RealTimeMultiplayer.create(gameHelper.getApiClient(), builder.build());
 
 
@@ -151,7 +162,12 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	@Override
 	public void onJoinedRoom(int i, Room room) {
+		showWaitingRoom(room);
+		//finishActivity(251);
+		//erm.ms.startGame();
 
+		//Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(gameHelper.getApiClient(), room, 1);
+		//startActivityForResult(intent, 386);
 	}
 
 	@Override
@@ -159,38 +175,33 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	}
 
-	@Override
-	public void onRoomConnected(int statusCode, Room room) {
-		//dLog("onRoomConnected");
-		/*mRoomCurrent = room;
-		mParticipants = room.getParticipants();
 
-		mMyID = room.getParticipantId(aHelper.getGamesClient().getCurrentPlayerId());
-		//dLog("The id is " + mMyID);
 
-		try {
-			bWaitRoomDismissedFromCode = true;
-			finishActivity(251);
-		} catch (Exception e) {
-			//dLog("would have errored out in waiting room");
+	void updateRoom(Room room) {
+		if (room != null) mParticipants = room.getParticipants();
+		if (mParticipants != null) {
+			// Nothing
 		}
-
-		aHelper.getGamesClient();
-		//tell the Game the room is connected
-		if (statusCode == GamesClientStatusCodes.SUCCESS) {
-			theGameInterface.onRoomConnected(room.getParticipantIds(), mMyID, room.getCreationTimestamp() );
-		} else {
-			leaveRoom();
-		}*/
-
 	}
 
 	@Override
-	public void onRoomCreated(int statusCode, Room room) {
+	public void onRoomCreated(final int statusCode, Room room) {
 
 		Gdx.app.debug("ANDROIDLAUNCHER", "On room created()");
+
+
 		if(statusCode != GamesClientStatusCodes.SUCCESS){
-			Gdx.app.debug("ANDROIDLAUNCHER", "On room created() ERROR" + statusCode);
+			try {
+				runOnUiThread(new Runnable(){
+					public void run() {
+						//Toast.makeText(getContext(), "ANDROIDLAUNCHER", "On room created() ERROR" + statusCode, Toast.LENGTH_LONG).show();
+
+
+					}
+				});
+			} catch (final Exception ex) {
+
+			}
 			return;
 		}
 		showWaitingRoom(room);
@@ -233,6 +244,42 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	}
 
 	@Override
+	public void onRoomConnected(int statusCode, Room room) {
+		//dLog("onRoomConnected");
+		mRoomCurrent = room;
+		mParticipants = room.getParticipants();
+
+		mMyId = room.getParticipantId(Games.Players.getCurrentPlayerId(gameHelper.getApiClient()));
+
+		try {
+			//bWaitRoomDismissedFromCode = true;
+			finishActivity(251);
+		} catch (Exception e) {
+			//dLog("would have errored out in waiting room");
+		}
+
+		//aHelper.getGamesClient();
+		//tell the Game the room is connected
+		if (statusCode == GamesClientStatusCodes.SUCCESS) {
+			erm.onRoomConnected(room.getParticipantIds(), mMyId, room.getCreationTimestamp() );
+			Gdx.app.debug("ANDROIDLAUNCHER", "StartGame");
+		} else {
+			//leaveRoom();
+
+		}
+
+
+		//finishActivity(251);
+		//erm.ms.startGame();
+
+		//updateRoom(room);
+
+		//Gdx.app.debug("ANDROIDLAUNCHER", "OnRoomConnected");
+
+
+	}
+
+	@Override
 	public void onConnectedToRoom(Room room) {
 
 		Gdx.app.debug("ANDROIDLAUNCHER", "onConnectedToRoom.");
@@ -247,6 +294,11 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		Gdx.app.debug("ANDROIDLAUNCHER", "Room ID: " + mRoomId);
 		Gdx.app.debug("ANDROIDLAUNCHER", "My ID " + mMyId);
 		Gdx.app.debug("ANDROIDLAUNCHER", "<< CONNECTED TO ROOM>>");
+
+
+
+
+
 
 	}
 
@@ -280,9 +332,11 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		// For simplicity, we require everyone to join the game before we start it
 		// (this is signaled by Integer.MAX_VALUE).
 		final int MIN_PLAYERS = Integer.MAX_VALUE;
-		Intent i = Games.RealTimeMultiplayer.getWaitingRoomIntent(gameHelper.getApiClient(), room, MIN_PLAYERS);
+		Intent i = Games.RealTimeMultiplayer.getWaitingRoomIntent(gameHelper.getApiClient(), room, 2);
 
 		// show waiting room UI
 		startActivityForResult(i, 251);
+
+
 	}
 }

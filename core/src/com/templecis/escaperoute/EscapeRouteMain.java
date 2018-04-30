@@ -13,11 +13,18 @@ import com.templecis.escaperoute.screens.transitions.ScreenTransition;
 import com.templecis.escaperoute.screens.transitions.ScreenTransitionSlice;
 import com.templecis.escaperoute.util.ActionResolver;
 
+import java.awt.Menu;
+import java.util.ArrayList;
+
 public class EscapeRouteMain extends DirectedGame {
 	public static final int WIDTH = 480;
 	public static final int HEIGHT = 800;
 
+	public Boolean connected = false;
+
 	public ActionResolver actionResolver;
+
+	public MenuScreen ms;
 
 
 	public static final String title = "Escape Route";
@@ -45,7 +52,8 @@ public class EscapeRouteMain extends DirectedGame {
 
 		// Start game at menu screen
 		ScreenTransition transition = ScreenTransitionSlice.init(2, ScreenTransitionSlice.UP_DOWN, 10, Interpolation.pow5Out);
-		 setScreen(new MenuScreen(this), transition);
+		ms = new MenuScreen(this);
+		setScreen(ms, transition);
 	}
 
     @Override
@@ -54,4 +62,12 @@ public class EscapeRouteMain extends DirectedGame {
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     }
+
+	public void onRoomConnected(ArrayList<String> participantIds, String mMyId, long creationTimestamp) {
+		connected = true;
+		for (int i = 0; i < participantIds.size(); i++){
+			Gdx.app.debug("ERM", participantIds.get(i));
+		}
+
+	}
 }
