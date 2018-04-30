@@ -35,6 +35,7 @@ public class WorldRenderer implements Disposable {
     AbstractGameObject obj;
 
     boolean attacker = false;
+    //boolean time_done = false;
 
     //Health bar vars
     long startTime = System.currentTimeMillis();
@@ -369,23 +370,22 @@ public class WorldRenderer implements Disposable {
         */
     }
 
-    boolean time_done = false;
     private void Countdown(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth - 500;
         float y = cameraGUI.viewportHeight - 450;
 
 
-        timer = (int) (60 - ((System.currentTimeMillis() - startTime) / 1000));
+        timer = (int) (20 - ((System.currentTimeMillis() - startTime) / 1000));
         timeleft = timer;
         BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
 
 
         fpsFont.draw(batch, "Time Remaining: " + timer, x, y);
-        fpsFont.setColor(1, 0, 0, 1); // white
+        fpsFont.setColor(1, 0, 0, 1); // red
 
-        if(timer == 0 && !time_done){
-            time_done = true;
-            renderGuiGameOverMessage(batch);
+        if(timer == 0){
+           // time_done = true;
+            worldController.backToMenu();
         }
 
     }
