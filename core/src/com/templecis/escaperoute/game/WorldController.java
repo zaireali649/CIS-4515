@@ -53,6 +53,7 @@ public class WorldController extends InputAdapter implements Disposable {
     public float scoreVisual;
     public World b2world;
     public int mana = 8;
+    public int frames;
 
     private float timeLeftGameOverDelay;
     // Rectangles for collision detection
@@ -63,6 +64,10 @@ public class WorldController extends InputAdapter implements Disposable {
     private Rectangle r5 = new Rectangle();
     private Rectangle r6 = new Rectangle();
     private Rectangle r7 = new Rectangle();
+
+    long startTime = System.currentTimeMillis();
+    int manatimer;
+
 
     public long reverseCoinTime = 0;
     public int reverseCoinDuration;
@@ -437,11 +442,11 @@ public class WorldController extends InputAdapter implements Disposable {
                         mana -= 1;
                         //level.spawn_stuff(1);
                     }
-                    else if(button.bt == button.get_monster_type() && mana > 0){
+                    else if(button.bt == button.get_monster_type() && mana > 1){
                         mana -= 2;
                         //level.spawn_stuff(3);
                     }
-                    else if(button.bt == button.get_trap_type() && mana > 0){
+                    else if(button.bt == button.get_trap_type() && mana > 4){
                         mana -= 5;
                         //level.spawn_stuff(2);
                     }
@@ -451,6 +456,18 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public int return_mana(){
+        manatimer = (int) (((System.currentTimeMillis() - startTime) / 1000));
+
+        frames ++;
+
+        if(frames % 250 == 0 && mana < 8){
+            mana++;
+        }
+
+
+        Gdx.app.log("MANA TIMER", "" + manatimer);
+
+
         return mana;
     }
 
