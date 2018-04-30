@@ -15,7 +15,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.templecis.escaperoute.game.objects.AbstractGameObject;
 import com.templecis.escaperoute.game.objects.Player;
 import com.templecis.escaperoute.game.objects.Button;
 import com.templecis.escaperoute.game.objects.MazeTile;
@@ -29,6 +31,8 @@ import com.templecis.escaperoute.screens.transitions.ScreenTransitionSlide;
 import com.templecis.escaperoute.util.AudioManager;
 import com.templecis.escaperoute.util.CameraHelper;
 import com.templecis.escaperoute.util.Constants;
+
+import java.util.Random;
 
 
 /**
@@ -64,6 +68,7 @@ public class WorldController extends InputAdapter implements Disposable {
     private Rectangle r5 = new Rectangle();
     private Rectangle r6 = new Rectangle();
     private Rectangle r7 = new Rectangle();
+    AbstractGameObject obj;
 
     long startTime = System.currentTimeMillis();
     int manatimer;
@@ -71,6 +76,12 @@ public class WorldController extends InputAdapter implements Disposable {
 
     public long reverseCoinTime = 0;
     public int reverseCoinDuration;
+
+    public Array<ReverseCoin> reverseCoins;
+    public Array<Monster> monsters;
+    public Array<TrapDoor> trapDoors;
+
+    Random randx = new Random();
 
     private DirectedGame game;
     private boolean goalReached;
@@ -92,6 +103,10 @@ public class WorldController extends InputAdapter implements Disposable {
 
     private void init() {
         cameraHelper = new CameraHelper();
+
+        reverseCoins = new Array<ReverseCoin>();
+        trapDoors = new Array<TrapDoor>();
+        monsters = new Array<Monster>();
 
         boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
         boolean accelAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
@@ -167,6 +182,7 @@ public class WorldController extends InputAdapter implements Disposable {
         level.update(deltaTime);
         //can get int lives from here
         testCollisions();
+        testMazeTileCollisions();
 
 
         b2world.step(deltaTime, 8, 3);
@@ -181,6 +197,8 @@ public class WorldController extends InputAdapter implements Disposable {
             else
                 initLevel();
         }
+
+
 
         //level.mountains.updateScrollPosition(cameraHelper.getPosition());
         if (livesVisual > lives)
@@ -339,6 +357,7 @@ public class WorldController extends InputAdapter implements Disposable {
                 }
             }
 
+
             if (mazeTile.bottomWall) {
                 r5.set(mazeTile.position.x - mazeTile.dimension.x/2, mazeTile.position.y - mazeTile.dimension.y/2, mazeTile.dimension.x, mazeTile.dimension.y/mazeTile.thickness);
                 if (r1.overlaps(r5)) // Bottom Wall
@@ -435,20 +454,41 @@ public class WorldController extends InputAdapter implements Disposable {
             Vector3 vec = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
             camera.unproject(vec);
 
+            MazeTile mt;
+
             if (Gdx.input.justTouched()){
                 if (r2.contains(vec.x, vec.y)){
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
                     if(button.bt == button.get_coin_type() && mana > 0){
                         mana -= 1;
                         //level.spawn_stuff(1);
+
+                        // Spawn Reverse Coin
+                        obj = new ReverseCoin();
+                        int x = (randx.nextInt(4) + 1);
+                        int y = (randx.nextInt(16) + 1);
+                        obj.position.set(x, y);
+                        reverseCoins.add((ReverseCoin) obj);
                     }
                     else if(button.bt == button.get_monster_type() && mana > 1){
                         mana -= 2;
                         //level.spawn_stuff(3);
+
+                        obj = new Monster();
+                        int x = (randx.nextInt(4) + 1);
+                        int y = (randx.nextInt(16) + 1);
+                        obj.position.set(x, y);
+                        monsters.add((Monster) obj);
                     }
                     else if(button.bt == button.get_trap_type() && mana > 4){
                         mana -= 5;
                         //level.spawn_stuff(2);
+
+                        obj = new TrapDoor();
+                        int x = (randx.nextInt(4) + 1);
+                        int y = (randx.nextInt(16) + 1);
+                        obj.position.set(x, y);
+                        trapDoors.add((TrapDoor) obj);
                     }
                 }
             }
@@ -458,7 +498,9 @@ public class WorldController extends InputAdapter implements Disposable {
     public int return_mana(){
         manatimer = (int) (((System.currentTimeMillis() - startTime) / 1000));
 
+
         frames ++;
+
 
         if(frames % 250 == 0 && mana < 8){
             mana++;

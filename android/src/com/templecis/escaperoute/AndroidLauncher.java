@@ -8,8 +8,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClientStatusCodes;
+import com.google.android.gms.games.RealTimeMultiplayerClient;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
@@ -26,13 +28,14 @@ import com.templecis.escaperoute.util.ActionResolver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AndroidLauncher extends AndroidApplication implements GameHelper.GameHelperListener, ActionResolver, RoomUpdateListener, RealTimeMessageReceivedListener, RoomStatusUpdateListener {
+public class AndroidLauncher extends AndroidApplication implements GameHelper.GameHelperListener, ActionResolver, RealTimeMultiplayerClient.ReliableMessageSentCallback, RoomUpdateListener, RealTimeMessageReceivedListener, RoomStatusUpdateListener {
 
 	private GameHelper gameHelper;
 	private String mRoomId = "";
 	private String mMyId = "";
 	private Room mRoomCurrent;
 	private ArrayList<Participant> mParticipants;
+	private Array trapStuff;
 
 	private EscapeRouteMain erm;
 
@@ -105,7 +108,16 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 	@Override
 	public void getLeaderboardGPGS() {
 		if (gameHelper.isSignedIn()) {
-			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getResources().getString(R.string.app_id)), 100);
+		//
+			// 	startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getResources().getString(R.string.app_id)), 100);
+
+//			mParticipants = room.getParticipants();
+
+
+
+
+
+
 		}
 		else if (!gameHelper.isConnecting()) {
 			loginGPGS();
@@ -208,10 +220,7 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 
 	}
 
-	@Override
-	public void onRealTimeMessageReceived(RealTimeMessage realTimeMessage) {
 
-	}
 
 	@Override
 	public void onRoomConnecting(Room room) {
@@ -338,5 +347,19 @@ public class AndroidLauncher extends AndroidApplication implements GameHelper.Ga
 		startActivityForResult(i, 251);
 
 
+	}
+
+	void sendData(String msg){
+		Games.RealTimeMultiplayer.sendReliableMessage(gameHelper.getApiClient(), this, msg.getBytes(), mRoomId, mMyId);
+	}
+
+	@Override
+	public void onRealTimeMessageSent(int i, int i1, String s) {
+
+	}
+
+	@Override
+	public void onRealTimeMessageReceived(RealTimeMessage rtm) {
+		final byte[] buf = rtm.getMessageData();
 	}
 }

@@ -214,6 +214,7 @@ public class Level {
 
     public void update(float deltaTime) {
         player.update(deltaTime);
+
     }
 
 

@@ -133,7 +133,8 @@ public class WorldRenderer implements Disposable {
 
 
         if (attacker){
-            renderGuiGameOverMessage(batch);
+           // renderGuiGameOverMessage(batch);
+            Countdown(batch);
         }
 
         // draw game over text
@@ -160,7 +161,7 @@ public class WorldRenderer implements Disposable {
         if (attacker){
             render_mana(batch);
 
-            renderGuiGameOverMessage(batch);
+           // renderGuiGameOverMessage(batch);
         }
 
         // draw game over text
