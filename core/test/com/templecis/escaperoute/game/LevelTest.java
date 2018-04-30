@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,7 +30,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class LevelTest{
+public class LevelTest extends GameTest{
 
     private Stage stage;
     private HealthBar healthBar;
@@ -51,47 +52,47 @@ SpriteBatch batch;
 
     AbstractGameObject obj;
 
-    private void init(){
-
-     //   Assets.instance.init(new AssetManager());
-
-//        monsters = new Array<Monster>();
+//    public void init(){
+//
+//     //   Assets.instance.init(new AssetManager());
+//
+////        monsters = new Array<Monster>();
+////
+////
+////
+////        obj = new Monster();
+////        obj.position.set(12, 5);
+////
+////        reverseCoins = new Array<ReverseCoin>();
+////
+////
+////        obj = new ReverseCoin();
+////        obj.position.set(100, 120);
+////
+////        trapDoors = new Array<TrapDoor>();
+////
+////
+////        obj = new TrapDoor();
+////        obj.position.set(15, 13);
+////        mazeTiles = new Array<MazeTile>();
+////
+////
+////        MazeTile mt =  new MazeTile();
+////        mt.position.set(6, 2);
+////
+////        mt.topWall = false;
+////        mt.rightWall = false;
+////        mt.leftWall = true;
+////        mt.bottomWall = true;
+//        //monsters.add((Monster) obj);
+//        // Assets.instance.init(new AssetManager());
+//        boolean truth = true;
+//        boolean falsely = false;
+//
+//        //img = new Texture(Color.BLACK);
 //
 //
-//
-//        obj = new Monster();
-//        obj.position.set(12, 5);
-//
-//        reverseCoins = new Array<ReverseCoin>();
-//
-//
-//        obj = new ReverseCoin();
-//        obj.position.set(100, 120);
-//
-//        trapDoors = new Array<TrapDoor>();
-//
-//
-//        obj = new TrapDoor();
-//        obj.position.set(15, 13);
-//        mazeTiles = new Array<MazeTile>();
-//
-//
-//        MazeTile mt =  new MazeTile();
-//        mt.position.set(6, 2);
-//
-//        mt.topWall = false;
-//        mt.rightWall = false;
-//        mt.leftWall = true;
-//        mt.bottomWall = true;
-        //monsters.add((Monster) obj);
-        // Assets.instance.init(new AssetManager());
-        boolean truth = true;
-        boolean falsely = false;
-
-        //img = new Texture(Color.BLACK);
-
-
-    }
+//    }
 
 
     @Test
@@ -105,10 +106,10 @@ SpriteBatch batch;
         obj = new Monster();
         obj.position.set(12, 5);
 
-        batch.draw(img, obj.position.x, obj.position.y,
-                obj.origin.x, obj.origin.y, obj.dimension.x, obj.dimension.y, obj.scale.x, obj.scale.y,
-                obj.rotation, 0, 0,
-                imgMonster.getWidth(), imgMonster.getHeight(), false, false);
+//        batch.draw(img, obj.position.x, obj.position.y,
+//                obj.origin.x, obj.origin.y, obj.dimension.x, obj.dimension.y, obj.scale.x, obj.scale.y,
+//                obj.rotation, 0, 0,
+//                imgMonster.getWidth(), imgMonster.getHeight(), false, false);
        // Assets.instance.init(new AssetManager());
 
 
