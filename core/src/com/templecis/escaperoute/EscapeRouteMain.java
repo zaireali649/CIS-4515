@@ -11,15 +11,24 @@ import com.templecis.escaperoute.screens.DirectedGame;
 import com.templecis.escaperoute.screens.MenuScreen;
 import com.templecis.escaperoute.screens.transitions.ScreenTransition;
 import com.templecis.escaperoute.screens.transitions.ScreenTransitionSlice;
+import com.templecis.escaperoute.util.ActionResolver;
 
 public class EscapeRouteMain extends DirectedGame {
 	public static final int WIDTH = 480;
 	public static final int HEIGHT = 800;
 
+	public ActionResolver actionResolver;
+
+
 	public static final String title = "Escape Route";
     //private GameStateManager gsm;
 	private SpriteBatch batch;
 	Texture img;
+
+	public EscapeRouteMain(ActionResolver actionResolver) {
+		this.actionResolver = actionResolver;
+	}
+
 
 	@Override
 	public void create() {
@@ -33,8 +42,6 @@ public class EscapeRouteMain extends DirectedGame {
 
 		// Load assets
 		Assets.instance.init(new AssetManager());
-
-
 
 		// Start game at menu screen
 		ScreenTransition transition = ScreenTransitionSlice.init(2, ScreenTransitionSlice.UP_DOWN, 10, Interpolation.pow5Out);

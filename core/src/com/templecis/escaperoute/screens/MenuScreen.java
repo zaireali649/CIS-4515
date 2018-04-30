@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.templecis.escaperoute.EscapeRouteMain;
 import com.templecis.escaperoute.screens.transitions.ScreenTransition;
 import com.templecis.escaperoute.screens.transitions.ScreenTransitionFade;
 import com.templecis.escaperoute.util.Constants;
@@ -51,8 +52,14 @@ public class MenuScreen extends AbstractGameScreen {
     private boolean debugEnabled = false;
     private float debugRebuildStage;
 
+    EscapeRouteMain main;
+
     public MenuScreen(DirectedGame game) {
         super(game);
+        this.main = (EscapeRouteMain) game;
+        if (!main.actionResolver.getSignedInGPGS()){
+            main.actionResolver.loginGPGS();
+        }
     }
 
     @Override
@@ -203,13 +210,23 @@ public class MenuScreen extends AbstractGameScreen {
 
 
     private void onPlayClicked() {
-        ScreenTransition transition = ScreenTransitionFade.init(0.75f);
-        game.setScreen(new EscaperGameScreen(game), transition);
+        if (!main.actionResolver.getSignedInGPGS()){
+            main.actionResolver.loginGPGS();
+        }
+        else{
+            ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+            game.setScreen(new EscaperGameScreen(game), transition);
+        }
     }
 
     private void onOptionsClicked() {
-        ScreenTransition transition = ScreenTransitionFade.init(0.75f);
-        game.setScreen(new AttackerGameScreen(game), transition);
+        if (!main.actionResolver.getSignedInGPGS()){
+            main.actionResolver.loginGPGS();
+        }
+        else {
+            ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+            game.setScreen(new AttackerGameScreen(game), transition);
+        }
     }
 
 

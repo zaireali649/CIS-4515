@@ -7,6 +7,6 @@ import com.templecis.escaperoute.EscapeRouteMain;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new EscapeRouteMain(), config);
+		new LwjglApplication(new EscapeRouteMain(null), config);
 	}
 }
