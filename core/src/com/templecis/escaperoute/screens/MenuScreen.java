@@ -214,8 +214,9 @@ public class MenuScreen extends AbstractGameScreen {
             main.actionResolver.loginGPGS();
         }
         else{
-            ScreenTransition transition = ScreenTransitionFade.init(0.75f);
-            game.setScreen(new EscaperGameScreen(game), transition);
+            //ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+            //game.setScreen(new EscaperGameScreen(game), transition);
+            main.actionResolver.waitingRoom();
         }
     }
 
