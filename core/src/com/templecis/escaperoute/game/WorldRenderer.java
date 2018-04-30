@@ -45,6 +45,10 @@ public class WorldRenderer implements Disposable {
     int timer;
     int timeleft;
 
+    int mana;
+    int manatimer;
+    int manatimerleft;
+
     float x = -15;
     float y = -15;
     float offsetX = 50;
@@ -67,6 +71,7 @@ public class WorldRenderer implements Disposable {
         cameraGUI.update();
         b2debugRenderer = new Box2DDebugRenderer();
 //        add_attacker_trap_ui(batch);
+
     }
 
     public void render() {
@@ -273,6 +278,7 @@ public class WorldRenderer implements Disposable {
             fontGameOver.setColor(1, 1, 1, 1);
 
 
+
            // dispose();
             //worldController.backToMenu();
         //}
@@ -302,12 +308,14 @@ public class WorldRenderer implements Disposable {
 
 
     //private Skin skin = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
-    int mana;
     private void render_mana(final SpriteBatch batch) {
         float x = cameraGUI.viewportWidth - 50 - Constants.LIVES_START * 50;
         float y = -15;
 
+
         mana = worldController.return_mana();
+
+
 
         if(mana == 8){
             batch.draw(Assets.instance.mana.mana8, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
@@ -339,6 +347,19 @@ public class WorldRenderer implements Disposable {
         else if(mana < 0){
             batch.draw(Assets.instance.mana.mana0, x, y, 50, 50, 400, 120, 0.35f, -0.35f, 0);
         }
+
+
+//        timeleft = timer;
+//        BitmapFont fpsFont = Assets.instance.fonts.defaultBig;
+//
+//
+//        fpsFont.draw(batch, "Time Remaining: " + timer, x, y);
+//        fpsFont.setColor(1, 0, 0, 1); // red
+//
+//        if(timer == 0){
+//            // time_done = true;
+//            worldController.backToMenu();
+//        }
 
 
 
