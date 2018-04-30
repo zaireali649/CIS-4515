@@ -227,17 +227,17 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
     private void onOptionsClicked() {
-        /*if (!main.actionResolver.getSignedInGPGS()){
+        if (!main.actionResolver.getSignedInGPGS()){
             main.actionResolver.loginGPGS();
         }
         else {
             ScreenTransition transition = ScreenTransitionFade.init(0.75f);
             game.setScreen(new AttackerGameScreen(game), transition);
-        }*/
-
-        if (main.actionResolver.getSignedInGPGS()){
-            main.actionResolver.logoutGPGS();
         }
+
+        /*if (main.actionResolver.getSignedInGPGS()){
+            main.actionResolver.logoutGPGS();
+        }*/
 
     }
 

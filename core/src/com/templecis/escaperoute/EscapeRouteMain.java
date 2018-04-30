@@ -15,6 +15,7 @@ import com.templecis.escaperoute.util.ActionResolver;
 
 import java.awt.Menu;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EscapeRouteMain extends DirectedGame {
 	public static final int WIDTH = 480;
@@ -65,6 +66,7 @@ public class EscapeRouteMain extends DirectedGame {
 
 	public void onRoomConnected(ArrayList<String> participantIds, String mMyId, long creationTimestamp) {
 		connected = true;
+		Collections.sort(participantIds);
 		for (int i = 0; i < participantIds.size(); i++){
 			Gdx.app.debug("ERM", participantIds.get(i));
 		}
