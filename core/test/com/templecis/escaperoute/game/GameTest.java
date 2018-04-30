@@ -1,9 +1,10 @@
-/*
+
 package com.templecis.escaperoute.game;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.graphics.GL20;
 import com.templecis.escaperoute.EscapeRouteMain;
 import com.templecis.escaperoute.screens.DirectedGame;
@@ -15,14 +16,15 @@ import java.awt.HeadlessException;
 
 
 public class GameTest {
-    // This is our "test" application
+
+
     private static Application application;
 
     // Before running any tests, initialize the application with the headless backend
     @BeforeClass
     public static void init() {
         // Note that we don't need to implement any of the listener's methods
-        application = new HeadlessException(new ApplicationListener() {
+        application = new HeadlessApplication(new ApplicationListener() {
             @Override public void create() {}
             @Override public void resize(int width, int height) {}
             @Override public void render() {}
@@ -44,4 +46,6 @@ public class GameTest {
         application = null;
     }
 }
-*/
+
+
+

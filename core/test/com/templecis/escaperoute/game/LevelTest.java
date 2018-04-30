@@ -3,6 +3,7 @@ package com.templecis.escaperoute.game;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.templecis.escaperoute.EscapeRouteMain;
 import com.templecis.escaperoute.game.objects.AbstractGameObject;
@@ -17,12 +18,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class LevelTest {
+public class LevelTest extends GameTest{
     public Array<MazeTile> mazeTiles;
     public Array<ReverseCoin> reverseCoins;
     public Array<Monster> monsters;
     public Array<TrapDoor> trapDoors;
     public Array<Button> buttons;
+    private Texture imgMonster;
+
 
     AbstractGameObject obj;
 
@@ -78,7 +81,7 @@ public class LevelTest {
     @Test
     public void setMazeTiles(){
 
-        monsters = new Array<Monster>();
+        mazeTiles = new Array<MazeTile>();
 
 
         MazeTile mt =  new MazeTile();
@@ -104,3 +107,5 @@ public class LevelTest {
     }
 
 }
+
+
