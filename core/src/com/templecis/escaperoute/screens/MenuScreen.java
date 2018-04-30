@@ -77,6 +77,12 @@ public class MenuScreen extends AbstractGameScreen {
         stage.act(deltaTime);
         stage.setDebugAll(false);
         stage.draw();
+
+        if (main.connected){
+            Gdx.app.debug("MenuScreen", "Connected.");
+            main.connected = false;
+            startGame();
+        }
     }
 
     @Override
@@ -233,6 +239,11 @@ public class MenuScreen extends AbstractGameScreen {
             main.actionResolver.logoutGPGS();
         }
 
+    }
+
+    public void startGame(){
+        ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+        game.setScreen(new EscaperGameScreen(game), transition);
     }
 
 

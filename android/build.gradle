@@ -24,21 +24,12 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    signingConfigs {
-        release {
-            storeFile file("C:\\Users\\Ziggy\\klaydol.jks")
-            storePassword "karlkey"
-            keyAlias "key0"
-            keyPassword "karlkey"
-        }
-    }
+
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-
         }
     }
 }
