@@ -17,6 +17,8 @@ import com.templecis.escaperoute.game.objects.Monster;
 import com.templecis.escaperoute.game.objects.ReverseCoin;
 import com.templecis.escaperoute.game.objects.TrapDoor;
 
+import java.util.Random;
+
 /**
  * Created by Ziggy on 4/19/2018.
  */
@@ -127,6 +129,32 @@ public class Level {
         generateMaze();
     }
 
+    int maze_size;
+    public void spawn_stuff(int i){
+        AbstractGameObject obj;
+        obj = new MazeTile();
+        int w = (int) obj.dimension.x;
+        int h = (int) obj.dimension.y;
+
+        Random rng = new Random();
+        int x_offset = (rng.nextInt(maze_size))+1;
+        int y_offset = (rng.nextInt((maze_size*4)))+1;
+        if(i == 1){
+            obj = new ReverseCoin();
+            obj.position.set(w/2 + obj.dimension.x/2 + x_offset*2, h/2 + obj.dimension.y/2 + y_offset*2);
+            reverseCoins.add((ReverseCoin) obj);
+        }
+        else if(i == 2){
+            obj = new TrapDoor();
+            obj.position.set(w/2 + obj.dimension.x/2 + x_offset*2, h/2 + obj.dimension.y/2 + y_offset*2);
+            trapDoors.add((TrapDoor) obj);
+        }
+        else if(i == 3){
+            obj = new Monster();
+            obj.position.set(w/2 + obj.dimension.x/2 + x_offset*2, h/2 + obj.dimension.y/2 + y_offset*2);
+            monsters.add((Monster) obj);
+        }
+    }
 
     private Array<MazeTile> generateMaze() {
         //YourGraphicMaze yourGraphicMaze = new YourGraphicMaze();

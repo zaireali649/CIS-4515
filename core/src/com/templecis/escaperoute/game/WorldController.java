@@ -461,7 +461,7 @@ public class WorldController extends InputAdapter implements Disposable {
                     Gdx.app.debug(TAG, "Clicked " + button.bt + " Trap Button");
                     if(button.bt == button.get_coin_type() && mana > 0){
                         mana -= 1;
-                        //level.spawn_stuff(1);
+                        level.spawn_stuff(1);
 
                         // Spawn Reverse Coin
                         obj = new ReverseCoin();
@@ -472,7 +472,7 @@ public class WorldController extends InputAdapter implements Disposable {
                     }
                     else if(button.bt == button.get_monster_type() && mana > 1){
                         mana -= 2;
-                        //level.spawn_stuff(3);
+                        level.spawn_stuff(3);
 
                         obj = new Monster();
                         int x = (randx.nextInt(4) + 1);
@@ -482,7 +482,7 @@ public class WorldController extends InputAdapter implements Disposable {
                     }
                     else if(button.bt == button.get_trap_type() && mana > 4){
                         mana -= 5;
-                        //level.spawn_stuff(2);
+                        level.spawn_stuff(2);
 
                         obj = new TrapDoor();
                         int x = (randx.nextInt(4) + 1);
