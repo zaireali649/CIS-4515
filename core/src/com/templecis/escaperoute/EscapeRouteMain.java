@@ -27,11 +27,16 @@ public class EscapeRouteMain extends DirectedGame {
 
 	public MenuScreen ms;
 
+	public enum ROLE {
+		Attacker, Escaper;
+	}
 
 	public static final String title = "Escape Route";
     //private GameStateManager gsm;
 	private SpriteBatch batch;
 	Texture img;
+
+	public ROLE role;
 
 	public EscapeRouteMain(ActionResolver actionResolver) {
 		this.actionResolver = actionResolver;
@@ -70,6 +75,12 @@ public class EscapeRouteMain extends DirectedGame {
 		for (int i = 0; i < participantIds.size(); i++){
 			Gdx.app.debug("ERM", participantIds.get(i));
 		}
-
+		if (participantIds.get(0).equals(mMyId)){
+			role = ROLE.Attacker;
+		}
+		else{
+			role = ROLE.Escaper;
+		}
+		Gdx.app.debug("ERM", String.valueOf(role));
 	}
 }

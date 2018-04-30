@@ -243,7 +243,12 @@ public class MenuScreen extends AbstractGameScreen {
 
     public void startGame(){
         ScreenTransition transition = ScreenTransitionFade.init(0.75f);
-        game.setScreen(new EscaperGameScreen(game), transition);
+        if (main.role == EscapeRouteMain.ROLE.Escaper) {
+            game.setScreen(new EscaperGameScreen(game), transition);
+        }
+        else{
+            game.setScreen(new AttackerGameScreen(game), transition);
+        }
     }
 
 
