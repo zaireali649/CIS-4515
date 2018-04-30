@@ -12,4 +12,5 @@ public interface ActionResolver {
     public void getLeaderboardGPGS();
     public void getAchievementsGPGS();
     public void logoutGPGS();
+    public void waitingRoom();
 }
