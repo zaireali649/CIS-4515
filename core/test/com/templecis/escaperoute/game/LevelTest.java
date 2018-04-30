@@ -88,7 +88,7 @@ SpriteBatch batch;
         boolean truth = true;
         boolean falsely = false;
 
-        img = new Texture(Color.BLACK);
+        //img = new Texture(Color.BLACK);
 
 
     }

@@ -23,7 +23,7 @@ public class Monster extends AbstractGameObject {
         bounds.set(0, 0, dimension.x, dimension.y);
         collected = false;
 
-//        imgMonster = Assets.instance.monster.monster;
+        imgMonster = Assets.instance.monster.monster;
 
     }
 
